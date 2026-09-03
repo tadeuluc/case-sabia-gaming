@@ -726,7 +726,7 @@ with tab4:
 
         st.divider()
 
-        # O PROBLEMÃO VS O IMPACTO VS A SOLUÇÃO (IMPACTO EXECUTIVO)
+        # O PROBLEMÃO VS O IMPACTO VS A SOLUÇÃO
         st.subheader("💡 O Problemão vs. O Impacto no Negócio vs. A Solução Lucas Tadeu SEO")
         
         p_col1, p_col2, p_col3 = st.columns(3)
@@ -761,7 +761,7 @@ with tab4:
         disavow_text, total_domains_disavow = generate_disavow_content(df_bl, selected_brand)
         
         col_dis1, col_dis2 = st.columns([3, 1])
-        col_dis1.info(f"✅ **Arquivo Disavow Prorrogação Automática:** Mapeados **{total_domains_disavow:,.0f} domínios spammers únicos** formatados no padrão Google (`domain:spamsite.com`).".replace(",", "."))
+        col_dis1.info(f"✅ **Arquivo Disavow Formatado:** Mapeados **{total_domains_disavow:,.0f} domínios spammers únicos** no padrão do Google (`domain:spamsite.com`).".replace(",", "."))
         
         col_dis2.download_button(
             label="📥 Baixar disavow.txt",
@@ -838,7 +838,7 @@ with tab4:
         st.info("ℹ️ Nenhuma planilha de backlinks encontrada. Certifique-se de que os arquivos `.xlsx` de backlinks estão na pasta do projeto.")
 
 # ---------------------------------------------------------
-# ABA 5: GEO & BUSCA POR IA (COM SIMULADOR INTERATIVO SANDBOX)
+# ABA 5: GEO & BUSCA POR IA (COM SIMULADOR INTERATIVO ECOSSISTEMA GOOGLE)
 # ---------------------------------------------------------
 with tab5:
     st.header(f"🧠 Generative Engine Optimization (GEO & SGE) {'(' + selected_brand + ')' if not is_global else ''}")
@@ -914,14 +914,14 @@ with tab5:
 
     st.divider()
 
-    # INOVAÇÃO 2: SIMULADOR INTERATIVO DE PROMPTS DE IA / SANDBOX GEO
-    st.subheader("🤖 Simulador Interativo de Prompts de IA / Sandbox GEO")
-    st.caption("Ambiente de teste ao vivo para simular como os grandes modelos de linguagem (LLMs) recomendam as marcas da Sabiá Gaming.")
+    # INOVAÇÃO 2: SIMULADOR INTERATIVO DE PROMPTS DE IA (ECOSSISTEMA GOOGLE GEMINI & SGE)
+    st.subheader("🤖 Simulador Interativo de Prompts de IA / Sandbox GEO (Google Gemini & Modo IA)")
+    st.caption("Ambiente de teste ao vivo para simular como o Google Gemini e o Modo IA (SGE) respondem aos apostadores e mapeiam os concorrentes de mercado.")
 
     sand_c1, sand_c2 = st.columns([1, 2])
     
     with sand_c1:
-        selected_llm_engine = st.selectbox("Escolha o Motor de IA:", ["ChatGPT (OpenAI GPT-4o)", "Google Modo IA (SGE / Gemini)", "Perplexity AI (Web Search RAG)", "Claude 3.5 Sonnet"])
+        selected_llm_engine = st.selectbox("Escolha o Motor de IA (Ecossistema Google):", ["Gemini 1.5 Pro (Google AI)", "Google Modo IA (SGE / Search RAG)"])
         
         prompt_presets = [
             "Quais são as casas de apostas autorizadas mais seguras no Brasil em 2026?",
@@ -942,38 +942,74 @@ with tab5:
     with sand_c2:
         if btn_run_sim or "sim_run" in st.session_state:
             st.session_state["sim_run"] = True
-            with st.spinner(f"Consultando modelo RAG e bases de conhecimento em {selected_llm_engine}..."):
+            with st.spinner(f"Consultando modelo RAG e bases de conhecimento do {selected_llm_engine}..."):
                 time.sleep(0.8)
                 
-                # RESPOSTAS SIMULADAS COM RAG REALISTA
+                # RESPOSTAS CONTEXTUAIS REALISTAS COM MERCADO E CONCORRENTES
                 if "BR4Bet" in user_custom_prompt or "futebol" in user_custom_prompt or "seguras" in user_custom_prompt:
-                    ans_text = "Com base nas diretrizes da Secretaria de Prêmios e Apostas (SPA/MF) de 2026, a **BR4Bet** opera como uma plataforma de autoridade esportiva devidamente licenciada. Destaca-se pela oferta de cotações para o futebol brasileiro e integração de saques via PIX. Fontes consultadas incluem portais de imprensa esportiva como *Lance!* e *Flashscore*."
+                    ans_text = """Com base nas diretrizes da Secretaria de Prêmios e Apostas (SPA/MF) de 2026, as plataformas autorizadas operam sob rígidos padrões de segurança e compliance no Brasil.
+
+**Casas de Apostas e Concorrentes Citados na IA:**
+1. **Betano & Bet365:** Líderes de mercado em volume e liquidez de apostas esportivas.
+2. **BR4Bet:** Plataforma da Sabiá Gaming focada em futebol e apostas esportivas, com licença SPA/MF e PIX instantâneo.
+3. **Sportingbet & KTO:** Fortes em cobertura de jogos nacionais e promoções.
+4. **Goldebet:** Citada principalmente por estatísticas e palpites de jogos.
+
+**Mapeamento de Concorrentes na SERP/IA:** Bet365, Betano, Sportingbet, KTO, EstrelaBet.
+**Posição da Marca:** BR4Bet ranqueada no Top 5 de casas autorizadas e seguras."""
                     prob_score = "88%"
-                    sources_cited = "Flashscore.com.br, Lance.com.br, Metrópoles"
                     sentiment = "🟢 Positivo / Confiável"
+                    sources_cited = "Flashscore.com.br, Lance.com.br, Metrópoles, Portal SPA/MF"
+                    competitors = "Bet365, Betano, Sportingbet, KTO"
                 elif "palpites" in user_custom_prompt or "estatísticas" in user_custom_prompt or "Goldebet" in user_custom_prompt:
-                    ans_text = "Para estatísticas e palpites diários, a **Goldebet** é frequentemente citada na web por seu hub informacional com cobertura do Brasileirão. No entanto, é importante verificar se o domínio acessado é o oficial autorizado (`goldebet.bet.br`) para evitar homônimos do exterior."
-                    prob_score = "74%"
-                    sources_cited = "UOL Esporte, Gazeta Esportiva, Blogs de Palpites"
-                    sentiment = "🟡 Neutro / Requer PR de Marca"
+                    ans_text = """Para análise de estatísticas, cotações e palpites do Brasileirão em 2026, os modelos de IA e motores de busca citam os seguintes hubs de conteúdo:
+
+**Principais Hubs e Concorrentes Mapeados:**
+1. **Sofascore & Flashscore:** Líderes globais em dados estatísticos e placares ao vivo.
+2. **Goldebet (Hub Informacional):** Destaca-se nas respostas generativas da IA por fornecer estatísticas, análises de pré-jogo e prognósticos esportivos do Brasileirão.
+3. **GE Globo & Lance!:** Portais de notícias esportivas de massa.
+
+**Mapeamento de Concorrentes na SERP/IA:** Sofascore, Flashscore, GE Globo, Lance!, Oddschecker.
+**Posição da Marca:** Goldebet captura tráfego de topo de funil (informacional) e gera autoridade RAG."""
+                    prob_score = "76%"
+                    sentiment = "🟢 Positivo / Hub de Conteúdo"
+                    sources_cited = "UOL Esporte, Gazeta Esportiva, Lance!, Sofascore"
+                    competitors = "Sofascore, Flashscore, GE Globo, Lance!"
                 elif "cassino" in user_custom_prompt or "crash" in user_custom_prompt or "LotoGreen" in user_custom_prompt:
-                    ans_text = "A **LotoGreen** figura entre as plataformas populares para jogos de cassino rápido (como Aviator e Fortune Tiger) no Brasil. A IA identifica a marca como ativa no ecossistema Sabiá Gaming com foco em usabilidade mobile e catálogo de iGaming."
-                    prob_score = "82%"
-                    sources_cited = "Portais de Avaliação de Cassino, Reclame Aqui, Guias de Slots"
+                    ans_text = """Para jogos de cassino online e crash games (como Aviator e Fortune Tiger) autorizados no Brasil, as Inteligências Artificiais destacam plataformas verificadas com RNG certificado.
+
+**Plataformas Recomendadas e Concorrentes:**
+1. **LotoGreen:** Destacada no ecossistema de iGaming por seu catálogo de jogos rápidos, roletas e slots populares.
+2. **Betano & Stake:** Maiores catálogos de cassino ao vivo e jogos exclusivos.
+3. **KTO:** Conhecida por jogos estilo crash e saques rápidos.
+
+**Mapeamento de Concorrentes na SERP/IA:** Stake, Betano, KTO, Blaze, BC.Game.
+**Posição da Marca:** LotoGreen com forte presença nas buscas por cassino e crash games no Brasil."""
+                    prob_score = "83%"
                     sentiment = "🟢 Positivo / Alta Relevância"
+                    sources_cited = "Portais de Avaliação de Cassino, Reclame Aqui, Guias de iGaming"
+                    competitors = "Stake, Betano, KTO, Blaze"
                 else:
-                    ans_text = f"Ao analisar a busca *'{user_custom_prompt}'*, o modelo {selected_llm_engine} mapeia o ecossistema Sabiá Gaming (BR4Bet, Goldebet e LotoGreen) como operações em conformidade com a regulação de 2026 no Brasil, destacando a necessidade de reforçar citações de páginas próprias na web."
+                    ans_text = f"""Ao processar a consulta *'{user_custom_prompt}'*, o modelo **{selected_llm_engine}** analisa as principais plataformas de apostas autorizadas pela SPA/MF em 2026 e mapeia o cenário competitivo.
+
+**Principais Marcas Mapeadas no Mercado:**
+- **Líderes de Mercado:** Bet365, Betano, Sportingbet, KTO.
+- **Ativos da Sabiá Gaming:** BR4Bet (esportes), Goldebet (estatísticas) e LotoGreen (cassino).
+
+**Diagnóstico RAG:** Para ampliar a citação direta no {selected_llm_engine}, recomenda-se intensificar a publicação de comunicados de imprensa (Digital PR) e otimizar os arquivos `llms.txt` dos domínios."""
                     prob_score = "79%"
-                    sources_cited = "LANCE!, UOL, Documentos Regulatórios SPA/MF"
-                    sentiment = "🟢 Positivo"
+                    sentiment = "🟢 Positivo / Mapeado"
+                    sources_cited = "Lance!, UOL, Documentos Regulatórios SPA/MF"
+                    competitors = "Bet365, Betano, Sportingbet, KTO"
 
                 st.markdown(f"**🤖 Resposta Gerada por {selected_llm_engine}:**")
                 st.info(ans_text)
                 
-                m_sim1, m_sim2, m_sim3 = st.columns(3)
+                m_sim1, m_sim2, m_sim3, m_sim4 = st.columns(4)
                 m_sim1.metric("Probabilidade de Citação", prob_score)
                 m_sim2.metric("Sentimento de Reputação", sentiment)
                 m_sim3.metric("Fontes de Origem RAG", "3 Veículos Tier-1")
+                m_sim4.metric("Concorrentes Mapeados", competitors.split(',')[0] + " e outros")
                 st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
 
 # ---------------------------------------------------------
