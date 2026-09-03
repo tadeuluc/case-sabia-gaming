@@ -4,6 +4,7 @@ import numpy as np
 import plotly.express as px
 import streamlit as st
 import time
+from urllib.parse import urlparse
 
 # Carregamento seguro das variáveis de ambiente
 try:
@@ -161,8 +162,8 @@ st.markdown("""
 # 3. HERO BANNER PRINCIPAL
 st.markdown("""
     <div class="hero-banner">
-        <span class="hero-badge">Apresentação Executiva</span>
-        <h1 class="hero-title">🚀 Case Estratégico: SEO, GEO & IA — Sabiá Gaming</h1>
+        <span class="hero-badge">Apresentação Executiva de Diretoria</span>
+        <h1 class="hero-title">🚀 Dashboard Estratégico: SEO, GEO & IA — Sabiá Gaming</h1>
         <p class="hero-subtitle">Plano de Aquisição, Arquitetura Técnica e Defesa Operacional | Estratégia por <strong>Lucas Tadeu SEO</strong></p>
     </div>
 """, unsafe_allow_html=True)
@@ -173,7 +174,7 @@ def load_semrush_keywords():
     all_files = os.listdir('.')
     files_map = {}
     for f in all_files:
-        if f.endswith('.xlsx') and 'screaming' not in f.lower() and 'tecnico' not in f.lower():
+        if f.endswith('.xlsx') and 'screaming' not in f.lower() and 'tecnico' not in f.lower() and 'backlink' not in f.lower():
             if 'br4' in f.lower(): files_map['BR4Bet'] = f
             elif 'goldebet' in f.lower(): files_map['Goldebet'] = f
             elif 'lotogreen' in f.lower(): files_map['LotoGreen'] = f
@@ -208,14 +209,14 @@ def load_semrush_keywords():
 
 df_keywords = load_semrush_keywords()
 
-# 5. AUTO-DETECÇÃO DOS CSVS DO SCREAMING FROG
+# 5. PARSER DINÂMICO DOS CSVS DO SCREAMING FROG
 @st.cache_data
 def load_screaming_frog_data():
     all_files = os.listdir('.')
-    files_target = {
-        'BR4Bet': ['seo tecnico br4.csv'], 
-        'Goldebet': ['seo tecnico goldebet.csv'], 
-        'LotoGreen': ['seo tecnico lotogreen.csv']
+    patterns = {
+        'BR4Bet': ['br4'],
+        'Goldebet': ['goldebet', 'goldbet', 'golde'],
+        'LotoGreen': ['lotogreen', 'lotto', 'green']
     }
     
     parsed_sf = {
@@ -224,8 +225,13 @@ def load_screaming_frog_data():
         "LotoGreen": {"total_urls": 620, "status_200": 550, "status_3xx": 40, "status_4xx": 30, "missing_h1": 400, "non_indexable": 80, "df_raw": None},
     }
 
-    for brand, targets in files_target.items():
-        found_file = next((t for t in targets if os.path.exists(t)), None)
+    for brand, keys in patterns.items():
+        found_file = None
+        for f in all_files:
+            if f.endswith('.csv') and any(k in f.lower() for k in keys):
+                found_file = f
+                break
+                    
         if found_file:
             try:
                 df = None
@@ -233,35 +239,134 @@ def load_screaming_frog_data():
                     for sep in [',', ';', '\t']:
                         try:
                             temp_df = pd.read_csv(found_file, encoding=enc, sep=sep)
-                            if len(temp_df.columns) > 3: df = temp_df; break
-                        except Exception: continue
-                    if df is not None: break
+                            if len(temp_df.columns) > 2:
+                                df = temp_df
+                                break
+                        except Exception:
+                            continue
+                    if df is not None:
+                        break
 
                 if df is not None:
-                    df.columns = df.columns.str.strip()
-                    col_status = next((c for c in df.columns if 'status code' in c.lower()), None)
-                    col_indexable = next((c for c in df.columns if 'indexability' in c.lower() and 'status' not in c.lower()), None)
-                    col_h1 = next((c for c in df.columns if 'h1-1' in c.lower() or c.lower() == 'h1' or 'h1 1' in c.lower()), None)
-                    col_url = next((c for c in df.columns if 'address' in c.lower() or 'url' in c.lower()), df.columns[0])
+                    df.columns = [str(c).strip() for c in df.columns]
+                    cols_lower = [c.lower() for c in df.columns]
+                    
+                    col_url = next((df.columns[i] for i, c in enumerate(cols_lower) if 'address' in c or 'url' in c or 'uri' in c), df.columns[0])
+                    col_status = next((df.columns[i] for i, c in enumerate(cols_lower) if 'status code' in c or c == 'status'), None)
+                    col_indexable = next((df.columns[i] for i, c in enumerate(cols_lower) if 'indexability' in c and 'status' not in c), None)
+                    col_h1 = next((df.columns[i] for i, c in enumerate(cols_lower) if 'h1-1' in c or c == 'h1' or 'h1 1' in c), None)
 
                     total_urls = len(df)
-                    status_200 = len(df[df[col_status] == 200]) if col_status else total_urls
-                    status_3xx = len(df[(df[col_status] >= 300) & (df[col_status] < 400)]) if col_status else 0
-                    status_4xx = len(df[df[col_status] >= 400]) if col_status else 0
-                    non_indexable = len(df[df[col_indexable].astype(str).str.lower() != 'indexable']) if col_indexable else total_urls - status_200
-                    missing_h1 = len(df[df[col_h1].isna() | (df[col_h1].astype(str).str.strip() == '') | (df[col_h1].astype(str).str.lower() == 'nan')]) if col_h1 else int(total_urls * 0.85)
+                    
+                    if col_status:
+                        s_series = pd.to_numeric(df[col_status], errors='coerce')
+                        status_200 = int((s_series == 200).sum())
+                        status_3xx = int(((s_series >= 300) & (s_series < 400)).sum())
+                        status_4xx = int((s_series >= 400).sum())
+                    else:
+                        status_200, status_3xx, status_4xx = total_urls, 0, 0
+                        
+                    if col_indexable:
+                        non_indexable = int((df[col_indexable].astype(str).str.lower() != 'indexable').sum())
+                    else:
+                        non_indexable = total_urls - status_200
+                        
+                    if col_h1:
+                        missing_h1 = int((df[col_h1].isna() | (df[col_h1].astype(str).str.strip() == '') | (df[col_h1].astype(str).str.lower() == 'nan') | (df[col_h1].astype(str).str.lower() == 'missing') | (df[col_h1].astype(str).str.strip() == '0')).sum())
+                    else:
+                        missing_h1 = int(total_urls * 0.85)
+
+                    raw_cols = [col_url]
+                    if col_status: raw_cols.append(col_status)
+                    if col_h1: raw_cols.append(col_h1)
 
                     parsed_sf[brand] = {
-                        "total_urls": total_urls, "status_200": status_200, "status_3xx": status_3xx,
-                        "status_4xx": status_4xx, "missing_h1": missing_h1, "non_indexable": non_indexable,
-                        "df_raw": df[[col_url] + ([col_status] if col_status else []) + ([col_h1] if col_h1 else [])].head(100)
+                        "total_urls": total_urls,
+                        "status_200": status_200,
+                        "status_3xx": status_3xx,
+                        "status_4xx": status_4xx,
+                        "missing_h1": missing_h1,
+                        "non_indexable": non_indexable,
+                        "df_raw": df[raw_cols].head(100)
                     }
-            except Exception: continue
+            except Exception:
+                continue
+
     return parsed_sf
 
 sf_data = load_screaming_frog_data()
 
-# 6. BASE TÉCNICA E KNOWLEDGE BASE
+# 6. CARREGAMENTO DINÂMICO MULTI-MARCA DAS PLANILHAS DE BACKLINKS
+@st.cache_data
+def load_backlink_datasets():
+    all_files = os.listdir('.')
+    backlink_files = {}
+    for f in all_files:
+        if f.endswith('.xlsx') and 'backlink' in f.lower():
+            if 'br4' in f.lower(): backlink_files['BR4Bet'] = f
+            elif 'golde' in f.lower(): backlink_files['Goldebet'] = f
+            elif 'loto' in f.lower(): backlink_files['LotoGreen'] = f
+            
+    parsed_bl = {}
+    trusted_domains = ['flashscore.com.br', 'lance.com.br', 'uol.com.br', 'g1.globo.com', 'terra.com.br', 'estadao.com.br', 'folha.uol.com.br', 'metropoles.com', 'ge.globo.com']
+
+    for brand, filepath in backlink_files.items():
+        try:
+            df = pd.read_excel(filepath)
+            df.columns = [str(c).strip() for c in df.columns]
+            df['Marca'] = brand
+            
+            def classify(row):
+                ascore = row.get('Page ascore', 0)
+                ext_links = row.get('External links', 0)
+                src_url = str(row.get('Source url', '')).lower()
+                sitewide = row.get('Sitewide', False)
+                
+                is_trusted = any(td in src_url for td in trusted_domains)
+                
+                if is_trusted or ascore >= 20:
+                    return '🟢 Bom (Alta Autoridade)'
+                elif ascore >= 5:
+                    return '🟡 Médio (Relevância Moderada)'
+                elif (ascore == 0 and ext_links > 2000) or 'black-hat' in src_url or 'mass-links' in src_url or 'link-dealer' in src_url or 'seo_anomaly' in src_url:
+                    return '🔴 Tóxico / Spam (Link Farm)'
+                elif ascore == 0 and sitewide:
+                    return '🔴 Tóxico / Spam (Sitewide)'
+                elif ascore == 0:
+                    return '🔴 Suspeito / Baixa Qualidade'
+                else:
+                    return '🟡 Médio (Relevância Moderada)'
+
+            df['Qualidade'] = df.apply(classify, axis=1)
+            df['Status_Link'] = np.where(df.get('Nofollow', False), 'Nofollow', 'DoFollow')
+            df['Tipo_Link'] = np.where(df.get('Text', True), 'Texto / Ancorado', np.where(df.get('Image', False), 'Imagem / Banner', 'Outro'))
+            parsed_bl[brand] = df
+        except Exception:
+            continue
+            
+    return parsed_bl
+
+bl_data = load_backlink_datasets()
+
+# 7. FUNÇÃO UTILITÁRIA PARA GERAR O ARQUIVO DISAVOW.TXT FORMATADO
+def generate_disavow_content(df_subset, brand_name):
+    toxic_df = df_subset[df_subset['Qualidade'].str.contains('Tóxico|Suspeito', case=False, na=False)]
+    domains = set()
+    for u in toxic_df['Source url'].dropna():
+        try:
+            netloc = urlparse(str(u)).netloc.split(':')[0]
+            if netloc.startswith("www."): netloc = netloc[4:]
+            if netloc and '.' in netloc and len(netloc) > 3:
+                domains.add(netloc.lower())
+        except Exception:
+            pass
+            
+    sorted_domains = sorted(list(domains))
+    header = f"# Disavow File generated by Lucas Tadeu SEO Dashboard\n# Target Brand: {brand_name}\n# Total Spammer Domains Filtered: {len(sorted_domains)}\n# Submission Tool: Google Search Console Disavow Tool\n\n"
+    lines = [f"domain:{d}" for d in sorted_domains]
+    return header + "\n".join(lines), len(sorted_domains)
+
+# 8. BASE TÉCNICA E KNOWLEDGE BASE
 BRAND_AUDIT_DATA = {
     "BR4Bet": {"url": "https://br4.bet.br/", "mobile": {"score": 46, "lcp": "2.2s", "inp": "564ms", "cls": "0.37", "ttfb": "0.9s"}, "desktop": {"score": 78, "lcp": "1.1s", "inp": "140ms", "cls": "0.05", "ttfb": "0.4s"}},
     "Goldebet": {"url": "https://goldebet.bet.br/", "mobile": {"score": 44, "lcp": "5.9s", "inp": "800ms", "cls": "0.01", "ttfb": "1.2s"}, "desktop": {"score": 65, "lcp": "2.4s", "inp": "210ms", "cls": "0.00", "ttfb": "0.6s"}},
@@ -281,7 +386,7 @@ BRAND_KNOWLEDGE = {
     "Goldebet": {
         "posicionamento": "A Especialista Informacional (Palpites)",
         "trafego_total": "108,1K",
-        "backlinks": "46",
+        "backlinks": "7,3K",
         "authority": 30,
         "seo_problem": "A marca possui uma dependência extrema de buscas branded (>91%), o que oculta grandes oportunidades de captura de buscas informacionais (estatísticas, cotações e palpites do Brasileirão).",
         "seo_solution": "Estruturar o hub informacional de 'Palpites e Estatísticas' no blog e subdiretórios, capturando o apostador no topo do funil antes da concorrência.",
@@ -290,7 +395,7 @@ BRAND_KNOWLEDGE = {
     "LotoGreen": {
         "posicionamento": "O Hub de Cassino e Jogos Rápidos",
         "trafego_total": "161,1K",
-        "backlinks": "29",
+        "backlinks": "5,3K",
         "authority": 33,
         "seo_problem": "Desalinhamento de intenção de busca (Search Intent Mismatch) em termos de marca/jogos e estagnação de palavras valiosas de crash games (Aviator, Fortune Tiger) fora do Top 3.",
         "seo_solution": "Ajustar o Search Intent das Landing Pages de cassino, aplicar marcação Schema estruturada e impulsionar os termos de jogos rápidos para as 3 primeiras posições da SERP.",
@@ -337,7 +442,7 @@ GEO_KNOWLEDGE = {
     }
 }
 
-# 7. BARRA LATERAL (SIDEBAR COM BRANDING FIXADO + LINKEDIN)
+# 9. BARRA LATERAL (SIDEBAR COM BRANDING FIXADO + LINKEDIN)
 st.sidebar.markdown("""
     <div class="author-card">
         <p class="author-name">Lucas Tadeu SEO</p>
@@ -357,14 +462,15 @@ st.sidebar.divider()
 st.sidebar.caption("Sabiá Gaming Case Study © 2026")
 st.sidebar.caption("Consultoria Executiva por Lucas Tadeu SEO")
 
-# 8. ESTRUTURA DE ABAS
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+# 10. ESTRUTURA DE ABAS (7 ABAS ESTRATÉGICAS)
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "1. Ativos & Diferenciação", 
     "2. Diagnóstico de Conteúdo", 
     "3. SEO Técnico & Rastreio", 
-    "4. GEO & Busca por IA", 
-    "5. Expansão Internacional", 
-    "6. Plano Executivo & Time"
+    "4. Backlinks & Autoridade Off-Page",
+    "5. GEO & Busca por IA", 
+    "6. Expansão Internacional", 
+    "7. Plano Executivo & Time"
 ])
 
 # ---------------------------------------------------------
@@ -414,7 +520,7 @@ with tab1:
             st.success(f"🧠 **Presença em IA & Busca Generativa (GEO):**\n\n- **Visibilidade:** Score de {info_geo_b['score']} com {info_geo_b['mencoes']} menções acumuladas nas plataformas.\n- **Distribuição por IA:** Presença concentrada em {info_geo_b['paises']}.\n- **Diretriz RAG:** {info_geo_b['solucao']}")
 
         st.divider()
-        st.markdown("👉 *Utilize as abas superiores (2 a 6) para aprofundar a auditoria técnica, tabelas de palavras-chave e o plano de execução de 90 dias da marca.*")
+        st.markdown("👉 *Utilize as abas superiores (2 a 7) para aprofundar a auditoria técnica, tabelas de palavras-chave, perfil de backlinks e o plano de execução de 90 dias da marca.*")
 
 # ---------------------------------------------------------
 # ABA 2: DIAGNÓSTICO DE CONTEÚDO
@@ -485,7 +591,19 @@ with tab3:
     st.markdown("Diagnóstico técnico integrando o **Google PageSpeed Insights** (Métricas de Usuário) e o **Screaming Frog** (Métricas do Googlebot).")
 
     info_ps = BRAND_AUDIT_DATA[active_brand_key]
-    info_sf = sf_data[active_brand_key]
+
+    if is_global:
+        info_sf = {
+            "total_urls": sum(sf_data[b]["total_urls"] for b in sf_data),
+            "status_200": sum(sf_data[b]["status_200"] for b in sf_data),
+            "status_3xx": sum(sf_data[b]["status_3xx"] for b in sf_data),
+            "status_4xx": sum(sf_data[b]["status_4xx"] for b in sf_data),
+            "missing_h1": sum(sf_data[b]["missing_h1"] for b in sf_data),
+            "non_indexable": sum(sf_data[b]["non_indexable"] for b in sf_data),
+            "df_raw": pd.concat([sf_data[b]["df_raw"] for b in sf_data if sf_data[b]["df_raw"] is not None], ignore_index=True) if any(sf_data[b]["df_raw"] is not None for b in sf_data) else None
+        }
+    else:
+        info_sf = sf_data[selected_brand]
 
     st.subheader("🚀 Core Web Vitals (Mobile vs Desktop)")
     col_u1, col_u2 = st.columns([3, 1])
@@ -516,8 +634,8 @@ with tab3:
 
     st.divider()
 
-    st.subheader("🕷️ Auditoria do Crawler (Screaming Frog)")
-    st.caption(f"Dados extraídos diretamente do arquivo `seo tecnico {active_brand_key.lower()}.csv`")
+    st.subheader(f"🕷️ Auditoria do Crawler — Screaming Frog ({'Ecossistema' if is_global else selected_brand})")
+    st.caption(f"Dados calculados do arquivo CSV `{active_brand_key.lower()}`")
 
     s1, s2, s3, s4 = st.columns(4)
     s1.metric("Total URLs Rastreadas", f"{info_sf['total_urls']:,}".replace(",", "."))
@@ -539,43 +657,192 @@ with tab3:
     with sf_g2:
         df_index = pd.DataFrame({
             "Indexabilidade": ["Indexável (Aberta)", "Não-Indexável"],
-            "Quantidade": [info_sf['total_urls'] - info_sf['non_indexable'], info_sf['non_indexable']]
+            "Quantidade": [max(0, info_sf['total_urls'] - info_sf['non_indexable']), info_sf['non_indexable']]
         })
         fig_index = px.pie(df_index, names="Indexabilidade", values="Quantidade", title="Proporção de Indexabilidade", hole=0.4, color_discrete_sequence=px.colors.sequential.Teal)
         fig_index.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
         st.plotly_chart(fig_index, use_container_width=True)
 
     if info_sf["df_raw"] is not None:
-        with st.expander(f"📂 Visualizar URLs do Screaming Frog ({active_brand_key})"):
+        with st.expander(f"📂 Visualizar Amostra do Screaming Frog ({'Ecossistema' if is_global else selected_brand})"):
             st.dataframe(info_sf["df_raw"], use_container_width=True, hide_index=True)
 
     st.divider()
 
-    st.subheader(f"💡 Diagnóstico Técnico Integrado ({active_brand_key})")
+    st.subheader(f"💡 Diagnóstico Técnico Integrado ({'Ecossistema' if is_global else selected_brand})")
     p1, p2, p3 = st.columns(3)
     
     with p1:
-        st.error(f"**1. O Problema na {active_brand_key}**")
+        st.error(f"**1. O Problema na {'Ecossistema' if is_global else selected_brand}**")
         st.write(f"- **Mobile:** O INP crítico de **{info_ps['mobile']['inp']}** gera congelamento de interface.")
         st.write(f"- **Estrutura:** Identificamos **{info_sf['missing_h1']} URLs** sem a tag H1 principal.")
         
     with p2:
         st.warning(f"**2. O Diagnóstico (Crawl Budget)**")
-        st.write(f"O Googlebot é sobrecarregado por JavaScript e encontra **{info_sf['status_4xx']} URLs quebradas (4xx/5xx)** e **{info_sf['status_3xx']} redirecionamentos** na {active_brand_key}.")
+        st.write(f"O Googlebot é sobrecarregado por JavaScript e encontra **{info_sf['status_4xx']} URLs quebradas (4xx/5xx)** e **{info_sf['status_3xx']} redirecionamentos** na {'Ecossistema' if is_global else selected_brand}.")
         st.write("Isso desperdiça a cota de varredura do robô em páginas sem valor comercial.")
         
     with p3:
-        st.success(f"**3. O Que Faremos na {active_brand_key} e Por Quê**")
+        st.success(f"**3. O Que Faremos na {'Ecossistema' if is_global else selected_brand} e Por Quê**")
         st.write("- **SSR (Server-Side Rendering):** Entrega o HTML limpo e pronto, eliminando o travamento mobile.")
         st.write("- **Higienização de Rastreio:** Corrigir os erros 4xx apontados no Screaming Frog e parametrizar tags H1 automáticas.")
         st.write("- **Por quê?** Uma arquitetura limpa garante que o Googlebot dedique 100% da sua capacidade para indexar novos mercados esportivos e páginas de aposta.")
 
 # ---------------------------------------------------------
-# ABA 4: GEO & BUSCA POR IA
+# ABA 4: BACKLINKS & AUTORIDADE OFF-PAGE (COM GERADOR DISAVOW.TXT)
 # ---------------------------------------------------------
 with tab4:
+    st.header(f"🔗 Auditoria de Backlinks & Autoridade Off-Page {'(' + selected_brand + ')' if not is_global else '(Visão Global)'}")
+    st.markdown("Análise de perfil de links, identificação de toxicidade (*Link Farms/Spam*) e classificação por autoridade | Dados extraídos das planilhas do Semrush.")
+
+    # TRATAMENTO DINÂMICO DOS DATASETS
+    if is_global and bl_data:
+        df_bl = pd.concat([bl_data[b] for b in bl_data], ignore_index=True)
+    elif not is_global and selected_brand in bl_data:
+        df_bl = bl_data[selected_brand].copy()
+    elif bl_data:
+        df_bl = list(bl_data.values())[0].copy()
+    else:
+        df_bl = pd.DataFrame()
+
+    if not df_bl.empty:
+        tot_links = len(df_bl)
+        good_links = len(df_bl[df_bl["Qualidade"].str.contains("Bom")])
+        toxic_links = len(df_bl[df_bl["Qualidade"].str.contains("Tóxico") | df_bl["Qualidade"].str.contains("Suspeito")])
+        pct_toxic = (toxic_links / tot_links * 100) if tot_links > 0 else 0
+        dofollow_count = len(df_bl[df_bl["Status_Link"] == "DoFollow"])
+
+        # BANNER DE ALERTA DINÂMICO DE TOXICIDADE
+        if is_global:
+            st.warning(f"⚠️ **DIAGNÓSTICO CONSOLIDADO DE OFF-PAGE (ECOSSISTEMA):** Foram analisados **{tot_links:,.0f} backlinks**. O ecossistema possui **{toxic_links:,.0f} links tóxicos ou suspeitos ({pct_toxic:.1f}%)**, exigindo higienização preventiva via Disavow.")
+        elif selected_brand == "BR4Bet":
+            st.warning(f"⚠️ **ALERTA DE TOXICIDADE OFF-PAGE (BR4Bet):** Detectados **{toxic_links:,.0f} links spammers/suspeitos ({pct_toxic:.1f}%)**. Por outro lado, a marca possui ativos valiosos como *Flashscore* (AS 83) e *Lance!* (AS 60) que precisam ser blindados.")
+        elif selected_brand == "Goldebet":
+            st.error(f"🚨 **ALERTA CRÍTICO DE SPAM (Goldebet):** A Goldebet possui **{toxic_links:,.0f} links tóxicos e de baixa qualidade ({pct_toxic:.1f}%)**, com forte presença de fazendas de links que suprimem a autoridade real da marca.")
+        elif selected_brand == "LotoGreen":
+            st.error(f"🚨 **ALERTA CRÍTICO DE SPAM (LotoGreen):** A LotoGreen sofreu um ataque massivo de SEO negativo, acumulando **{toxic_links:,.0f} links tóxicos de fazendas de links e PBNs ({pct_toxic:.1f}%)**. Ação urgente de Disavow necessária.")
+        else:
+            st.info(f"ℹ️ **PERFIL EM CONSTRUÇÃO ({selected_brand}):** {tot_links:,.0f} backlinks mapeados no Semrush. Foco em campanhas de Digital PR para construção de autoridade institucional.")
+
+        st.divider()
+
+        # O PROBLEMÃO VS O IMPACTO VS A SOLUÇÃO (IMPACTO EXECUTIVO)
+        st.subheader("💡 O Problemão vs. O Impacto no Negócio vs. A Solução Lucas Tadeu SEO")
+        
+        p_col1, p_col2, p_col3 = st.columns(3)
+        with p_col1:
+            st.error("🔴 **1. O Problemão (Ameaça Oculta)**")
+            if selected_brand == "BR4Bet":
+                st.write("- **Contaminação Massiva:** Mais de 10.900 backlinks vêm de fazendas de links automáticas e PBNs.")
+                st.write("- **Ancoragem Poluída:** Milhares de links apontam com textos estranhos e bots de automação.")
+            elif selected_brand == "Goldebet":
+                st.write("- **Poluição de Links Spam:** 94,5% dos links da Goldebet são fazendas de links e agregadores suspeitos.")
+                st.write("- **Risco Algorítmico:** O perfil de links esconde os ganhos de menção generativa na IA.")
+            else:
+                st.write("- **Invasão de Link Farms:** 90,4% do perfil de links é composto por PBNs e redes de spam (`@SEO_ANOMALY`).")
+                st.write("- **Cegueira do Algoritmo:** O perfil de links está dominado por spammers do Telegram.")
+
+        with p_col2:
+            st.warning("⚠️ **2. O Impacto no Negócio**")
+            st.write("- **Risco de Punição:** Ativação do *Google SpamBrain*, que rebaixa o domínio em buscas genéricas.")
+            st.write("- **Desperdício de Autoridade:** Links legítimos de alta autoridade (*Flashscore*, *Lance!*) perdem força devido à poluição de spam.")
+
+        with p_col3:
+            st.success("💡 **3. A Solução Lucas Tadeu SEO**")
+            st.write("- **Expurgo via Disavow:** Geração do arquivo `disavow.txt` com domínios tóxicos para upload no Google Search Console.")
+            st.write("- **Blindagem de Ativos:** Proteção dos links DoFollow Tier-1 e re-ancoragem semântica com o nome oficial da marca.")
+
+        st.divider()
+
+        # INOVAÇÃO 1: GERADOR & BOTÃO DE DOWNLOAD DO DISAVOW.TXT FORMATADO
+        st.subheader("🛠️ Ferramenta de Ação Imediata: Gerador do Arquivo disavow.txt")
+        st.caption("O sistema filtra automaticamente todos os domínios tóxicos/spammers mapeados acima e compila o arquivo de rejeição oficial para o Google Search Console.")
+        
+        disavow_text, total_domains_disavow = generate_disavow_content(df_bl, selected_brand)
+        
+        col_dis1, col_dis2 = st.columns([3, 1])
+        col_dis1.info(f"✅ **Arquivo Disavow Prorrogação Automática:** Mapeados **{total_domains_disavow:,.0f} domínios spammers únicos** formatados no padrão Google (`domain:spamsite.com`).".replace(",", "."))
+        
+        col_dis2.download_button(
+            label="📥 Baixar disavow.txt",
+            data=disavow_text,
+            file_name=f"disavow_{selected_brand.lower().replace(' ', '_')}.txt",
+            mime="text/plain",
+            type="primary",
+            use_container_width=True
+        )
+
+        st.divider()
+
+        # FILTROS DE INTERATIVIDADE DA TABELA
+        st.subheader("🔍 Mineração e Filtros de Backlinks")
+        bl_f1, bl_f2, bl_f3 = st.columns([1.5, 1.5, 2])
+        qualidade_selected = bl_f1.multiselect("Classificação de Qualidade:", options=df_bl["Qualidade"].unique(), default=df_bl["Qualidade"].unique())
+        status_selected = bl_f2.multiselect("Atributo de Rastreio:", options=df_bl["Status_Link"].unique(), default=df_bl["Status_Link"].unique())
+        search_bl = bl_f3.text_input("Buscar por Domínio / Âncora / URL:", "")
+
+        df_bl_filtered = df_bl.copy()
+        if qualidade_selected: df_bl_filtered = df_bl_filtered[df_bl_filtered["Qualidade"].isin(qualidade_selected)]
+        if status_selected: df_bl_filtered = df_bl_filtered[df_bl_filtered["Status_Link"].isin(status_selected)]
+        if search_bl:
+            df_bl_filtered = df_bl_filtered[
+                df_bl_filtered["Source url"].astype(str).str.contains(search_bl, case=False, na=False) | 
+                df_bl_filtered["Anchor"].astype(str).str.contains(search_bl, case=False, na=False) |
+                df_bl_filtered["Source title"].astype(str).str.contains(search_bl, case=False, na=False)
+            ]
+
+        # KPIS
+        bl_k1, bl_k2, bl_k3, bl_k4 = st.columns(4)
+        bl_k1.metric("Total Backlinks Mapeados", f"{tot_links:,.0f}".replace(",", "."))
+        bl_k2.metric("Backlinks Bons (Alta Autoridade)", f"{good_links:,.0f}".replace(",", "."), f"{(good_links/tot_links*100):.1f}% do total")
+        bl_k3.metric("Links Tóxicos / Suspeitos", f"{toxic_links:,.0f}".replace(",", "."), f"{pct_toxic:.1f}% de toxicidade", delta_color="inverse")
+        bl_k4.metric("Proporção DoFollow", f"{dofollow_count:,.0f}".replace(",", "."), f"{(dofollow_count/tot_links*100):.1f}% do total")
+
+        st.divider()
+
+        # GRÁFICOS VISUAIS
+        g_col1, g_col2 = st.columns(2)
+        with g_col1:
+            st.subheader("📊 Distribuição de Qualidade dos Backlinks")
+            df_qual_counts = df_bl["Qualidade"].value_counts().reset_index()
+            df_qual_counts.columns = ["Qualidade", "Quantidade"]
+            fig_qual = px.pie(
+                df_qual_counts, names="Qualidade", values="Quantidade", hole=0.4,
+                color="Qualidade",
+                color_discrete_map={
+                    "🟢 Bom (Alta Autoridade)": "#2E7D32",
+                    "🟡 Médio (Relevância Moderada)": "#F9A825",
+                    "🔴 Tóxico / Spam (Link Farm)": "#D32F2F",
+                    "🔴 Tóxico / Spam (Sitewide)": "#B71C1C",
+                    "🔴 Suspeito / Baixa Qualidade": "#C62828"
+                }
+            )
+            fig_qual.update_layout(height=340, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_qual, use_container_width=True)
+
+        with g_col2:
+            st.subheader("📌 Top 8 Textos Âncora Mais Frequentes")
+            top_anchors = df_bl["Anchor"].fillna("Sem Âncora (URL Direta)").value_counts().head(8).reset_index()
+            top_anchors.columns = ["Texto Âncora", "Quantidade"]
+            fig_anc = px.bar(top_anchors, x="Quantidade", y="Texto Âncora", orientation="h", color_discrete_sequence=["#0284c7"])
+            fig_anc.update_layout(height=340, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_anc, use_container_width=True)
+
+        st.divider()
+
+        st.subheader(f"📋 Tabela de Backlinks Mapeados ({len(df_bl_filtered):,.0f} exibidos)".replace(",", "."))
+        cols_show = ["Marca", "Source title", "Source url", "Target url", "Page ascore", "Anchor", "Status_Link", "Qualidade"]
+        cols_present = [c for c in cols_show if c in df_bl_filtered.columns]
+        st.dataframe(df_bl_filtered[cols_present].sort_values(by="Page ascore", ascending=False).head(1000), hide_index=True, use_container_width=True)
+    else:
+        st.info("ℹ️ Nenhuma planilha de backlinks encontrada. Certifique-se de que os arquivos `.xlsx` de backlinks estão na pasta do projeto.")
+
+# ---------------------------------------------------------
+# ABA 5: GEO & BUSCA POR IA (COM SIMULADOR INTERATIVO SANDBOX)
+# ---------------------------------------------------------
+with tab5:
     st.header(f"🧠 Generative Engine Optimization (GEO & SGE) {'(' + selected_brand + ')' if not is_global else ''}")
-    st.markdown("Análise baseada nos relatórios de Visibilidade na IA do **Semrush** (ChatGPT, Gemini, Google Modo IA).")
+    st.markdown("Análise de visibilidade nos motores de IA do **Semrush** (ChatGPT, Gemini, Google Modo IA).")
 
     if is_global:
         g_c1, g_c2, g_c3, g_c4 = st.columns(4)
@@ -645,10 +912,74 @@ with tab4:
             st.success(f"**Plano de Ação GEO para {selected_brand}:**")
             st.write(geo_info["solucao"])
 
+    st.divider()
+
+    # INOVAÇÃO 2: SIMULADOR INTERATIVO DE PROMPTS DE IA / SANDBOX GEO
+    st.subheader("🤖 Simulador Interativo de Prompts de IA / Sandbox GEO")
+    st.caption("Ambiente de teste ao vivo para simular como os grandes modelos de linguagem (LLMs) recomendam as marcas da Sabiá Gaming.")
+
+    sand_c1, sand_c2 = st.columns([1, 2])
+    
+    with sand_c1:
+        selected_llm_engine = st.selectbox("Escolha o Motor de IA:", ["ChatGPT (OpenAI GPT-4o)", "Google Modo IA (SGE / Gemini)", "Perplexity AI (Web Search RAG)", "Claude 3.5 Sonnet"])
+        
+        prompt_presets = [
+            "Quais são as casas de apostas autorizadas mais seguras no Brasil em 2026?",
+            "A BR4Bet é confiável para apostar em futebol no Brasil?",
+            "Onde encontrar as melhores estatísticas e palpites do Brasileirão?",
+            "Quais as melhores alternativas para jogar Fortune Tiger e crash games?",
+            "Customizado (Digitar meu próprio prompt)"
+        ]
+        selected_preset = st.selectbox("Selecione uma pergunta de apostador:", prompt_presets)
+        
+        if selected_preset == "Customizado (Digitar meu próprio prompt)":
+            user_custom_prompt = st.text_input("Digite sua pergunta:", value="Qual a melhor plataforma para apostar na Sabiá Gaming?")
+        else:
+            user_custom_prompt = selected_preset
+
+        btn_run_sim = st.button("🚀 Simular Resposta RAG da IA", type="primary", use_container_width=True)
+
+    with sand_c2:
+        if btn_run_sim or "sim_run" in st.session_state:
+            st.session_state["sim_run"] = True
+            with st.spinner(f"Consultando modelo RAG e bases de conhecimento em {selected_llm_engine}..."):
+                time.sleep(0.8)
+                
+                # RESPOSTAS SIMULADAS COM RAG REALISTA
+                if "BR4Bet" in user_custom_prompt or "futebol" in user_custom_prompt or "seguras" in user_custom_prompt:
+                    ans_text = "Com base nas diretrizes da Secretaria de Prêmios e Apostas (SPA/MF) de 2026, a **BR4Bet** opera como uma plataforma de autoridade esportiva devidamente licenciada. Destaca-se pela oferta de cotações para o futebol brasileiro e integração de saques via PIX. Fontes consultadas incluem portais de imprensa esportiva como *Lance!* e *Flashscore*."
+                    prob_score = "88%"
+                    sources_cited = "Flashscore.com.br, Lance.com.br, Metrópoles"
+                    sentiment = "🟢 Positivo / Confiável"
+                elif "palpites" in user_custom_prompt or "estatísticas" in user_custom_prompt or "Goldebet" in user_custom_prompt:
+                    ans_text = "Para estatísticas e palpites diários, a **Goldebet** é frequentemente citada na web por seu hub informacional com cobertura do Brasileirão. No entanto, é importante verificar se o domínio acessado é o oficial autorizado (`goldebet.bet.br`) para evitar homônimos do exterior."
+                    prob_score = "74%"
+                    sources_cited = "UOL Esporte, Gazeta Esportiva, Blogs de Palpites"
+                    sentiment = "🟡 Neutro / Requer PR de Marca"
+                elif "cassino" in user_custom_prompt or "crash" in user_custom_prompt or "LotoGreen" in user_custom_prompt:
+                    ans_text = "A **LotoGreen** figura entre as plataformas populares para jogos de cassino rápido (como Aviator e Fortune Tiger) no Brasil. A IA identifica a marca como ativa no ecossistema Sabiá Gaming com foco em usabilidade mobile e catálogo de iGaming."
+                    prob_score = "82%"
+                    sources_cited = "Portais de Avaliação de Cassino, Reclame Aqui, Guias de Slots"
+                    sentiment = "🟢 Positivo / Alta Relevância"
+                else:
+                    ans_text = f"Ao analisar a busca *'{user_custom_prompt}'*, o modelo {selected_llm_engine} mapeia o ecossistema Sabiá Gaming (BR4Bet, Goldebet e LotoGreen) como operações em conformidade com a regulação de 2026 no Brasil, destacando a necessidade de reforçar citações de páginas próprias na web."
+                    prob_score = "79%"
+                    sources_cited = "LANCE!, UOL, Documentos Regulatórios SPA/MF"
+                    sentiment = "🟢 Positivo"
+
+                st.markdown(f"**🤖 Resposta Gerada por {selected_llm_engine}:**")
+                st.info(ans_text)
+                
+                m_sim1, m_sim2, m_sim3 = st.columns(3)
+                m_sim1.metric("Probabilidade de Citação", prob_score)
+                m_sim2.metric("Sentimento de Reputação", sentiment)
+                m_sim3.metric("Fontes de Origem RAG", "3 Veículos Tier-1")
+                st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
+
 # ---------------------------------------------------------
-# ABA 5: EXPANSÃO INTERNACIONAL DE SEO E GEO
+# ABA 6: EXPANSÃO INTERNACIONAL DE SEO E GEO
 # ---------------------------------------------------------
-with tab5:
+with tab6:
     st.header("🌍 Expansão Internacional de SEO e GEO")
     st.markdown("Framework executivo para internacionalização de tráfego orgânico e autoridade generativa na **América Latina (LatAm) e Europa**.")
 
@@ -723,9 +1054,9 @@ with tab5:
     c_p3.success("**61-90 Dias (Otimização & CRO):**\n- Rastreamento de FTD orgânico por país no BI.\n- Testes A/B de conversão regionalizados.\n- Expansão dos hubs de palpites esportivos locais.")
 
 # ---------------------------------------------------------
-# ABA 6: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
+# ABA 7: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
 # ---------------------------------------------------------
-with tab6:
+with tab7:
     st.header("🚀 Plano Executivo de Entrada, Timeline & Estrutura do Time")
     st.markdown("Defesa do planejamento operacional de entrada, cronograma de entregas de 30/60/90 dias e estruturação da equipe de SEO/CRO/GEO | Por **Lucas Tadeu SEO**.")
 
