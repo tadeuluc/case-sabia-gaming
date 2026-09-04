@@ -523,65 +523,35 @@ with tab1:
         st.markdown("👉 *Utilize as abas superiores (2 a 7) para aprofundar a auditoria técnica, tabelas de palavras-chave, perfil de backlinks e o plano de execução de 90 dias da marca.*")
 
 # ---------------------------------------------------------
-# ABA 2: DIAGNÓSTICO DE CONTEÚDO
-# ---------------------------------------------------------
-with tab2:
-    st.header(f"📊 Diagnóstico de Palavras-Chave e Conteúdo {'(' + selected_brand + ')' if not is_global else ''}")
-    if not df_keywords.empty:
-        df_f = df_keywords.copy()
-        if not is_global: df_f = df_f[df_f["Marca"] == selected_brand]
-        
+# (Trecho atualizado para a ABA 2)
         st.subheader("🔍 Filtros de Mineração de Oportunidades")
         col_f1, col_f2, col_f3 = st.columns([1.5, 1.5, 2])
         search_kw = col_f1.text_input("Buscar Palavra/URL:", "")
         tipo_termo = col_f2.multiselect("Tipo de Termo:", options=df_f["Tipo"].unique(), default=df_f["Tipo"].unique())
-        foco_especial = col_f3.selectbox("Foco Especial Rápido:", ["Nenhum (Visualizar Todas)", "🔥 Quick Wins (Pos. 4-20)", "🏆 Top Performers (Top 1-3)"])
+        
+        # NOVA OPÇÃO ADICIONADA AQUI 👇
+        foco_especial = col_f3.selectbox("Foco Especial Rápido:", [
+            "Nenhum (Visualizar Todas)", 
+            "🏆 Top Performers (Top 1-3)",
+            "🔥 Quick Wins (Pos. 4-20)", 
+            "⚠️ Baixa Performance / Risco (Pos. 21+)"
+        ])
         
         st.markdown("🎯 **Filtro Avançado de Posição na SERP:**")
         min_pos, max_pos = st.slider("Arraste para definir a faixa exata de posição:", min_value=1, max_value=100, value=(1, 100))
         
         if search_kw: df_f = df_f[df_f["Keyword"].astype(str).str.contains(search_kw, case=False, na=False) | df_f["URL"].astype(str).str.contains(search_kw, case=False, na=False)]
         if tipo_termo: df_f = df_f[df_f["Tipo"].isin(tipo_termo)]
-        if foco_especial == "🔥 Quick Wins (Pos. 4-20)": df_f = df_f[(df_f["Position"] >= 4) & (df_f["Position"] <= 20)]
-        elif foco_especial == "🏆 Top Performers (Top 1-3)": df_f = df_f[df_f["Position"] <= 3]
+        
+        # NOVA LÓGICA DE FILTRAGEM AQUI 👇
+        if foco_especial == "🔥 Quick Wins (Pos. 4-20)": 
+            df_f = df_f[(df_f["Position"] >= 4) & (df_f["Position"] <= 20)]
+        elif foco_especial == "🏆 Top Performers (Top 1-3)": 
+            df_f = df_f[df_f["Position"] <= 3]
+        elif foco_especial == "⚠️ Baixa Performance / Risco (Pos. 21+)": 
+            df_f = df_f[df_f["Position"] >= 21]
+            
         df_f = df_f[(df_f["Position"] >= min_pos) & (df_f["Position"] <= max_pos)]
-
-        tot_kws = len(df_f)
-        tot_traf = df_f["Traffic"].sum()
-        branded_traf = df_f[df_f["Tipo"] == "Branded / Variação"]["Traffic"].sum()
-        pct_b = (branded_traf / tot_traf * 100) if tot_traf > 0 else 0
-        tot_qw = len(df_f[(df_f["Position"] >= 4) & (df_f["Position"] <= 20)])
-
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Palavras Encontradas", f"{tot_kws:,.0f}")
-        k2.metric("Tráfego Estimado", f"{tot_traf:,.0f}")
-        k3.metric("Dependência Branded", f"{pct_b:.1f}%")
-        k4.metric("Oportunidades Quick Wins", f"{tot_qw} termos", "Pos. 4 a 20")
-
-        st.divider()
-
-        st.subheader("💡 Diagnóstico Estratégico & Plano de Ação de Conteúdo")
-        d_col1, d_col2 = st.columns(2)
-        if is_global:
-            with d_col1:
-                st.error("**O Problema Global: Estagnação no Top 20 e Alta Dependência Branded**")
-                st.write("Mais de 99% do tráfego do ecossistema depende do nome das marcas. Além disso, um volume significativo de palavras-chave genéricas (Quick Wins) está represado entre a 4ª e a 20ª posição.")
-            with d_col2:
-                st.success("**O Plano de Ação & Por Quê (Visão Global)**")
-                st.write("**1. Captura de Quick Wins:** Atacar as palavras na faixa 4-20 no filtro acima, ajustando titles, H1s e links internos.")
-                st.write("**2. Correção de Intenção:** Parametrizar a arquitetura semântica para direcionar o usuário às LPs de conversão e apostas.")
-        else:
-            info = BRAND_KNOWLEDGE[selected_brand]
-            with d_col1:
-                st.error(f"**O Problema Específico na {selected_brand}:**")
-                st.write(info["seo_problem"])
-            with d_col2:
-                st.success(f"**O Plano de Ação & Por Quê ({selected_brand}):**")
-                st.write(f"**Ação Imediata:** {info['seo_solution']}")
-                st.write(f"**Por Quê:** {info['seo_por_que']}")
-
-        st.divider()
-        st.dataframe(df_f[["Marca", "Keyword", "Position", "Traffic", "Tipo", "URL"]].sort_values(by="Traffic", ascending=False), hide_index=True, use_container_width=True)
 
 # ---------------------------------------------------------
 # ABA 3: SEO TÉCNICO & RASTREIO
