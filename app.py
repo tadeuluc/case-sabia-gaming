@@ -163,7 +163,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <span class="hero-badge">Apresentação Executiva de Diretoria</span>
-        <h1 class="hero-title">🚀 Dashboard Estratégico: SEO, GEO & IA — Sabiá Gaming</h1>
+        <h1 class="hero-title">🚀 Case: SEO, GEO & IA — Sabiá Gaming</h1>
         <p class="hero-subtitle">Plano de Aquisição, Arquitetura Técnica e Defesa Operacional | Estratégia por <strong>Lucas Tadeu SEO</strong></p>
     </div>
 """, unsafe_allow_html=True)
