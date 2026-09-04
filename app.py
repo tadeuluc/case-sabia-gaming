@@ -168,7 +168,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 4. AUTO-DETECÇÃO DAS PLANILHAS DO SEMRUSH NA PASTA
+# 4. AUTO-DETECÇÃO DAS PLANILHAS DO SEMRUSH NA PASTA (AGORA COM CONCORRENTE)
 @st.cache_data
 def load_semrush_keywords():
     all_files = os.listdir('.')
@@ -178,6 +178,7 @@ def load_semrush_keywords():
             if 'br4' in f.lower(): files_map['BR4Bet'] = f
             elif 'goldebet' in f.lower(): files_map['Goldebet'] = f
             elif 'lotogreen' in f.lower(): files_map['LotoGreen'] = f
+            elif 'betano' in f.lower(): files_map['Oportunidade (Betano)'] = f
 
     typo_regex = {
         'BR4Bet': r'br4|b4bet|bra4|bet4|bet 4|brbet|br 4',
@@ -189,19 +190,36 @@ def load_semrush_keywords():
     for brand, filepath in files_map.items():
         try:
             df = pd.read_excel(filepath)
-            df['Marca'] = brand
             df['Keyword_Lower'] = df['Keyword'].astype(str).str.lower()
-            df['Is_Branded'] = df['Keyword_Lower'].str.contains(typo_regex[brand], regex=True)
-            df['Tipo'] = np.where(df['Is_Branded'], 'Branded / Variação', 'Non-Branded (Genérico)')
-            df['Intenção'] = df['Keyword Intents'].fillna('Desconhecida').astype(str).str.title() if 'Keyword Intents' in df.columns else 'Desconhecida'
             
-            bad_patterns = r'terms|cookies|privacy|promotions|faq|suport'
-            df['LP_Incorreta'] = df['URL'].astype(str).str.contains(bad_patterns, case=False, regex=True)
-            
-            conditions = [(df['Position'] <= 3), (df['Position'] >= 4) & (df['Position'] <= 10), (df['Position'] >= 11) & (df['Position'] <= 20), (df['Position'] >= 21) & (df['Position'] <= 50), (df['Position'] > 50)]
-            choices = ['Top 1-3', 'Pos 4-10', 'Pos 11-20', 'Pos 21-50', 'Pos >50']
-            df['Faixa_Posição'] = np.select(conditions, choices, default='Pos >50')
-            all_dfs.append(df)
+            if brand == 'Oportunidade (Betano)':
+                # Filtra fora a palavra "betano" (e outras marcas do grupo por segurança)
+                df = df[~df['Keyword_Lower'].str.contains(r'betano|br4|goldebet|lotogreen', regex=True, na=False)]
+                # Filtro: Cauda longa (3+ palavras)
+                df = df[df['Keyword_Lower'].apply(lambda x: len(str(x).split()) >= 3)]
+                # Filtro: Foco no Nicho iGaming
+                niche_terms = r'aposta|jogo|cassino|casino|palpite|odd|roleta|slot|crash|aviator|tiger|futebol|esporte|bônus|bonus|cadastro|ganhar'
+                df = df[df['Keyword_Lower'].str.contains(niche_terms, regex=True, na=False)]
+                
+                df['Marca'] = 'Competidor (Gap)'
+                df['Tipo'] = 'Oportunidade de Cauda Longa'
+                df['Intenção'] = df['Keyword Intents'].fillna('Desconhecida').astype(str).str.title() if 'Keyword Intents' in df.columns else 'Desconhecida'
+                df['LP_Incorreta'] = False
+                df['Faixa_Posição'] = 'Oportunidade'
+                all_dfs.append(df)
+            else:
+                df['Marca'] = brand
+                df['Is_Branded'] = df['Keyword_Lower'].str.contains(typo_regex[brand], regex=True)
+                df['Tipo'] = np.where(df['Is_Branded'], 'Branded / Variação', 'Non-Branded (Genérico)')
+                df['Intenção'] = df['Keyword Intents'].fillna('Desconhecida').astype(str).str.title() if 'Keyword Intents' in df.columns else 'Desconhecida'
+                
+                bad_patterns = r'terms|cookies|privacy|promotions|faq|suport'
+                df['LP_Incorreta'] = df['URL'].astype(str).str.contains(bad_patterns, case=False, regex=True)
+                
+                conditions = [(df['Position'] <= 3), (df['Position'] >= 4) & (df['Position'] <= 10), (df['Position'] >= 11) & (df['Position'] <= 20), (df['Position'] >= 21) & (df['Position'] <= 50), (df['Position'] > 50)]
+                choices = ['Top 1-3', 'Pos 4-10', 'Pos 11-20', 'Pos 21-50', 'Pos >50']
+                df['Faixa_Posição'] = np.select(conditions, choices, default='Pos >50')
+                all_dfs.append(df)
         except Exception:
             continue
             
@@ -523,35 +541,43 @@ with tab1:
         st.markdown("👉 *Utilize as abas superiores (2 a 7) para aprofundar a auditoria técnica, tabelas de palavras-chave, perfil de backlinks e o plano de execução de 90 dias da marca.*")
 
 # ---------------------------------------------------------
-# ABA 2: DIAGNÓSTICO DE CONTEÚDO (COM NOVO FILTRO DE RISCO/BAIXA PERFORMANCE)
+# ABA 2: DIAGNÓSTICO DE CONTEÚDO (COM NOVO FILTRO DE GAP COMPETITIVO)
 # ---------------------------------------------------------
 with tab2:
     st.header(f"📊 Diagnóstico de Palavras-Chave e Conteúdo {'(' + selected_brand + ')' if not is_global else ''}")
     
     if not df_keywords.empty:
         df_f = df_keywords.copy()
-        if not is_global: 
-            df_f = df_f[df_f["Marca"] == selected_brand]
         
         st.subheader("🔍 Filtros de Mineração de Oportunidades")
         col_f1, col_f2, col_f3 = st.columns([1.5, 1.5, 2])
         search_kw = col_f1.text_input("Buscar Palavra/URL:", "")
-        tipo_termo = col_f2.multiselect("Tipo de Termo:", options=df_f["Tipo"].unique(), default=df_f["Tipo"].unique())
+        tipo_termo = col_f2.multiselect("Tipo de Termo:", options=df_f[df_f["Marca"] != "Competidor (Gap)"]["Tipo"].unique(), default=df_f[df_f["Marca"] != "Competidor (Gap)"]["Tipo"].unique())
         
-        # NOVO FILTRO DE FOCO ESPECIAL COM BAIXA PERFORMANCE
         foco_especial = col_f3.selectbox("Foco Especial Rápido:", [
             "Nenhum (Visualizar Todas)", 
             "🏆 Top Performers (Top 1-3)", 
             "🔥 Quick Wins (Pos. 4-20)", 
-            "⚠️ Baixa Performance / Risco (Pos. 21+)"
+            "⚠️ Baixa Performance / Risco (Pos. 21+)",
+            "💡 Palavras-Chave de Oportunidade (Gap)"
         ])
         
         st.markdown("🎯 **Filtro Avançado de Posição na SERP:**")
         min_pos, max_pos = st.slider("Arraste para definir a faixa exata de posição:", min_value=1, max_value=100, value=(1, 100))
         
+        # APLICAÇÃO INTELIGENTE DE FILTROS (MANTÉM GAP VISÍVEL MESMO COM MARCA SELECIONADA)
+        if foco_especial == "💡 Palavras-Chave de Oportunidade (Gap)":
+            df_f = df_f[df_f["Marca"] == "Competidor (Gap)"]
+        else:
+            if not is_global: 
+                df_f = df_f[df_f["Marca"] == selected_brand]
+            else:
+                df_f = df_f[df_f["Marca"] != "Competidor (Gap)"] # Oculta competidor da visão padrão
+        
         if search_kw: 
             df_f = df_f[df_f["Keyword"].astype(str).str.contains(search_kw, case=False, na=False) | df_f["URL"].astype(str).str.contains(search_kw, case=False, na=False)]
-        if tipo_termo: 
+        
+        if tipo_termo and foco_especial != "💡 Palavras-Chave de Oportunidade (Gap)": 
             df_f = df_f[df_f["Tipo"].isin(tipo_termo)]
             
         if foco_especial == "🔥 Quick Wins (Pos. 4-20)": 
@@ -563,42 +589,75 @@ with tab2:
             
         df_f = df_f[(df_f["Position"] >= min_pos) & (df_f["Position"] <= max_pos)]
 
+        # KPIS DINÂMICOS BASEADO NO FOCO SELECIONADO
         tot_kws = len(df_f)
-        tot_traf = df_f["Traffic"].sum()
-        branded_traf = df_f[df_f["Tipo"] == "Branded / Variação"]["Traffic"].sum()
-        pct_b = (branded_traf / tot_traf * 100) if tot_traf > 0 else 0
-        tot_qw = len(df_f[(df_f["Position"] >= 4) & (df_f["Position"] <= 20)])
+        
+        if foco_especial == "💡 Palavras-Chave de Oportunidade (Gap)":
+            vol_total = df_f["Search Volume"].sum() if "Search Volume" in df_f.columns else 0
+            traf_potencial = df_f["Traffic"].sum() if "Traffic" in df_f.columns else 0
+            
+            k1, k2, k3, k4 = st.columns(4)
+            k1.metric("Oportunidades Mapeadas", f"{tot_kws:,.0f}".replace(",", "."))
+            k2.metric("Volume de Busca Total", f"{vol_total:,.0f}".replace(",", "."))
+            k3.metric("Tráfego Desperdiçado", f"{traf_potencial:,.0f}".replace(",", "."), "Gap Competitivo", delta_color="inverse")
+            k4.metric("Dificuldade Média", f"{df_f['Keyword Difficulty'].mean():.0f}%" if 'Keyword Difficulty' in df_f.columns else "N/A")
+            
+        else:
+            tot_traf = df_f["Traffic"].sum() if "Traffic" in df_f.columns else 0
+            branded_traf = df_f[df_f["Tipo"] == "Branded / Variação"]["Traffic"].sum() if "Traffic" in df_f.columns else 0
+            pct_b = (branded_traf / tot_traf * 100) if tot_traf > 0 else 0
+            tot_qw = len(df_f[(df_f["Position"] >= 4) & (df_f["Position"] <= 20)])
 
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Palavras Encontradas", f"{tot_kws:,.0f}")
-        k2.metric("Tráfego Estimado", f"{tot_traf:,.0f}")
-        k3.metric("Dependência Branded", f"{pct_b:.1f}%")
-        k4.metric("Oportunidades Quick Wins", f"{tot_qw} termos", "Pos. 4 a 20")
+            k1, k2, k3, k4 = st.columns(4)
+            k1.metric("Palavras Encontradas", f"{tot_kws:,.0f}".replace(",", "."))
+            k2.metric("Tráfego Estimado", f"{tot_traf:,.0f}".replace(",", "."))
+            k3.metric("Dependência Branded", f"{pct_b:.1f}%")
+            k4.metric("Oportunidades Quick Wins", f"{tot_qw} termos", "Pos. 4 a 20")
 
         st.divider()
 
+        # TEXTO DE DIAGNÓSTICO DINÂMICO
         st.subheader("💡 Diagnóstico Estratégico & Plano de Ação de Conteúdo")
         d_col1, d_col2 = st.columns(2)
-        if is_global:
+        
+        if foco_especial == "💡 Palavras-Chave de Oportunidade (Gap)":
             with d_col1:
-                st.error("**O Problema Global: Estagnação no Top 20 e Alta Dependência Branded**")
-                st.write("Mais de 99% do tráfego do ecossistema depende do nome das marcas. Além disso, um volume significativo de palavras-chave genéricas (Quick Wins) está represado entre a 4ª e a 20ª posição.")
+                st.error("**Oportunidade (Gap Competitivo): Tráfego Sangrando**")
+                st.write("Estas palavras-chave de cauda longa (3+ termos) possuem alta intenção comercial no nicho de apostas e alto volume, mas a Sabiá Gaming não está capturando esse tráfego.")
             with d_col2:
-                st.success("**O Plano de Ação & Por Quê (Visão Global)**")
-                st.write("**1. Captura de Quick Wins:** Atacar as palavras na faixa 4-20 no filtro acima, ajustando titles, H1s e links internos.")
-                st.write("**2. Correção de Intenção:** Parametrizar a arquitetura semântica para direcionar o usuário às LPs de conversão e apostas.")
+                st.success("**Plano de Ação (Criação de Novos Clusters)**")
+                st.write("Produzir novos artigos para o blog e silos de conteúdo focados nestes termos específicos. O objetivo é interceptar o usuário antes que ele busque pela concorrência direta.")
         else:
-            info = BRAND_KNOWLEDGE[selected_brand]
-            with d_col1:
-                st.error(f"**O Problema Específico na {selected_brand}:**")
-                st.write(info["seo_problem"])
-            with d_col2:
-                st.success(f"**O Plano de Ação & Por Quê ({selected_brand}):**")
-                st.write(f"**Ação Imediata:** {info['seo_solution']}")
-                st.write(f"**Por Quê:** {info['seo_por_que']}")
+            if is_global:
+                with d_col1:
+                    st.error("**O Problema Global: Estagnação no Top 20 e Alta Dependência Branded**")
+                    st.write("Mais de 99% do tráfego do ecossistema depende do nome das marcas. Além disso, um volume significativo de palavras-chave genéricas (Quick Wins) está represado entre a 4ª e a 20ª posição.")
+                with d_col2:
+                    st.success("**O Plano de Ação & Por Quê (Visão Global)**")
+                    st.write("**1. Captura de Quick Wins:** Atacar as palavras na faixa 4-20 no filtro acima, ajustando titles, H1s e links internos.")
+                    st.write("**2. Correção de Intenção:** Parametrizar a arquitetura semântica para direcionar o usuário às LPs de conversão e apostas.")
+            else:
+                info = BRAND_KNOWLEDGE[selected_brand]
+                with d_col1:
+                    st.error(f"**O Problema Específico na {selected_brand}:**")
+                    st.write(info["seo_problem"])
+                with d_col2:
+                    st.success(f"**O Plano de Ação & Por Quê ({selected_brand}):**")
+                    st.write(f"**Ação Imediata:** {info['seo_solution']}")
+                    st.write(f"**Por Quê:** {info['seo_por_que']}")
 
         st.divider()
-        st.dataframe(df_f[["Marca", "Keyword", "Position", "Traffic", "Tipo", "URL"]].sort_values(by="Traffic", ascending=False), hide_index=True, use_container_width=True)
+        
+        # TABELA ADAPTÁVEL
+        if foco_especial == "💡 Palavras-Chave de Oportunidade (Gap)":
+            cols_show = ["Marca", "Keyword", "Search Volume", "Traffic", "Keyword Difficulty", "URL"]
+            cols_present = [c for c in cols_show if c in df_f.columns]
+            st.dataframe(df_f[cols_present].sort_values(by="Search Volume", ascending=False), hide_index=True, use_container_width=True)
+        else:
+            cols_show = ["Marca", "Keyword", "Position", "Traffic", "Tipo", "URL"]
+            cols_present = [c for c in cols_show if c in df_f.columns]
+            st.dataframe(df_f[cols_present].sort_values(by="Traffic", ascending=False), hide_index=True, use_container_width=True)
+            
     else:
         st.info("ℹ️ Nenhuma planilha de palavras-chave encontrada na pasta do projeto. Certifique-se de que os arquivos do Semrush estão salvos na raiz.")
 
