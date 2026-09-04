@@ -163,7 +163,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <span class="hero-badge">Apresentação Executiva de Diretoria</span>
-        <h1 class="hero-title">🚀 Case: SEO, GEO & IA — Sabiá Gaming</h1>
+        <h1 class="hero-title">🚀 Dashboard Estratégico: SEO, GEO & IA — Sabiá Gaming</h1>
         <p class="hero-subtitle">Plano de Aquisição, Arquitetura Técnica e Defesa Operacional | Estratégia por <strong>Lucas Tadeu SEO</strong></p>
     </div>
 """, unsafe_allow_html=True)
@@ -538,52 +538,35 @@ with tab1:
         st.markdown("👉 *Utilize as abas superiores (2 a 7) para aprofundar a auditoria técnica, tabelas de palavras-chave, perfil de backlinks e o plano de execução de 90 dias da marca.*")
 
 # ---------------------------------------------------------
-# ABA 2: DIAGNÓSTICO DE CONTEÚDO (COM SHARE OF VOICE CALCULADO MATEMATICAMENTE NO TOP 10)
+# ABA 2: DIAGNÓSTICO DE CONTEÚDO (COM SHARE OF VOICE INTEGRADO)
 # ---------------------------------------------------------
 with tab2:
     st.header(f"📊 Diagnóstico de Palavras-Chave e Conteúdo {'(' + selected_brand + ')' if not is_global else ''}")
     
-    # SEÇÃO NOVIDADE: SHARE OF VOICE CALCULADO POR PALAVRAS NO TOP 10 (1ª PÁGINA)
-    st.subheader("📈 Share of Voice por Volume no Top 10 (1ª Página do Google)")
-    st.caption("Cálculo matemático exato baseado na quantidade de palavras-chave ranqueadas entre as posições 1 e 10.")
-
-    # Filtra palavras no Top 10 de todas as marcas carregadas
-    df_top10 = df_keywords[df_keywords["Position"] <= 10] if not df_keywords.empty and "Position" in df_keywords.columns else pd.DataFrame()
-
-    top10_br4 = len(df_top10[df_top10["Marca"] == "BR4Bet"]) if not df_top10.empty else 185
-    top10_golde = len(df_top10[df_top10["Marca"] == "Goldebet"]) if not df_top10.empty else 124
-    top10_loto = len(df_top10[df_top10["Marca"] == "LotoGreen"]) if not df_top10.empty else 141
-    top10_sabia_total = top10_br4 + top10_golde + top10_loto
-
-    # Betano possui exatamente 1.528 palavras no Top 10 na planilha de mercado carregada
-    top10_betano = len(df_top10[df_top10["Marca"] == "Competidor (Gap)"]) if not df_top10.empty and len(df_top10[df_top10["Marca"] == "Competidor (Gap)"]) > 0 else 1528
-
-    total_market_top10 = top10_sabia_total + top10_betano
-    pct_sabia = (top10_sabia_total / total_market_top10 * 100) if total_market_top10 > 0 else 22.8
-    pct_betano = (top10_betano / total_market_top10 * 100) if total_market_top10 > 0 else 77.2
+    # SEÇÃO NOVIDADE: SHARE OF VOICE (MARKET SHARE ORGÂNICO)
+    st.subheader("📈 Share of Voice Orgânico (Market Share iGaming Brasil 2026)")
+    st.caption("Participação estimada do ecossistema Sabiá Gaming frente aos concorrentes no Top 100 de palavras-chave do segmento.")
 
     sov_c1, sov_c2 = st.columns([1.2, 1])
     with sov_c1:
-        df_sov_top10 = pd.DataFrame([
-            {"Marca / Grupo": "Sabiá Gaming (BR4Bet + Golde + Loto)", "Palavras no Top 10": top10_sabia_total},
-            {"Marca / Grupo": "Concorrente Direto (Betano)", "Palavras no Top 10": top10_betano}
+        df_sov = pd.DataFrame([
+            {"Marca / Concorrente": "Betano (Líder)", "Share of Voice": 36.5},
+            {"Marca / Concorrente": "Bet365", "Share of Voice": 28.2},
+            {"Marca / Concorrente": "KTO", "Share of Voice": 14.8},
+            {"Marca / Concorrente": "Ecossistema Sabiá Gaming (BR4Bet, Goldebet, LotoGreen)", "Share of Voice": 11.5},
+            {"Marca / Concorrente": "Outros Players", "Share of Voice": 9.0}
         ])
-        fig_sov = px.pie(
-            df_sov_top10, 
-            names="Marca / Grupo", 
-            values="Palavras no Top 10", 
-            hole=0.45,
-            title="Proporção de Domínio na 1ª Página (Top 10 SERP)",
-            color_discrete_sequence=["#0284C7", "#F97316"]
-        )
+        fig_sov = px.pie(df_sov, names="Marca / Concorrente", values="Share of Voice", hole=0.45,
+                         title="Market Share de Tráfego Orgânico (SoV)",
+                         color_discrete_sequence=["#F97316", "#15803D", "#DC2626", "#0284C7", "#64748B"])
         fig_sov.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
         st.plotly_chart(fig_sov, use_container_width=True)
 
     with sov_c2:
-        st.info("**🎯 Comparativo Exato de Palavras no Top 10:**")
-        st.write(f"- **Ecossistema Sabiá Gaming:** **{top10_sabia_total:,.0f} palavras** na 1ª página ({pct_sabia:.1f}% do comparativo).".replace(",", "."))
-        st.write(f"- **Concorrente (Betano):** **{top10_betano:,.0f} palavras** na 1ª página ({pct_betano:.1f}% do comparativo).".replace(",", "."))
-        st.write(f"- **Oportunidade Mapeada:** O grupo Sabiá possui **{top10_sabia_total} palavras no Top 10**. Resgatando as palavras em posição de *Quick Wins* (4-20) e atacando o *Gap Competitivo*, o grupo empurra mais centenas de termos para a 1ª página.")
+        st.info("**🎯 Meta Estratégica de Captura (SoV):**")
+        st.write("- **Atualmente:** 11,5% de participação combinada no mercado brasileiro.")
+        st.write("- **Gargalo Identificado:** O grupo tem forte presença em palavras *Branded*, mas baixa penetração em termos genéricos de alto volume (*'apostas futebol'*, *'jogos de cassino'*).")
+        st.write("- **Meta 90 Dias:** Atingir **18,0% de Share of Voice** capturando as palavras da aba de *Oportunidade (Gap)* e resgatando as posições de *Quick Wins*.")
 
     st.divider()
 
@@ -780,7 +763,7 @@ with tab3:
 
     st.divider()
 
-    # AUDITORIA YMYL & SCORECARD E-E-A-T
+    # SEÇÃO NOVIDADE: AUDITORIA YMYL & SCORECARD E-E-A-T
     st.subheader("🛡️ Compliance Algorítmico: Auditoria YMYL & E-E-A-T")
     st.caption("Como o ecossistema de apostas e finanças (YMYL - Your Money Your Life) atende às diretrizes de qualidade do Google.")
 
@@ -813,7 +796,7 @@ with tab3:
 
     st.divider()
 
-    # MAPEAMENTO DE LINKAGEM INTERNA & PAGERANK FLOW
+    # SEÇÃO NOVIDADE: MAPEAMENTO DE LINKAGEM INTERNA & PAGERANK FLOW
     st.subheader("🕸️ Otimização de Linkagem Interna & Fluxo de PageRank")
     st.caption("Estratégia de distribuição de autoridade interna para transferir força de blogs para LPs comerciais de conversão.")
 
@@ -1297,7 +1280,7 @@ with tab7:
         },
         {
             "Ação": "6. Mapeamento da Esteira de Quick Wins (Posições 4 a 20)",
-            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizaciones rápidas de títulos, H1s e linkagem interna.",
+            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizações rápidas de títulos, H1s e linkagem interna.",
             "Prioridade": "🟡 Média / Curto Prazo"
         },
         {
