@@ -477,7 +477,7 @@ st.sidebar.divider()
 st.sidebar.caption("Sabiá Gaming Case Study © 2026")
 st.sidebar.caption("Consultoria Executiva por Lucas Tadeu SEO")
 
-# 10. ESTRUTURA DE ABAS (8 ABAS ESTRATÉGICAS - INCLUINDO MIGRAÇÃO)
+# 10. ESTRUTURA DE ABAS (8 ABAS ESTRATÉGICAS - INCLUINDO MIGRAÇÃO DE CONTINGÊNCIA)
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "1. Ativos & Diferenciação", 
     "2. Diagnóstico de Conteúdo", 
@@ -486,7 +486,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "5. GEO & Busca por IA", 
     "6. Expansão Internacional", 
     "7. Plano Executivo & Time",
-    "8. Migração & Arquitetura /blog/"
+    "8. Migração de Contingência (Domínio Neutro)"
 ])
 
 # ---------------------------------------------------------
@@ -539,7 +539,7 @@ with tab1:
         st.markdown("👉 *Utilize as abas superiores (2 a 8) para aprofundar a auditoria técnica, tabelas de palavras-chave, perfil de backlinks, plano de execução e a trilha de migração do blog.*")
 
 # ---------------------------------------------------------
-# ABA 2: DIAGNÓSTICO DE CONTEÚDO (COM SHARE OF VOICE CALCULADO NO TOP 10)
+# ABA 2: DIAGNÓSTICO DE CONTEÚDO
 # ---------------------------------------------------------
 with tab2:
     st.header(f"📊 Diagnóstico de Palavras-Chave e Conteúdo {'(' + selected_brand + ')' if not is_global else ''}")
@@ -697,7 +697,7 @@ with tab2:
         st.info("ℹ️ Nenhuma planilha de palavras-chave encontrada na pasta do projeto. Certifique-se de que os arquivos do Semrush estão salvos na raiz.")
 
 # ---------------------------------------------------------
-# ABA 3: SEO TÉCNICO & RASTREIO (COM YMYL/E-E-A-T E PAGERANK FLOW)
+# ABA 3: SEO TÉCNICO & RASTREIO
 # ---------------------------------------------------------
 with tab3:
     st.header(f"⚡ SEO Técnico, Rastreio & Compliance YMYL {'(' + selected_brand + ')' if not is_global else ''}")
@@ -886,7 +886,7 @@ with tab4:
         elif selected_brand == "LotoGreen":
             st.error(f"🚨 **ALERTA CRÍTICO DE SPAM (LotoGreen):** A LotoGreen sofreu um ataque massivo de SEO negativo, acumulando **{toxic_links:,.0f} links tóxicos de fazendas de links e PBNs ({pct_toxic:.1f}%)**. Ação urgente de Disavow necessária.")
         else:
-            st.info(f"ℹ️️ **PERFIL EM CONSTRUÇÃO ({selected_brand}):** {tot_links:,.0f} backlinks mapeados no Semrush. Foco em campanhas de Digital PR para construção de autoridade institucional.")
+            st.info(f"ℹ️ **PERFIL EM CONSTRUÇÃO ({selected_brand}):** {tot_links:,.0f} backlinks mapeados no Semrush. Foco em campanhas de Digital PR para construção de autoridade institucional.")
 
         st.divider()
 
@@ -1056,7 +1056,7 @@ with tab5:
             st.write(f"- **Tópicos mapeados:** {geo_info['topicos_count']} com alto desempenho.")
 
         st.divider()
-        st.subheader(f"🕵️ Prompts Reais e Respostas de IA Monitoradas ({selected_brand})")
+        st.subheader(f"🕵️️ Prompts Reais e Respostas de IA Monitoradas ({selected_brand})")
         for idx, p in enumerate(geo_info["prompts"], 1):
             with st.expander(f"Prompt {idx}: {p['prompt']} (Vol. IA: {p['volume']})"):
                 st.write(f"**Resposta Gerada pela IA:** {p['resposta']}")
@@ -1284,7 +1284,7 @@ with tab7:
         },
         {
             "Ação": "6. Mapeamento da Esteira de Quick Wins (Posições 4 a 20)",
-            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizações rápidas de títulos, H1s e linkagem interna.",
+            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizaciones rápidas de títulos, H1s e linkagem interna.",
             "Prioridade": "🟡 Média / Curto Prazo"
         },
         {
@@ -1388,24 +1388,51 @@ with tab7:
         """)
 
 # ---------------------------------------------------------
-# ABA 8: MIGRAÇÃO DE BLOG & PRESERVAÇÃO DE AUTORIDADE (/blog/)
+# ABA 8: MIGRAÇÃO DE CONTINGÊNCIA & PRESERVAÇÃO DE AUTORIDADE (DOMÍNIO NEUTRO)
 # ---------------------------------------------------------
 with tab8:
-    st.header("🏛️ Estratégia de Migração de Blog & Preservação de Autoridade")
-    st.markdown("Planejamento técnico para hospedar o blog em **Subpasta (`/blog/`)** utilizando **WordPress** e **Reverse Proxy**, garantindo 100% de transferência de PageRank para o domínio comercial.")
+    st.header("🛡️️ Plano Executivo de Migração de Contingência & Domínio Neutro")
+    st.markdown("Estratégia para preservar 100% da autoridade de backlinks e tráfego orgânico dos domínios `.bet.br` migrando para um **Hub Neutro de Conteúdo/Mídia** (`.com` ou `.com.br`), garantindo a **reversibilidade total** caso a regulação restabeleça a operação.")
 
-    st.subheader("📌 1. Arquitetura de URL Recomendada vs Riscos de Subdomínio")
+    st.subheader("📌 1. Diagnóstico do Cenário de Risco & Solução Estratégica")
     
-    m_col1, m_col2 = st.columns(2)
-    with m_col1:
-        st.success("**✅ Arquitetura Escolhida: Subpasta (`br4.bet.br/blog/`)**\n\n- **Preservação de PageRank:** O Google interpreta a subpasta como o mesmo ecossistema. Toda autoridade conquistada por artigos de palpites fortalece o domínio comercial de apostas.\n- **Maximização de FTDs:** Reduz o atrito de navegação do usuário e facilita o cruzamento de sessões/cookies.\n- **Crawl Budget Unificado:** O Googlebot varre o conteúdo informacional e as LPs na mesma cota de varredura.")
+    r_col1, r_col2 = st.columns(2)
+    with r_col1:
+        st.error("**🚨 O Problema: Desligamento dos Domínios `.bet.br`**\n\n- **Desligamento Iminente:** Se os domínios `.bet.br` saírem do ar, subpastas internas (ex: `br4.bet.br/blog/`) também são destruídas.\n- **Perda de Autoridade:** O desligamento sem redirecionamento 301 ativo resulta na perda de mais de **33,5K backlinks** acumulados no ecossistema.\n- **Necessidade de Estepes/Hubs:** Isolar a autoridade em um domínio editorial (.com / .com.br) imune a bloqueios de TLD de apostas.")
         
-    with m_col2:
-        st.error("**❌ Arquitetura Descartada: Subdomínio (`blog.br4.bet.br`)**\n\n- **Diluição de Autoridade:** O Google trata subdomínios como entidades/sites independentes.\n- **Desperdício de Backlinks:** Links de veículos Tier-1 para o blog não transferem força direta para a página de apostas.\n- **Atrito de Conversão:** Perda de rastreabilidade de conversão (cross-domain cookies) do clique até o primeiro depósito.")
+    with r_col2:
+        st.success("**💡 A Solução: Migração para Hub Neutro de Conteúdo + Redirecionamento Reversível**\n\n- **Criação do Hub Neutro (Ex: `sabiaesportes.com` ou `sabianoticias.com.br`):** Portal de mídia/palpites em WordPress sem transação de apostas direta.\n- **301 Mapeado no Search Console:** Transferência formal de autoridade usando a ferramenta *Change of Address* (Mudança de Endereço) do Google.\n- **Plano de Reversão Pronta:** Mapeamento em banco de dados para reverter o redirecionamento (301 reverso) imediatamente caso os domínios `.bet.br` sejam reautorizados.")
 
     st.divider()
 
-    st.subheader("🛠️ 2. Stack de Plugins WordPress Recomendada (SEO & Performance)")
+    st.subheader("🌐 2. Arquitetura de Transição: Estrutura do Domínio Neutro")
+    st.caption("Organização em subdiretórios no novo domínio neutro para abrigar a autoridade das 3 marcas sem gerar canibalização semântica.")
+
+    df_arch_neutra = pd.DataFrame([
+        {
+            "Marca Origem (.bet.br)": "BR4Bet (br4.bet.br)",
+            "Novo Destino (Hub Neutro)": "`sabiaesportes.com/br4/`",
+            "Tipo de Conteúdo": "Notícias Esportivas, Guias e Análises de Futebol",
+            "Estratégia de Redirecionamento": "301 Wildcard 1:1 (`br4.bet.br/*` ➔ `sabiaesportes.com/br4/*`)"
+        },
+        {
+            "Marca Origem (.bet.br)": "Goldebet (goldebet.bet.br)",
+            "Novo Destino (Hub Neutro)": "`sabiaesportes.com/goldebet/`",
+            "Tipo de Conteúdo": "Hub Informacional de Palpites, Estatísticas e Odds",
+            "Estratégia de Redirecionamento": "301 Wildcard 1:1 (`goldebet.bet.br/*` ➔ `sabiaesportes.com/goldebet/*`)"
+        },
+        {
+            "Marca Origem (.bet.br)": "LotoGreen (lotogreen.bet.br)",
+            "Novo Destino (Hub Neutro)": "`sabiaesportes.com/lotogreen/`",
+            "Tipo de Conteúdo": "Guias de Jogos Rápidos, Análises de Slots e Roletas",
+            "Estratégia de Redirecionamento": "301 Wildcard 1:1 (`lotogreen.bet.br/*` ➔ `sabiaesportes.com/lotogreen/*`)"
+        }
+    ])
+    st.dataframe(df_arch_neutra, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.subheader("🛠️ 3. Stack de Plugins WordPress Recomendada no Hub Neutro")
     
     df_wp_stack = pd.DataFrame([
         {
@@ -1433,33 +1460,34 @@ with tab8:
 
     st.divider()
 
-    st.subheader("🛣️ 3. Trilha Executiva de Migração em 5 Fases (Passo a Passo)")
+    st.subheader("🛣️ 4. Trilha Executiva de Migração em 5 Etapas (GSC & DNS)")
 
-    fase1, fase2 = st.columns(2)
-    with fase1:
-        st.info("**Fase 1: Setup do WordPress & Staging**\n- Instalação do WordPress em servidor/container dedicado.\n- Estrutura de permalinks: `/blog/%postname%/`.\n- Instalação dos plugins da stack e bloqueio temporário via `<meta name=\"robots\" content=\"noindex, nofollow\">`.")
-        st.warning("**Fase 2: Planilha DE-PARA 1:1 e Mapeamento 301**\n- Mapeamento de 100% das URLs antigas indexadas no GSC/Semrush.\n- Elaboração da planilha DE-PARA direcionando cada URL antiga para `/blog/sua-pagina/`.\n- Validação das meta tags On-Page (Title, H1, H2, H3 e links internos).")
+    m_f1, m_f2 = st.columns(2)
+    with m_f1:
+        st.info("**Etapa 1: Subida do Hub Neutro (WordPress)**\n- Registrar domínio neutro de mídia (ex: `sabiaesportes.com`).\n- Instalar WordPress com arquitetura de subdiretórios para abrigar as 3 marcas.\n- Configurar stack de plugins (RankMath Pro, Redirection, WP Rocket, Redis).")
+        st.warning("**Etapa 2: Mapeamento DE-PARA & Mídia**\n- Exportar todas as URLs indexadas dos domínios `.bet.br`.\n- Criar tabela mestre DE-PARA ligando cada URL antiga ao seu novo caminho no domínio neutro.\n- Importar acervo de artigos e mídias mantendo títulos e estruturas de H1/H2.")
 
-    fase3, fase4 = st.columns(2)
-    with fase3:
-        st.error("**Fase 3: Configuração do Reverse Proxy (Dev/Infra)**\n- Configuração de regras Nginx / Cloudflare Workers para rotear `br4.bet.br/blog/*` para a instância do WordPress.\n- Garantia de resposta HTTP 200 OK sem redirecionamento visível de domínio.\n- Certificado SSL unificado (HTTPS).")
-        st.success("**Fase 4: Go-Live & Desbloqueio de Indexação**\n- Remoção da trava de `noindex` do WordPress.\n- Ativação dos redirecionamentos 301 permanentes da estrutura antiga.\n- Atualização do arquivo `robots.txt` e geração do sitemap em `br4.bet.br/blog/sitemap.xml`.")
+    m_f3, m_f4 = st.columns(2)
+    with m_f3:
+        st.error("**Etapa 3: Redirecionamento 301 em Nível de CDN/DNS**\n- Aplicar regras de redirecionamento permanente (HTTP 301) na Cloudflare/Edge Server do `.bet.br`.\n- Garantir que qualquer chamada a `br4.bet.br/pagina` aponte instantaneamente para `sabiaesportes.com/br4/pagina`.")
+        st.success("**Etapa 4: 'Mudança de Endereço' no Google Search Console**\n- Cadastrar o novo domínio neutro no GSC.\n- Executar a ferramenta oficial *Change of Address* (Mudança de Endereço) dentro das propriedades `.bet.br`.\n- Submeter os novos sitemaps XML (`sabiaesportes.com/sitemap.xml`).")
 
     st.divider()
 
-    st.subheader("📊 4. Matriz de Gestão de Riscos & Checklist de Validação (QA)")
+    st.subheader("🔄 5. Plano de Reversibilidade (Protocolo de Retorno ao `.bet.br`)")
+    st.caption("Garantia de segurança operacional: como reverter a migração se o governo liberar a operação das apostas novamente.")
 
-    qa_col1, qa_col2 = st.columns([1.2, 1])
-    with qa_col1:
-        st.markdown("**Checklist de Homologação Pós-Migração:**")
-        st.checkbox("O blog responde com HTTP 200 OK em `https://br4.bet.br/blog/`", value=True)
-        st.checkbox("Todas as URLs antigas redirecionam com código 301 direto (sem loops de redirecionamento)", value=True)
-        st.checkbox("Canonical tags apontam corretamente para o domínio sob `/blog/`", value=True)
-        st.checkbox("Sitemap XML submetido na propriedade principal do Google Search Console", value=True)
-        st.checkbox("Varredura no Screaming Frog confirma ausência de erros 404 e imagens quebradas", value=True)
-
-    with qa_col2:
-        st.warning("**⚠️ Principais Cuidados Durante o Go-Live:**\n\n1. **Mixed Content (HTTP/HTTPS):** Garantir que scripts e imagens do blog não tentem carregar sem SSL.\n2. **Loops de Redirecionamento (301):** Impedir que uma URL redirecione para ela mesma ou passe por múltiplos passos antes de abrir.\n3. **Crawl Budget:** Monitorar diariamente no GSC o relatório de 'Estatísticas de Rastreador' durante os primeiros 30 dias pós-migração.")
+    rev_col1, rev_col2 = st.columns(2)
+    with rev_col1:
+        st.markdown("**📋 Checklist do Protocolo de Retorno (Rollback):**")
+        st.write("""
+        1. **Preservação de Registros DNS/CDN:** Manter a propriedade dos domínios `.bet.br` renovada e configurada na Cloudflare.
+        2. **Tabela de Redirecionamento Inverso:** Manter salva a planilha DE-PARA com o mapeamento inverso (`sabiaesportes.com/br4/*` ➔ `br4.bet.br/*`).
+        3. **Troca de Redirecionamento 301:** Inverter as regras na CDN assim que o site `.bet.br` for reativado em ambiente de produção.
+        4. **Solicitação de Mudança de Endereço no GSC:** Disparar a ferramenta de alteração de endereço no GSC apontando do domínio neutro de volta para o `.bet.br`.
+        """)
+    with rev_col2:
+        st.warning("**⚠️ Benefícios da Estratégia de Hub Neutro:**\n\n- **Zero Perda de Autoridade:** O PageRank de backlinks externos fica acumulado no domínio neutro mesmo se o `.bet.br` for suspenso temporariamente.\n- **Presença Orgânica Contínua:** A marca continua ranqueando para buscas genéricas de palpites, jogos e futebol.\n- **Retorno Imediato:** Quando o governo liberar, o domínio `.bet.br` herda a autoridade expandida do Hub Neutro sem precisar recomeçar do zero.")
 
     # RODAPÉ FINAL DE COPYRIGHT & BRANDING
     st.markdown("""
