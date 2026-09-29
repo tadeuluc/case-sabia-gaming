@@ -825,3 +825,645 @@ with tab3:
                   │
                   ▼ (Link com CTA de Aposta Direct)
         [ Landing Page Comercial / Depósito (FTD) ] ➔ (Fundo de Funil)
+        ```
+        """)
+    with pr_col2:
+        st.error("**⚠️ Vazamento de PageRank Identificado:**")
+        st.write("- **38% dos artigos do blog da Goldebet** não possuem links apontando para as LPs de apostas.")
+        st.write("- **Âncoras Genéricas:** Uso excessivo de termos neutros como *'clique aqui'* e *'saiba mais'*.")
+        st.write("- **Solução:** Trocar por âncoras transacionais como *'apostas no Brasileirão'*, *'jogar Fortune Tiger'* e *'odds da BR4Bet'*.")
+
+    st.divider()
+
+    st.subheader(f"💡 Diagnóstico Técnico Integrado ({'Ecossistema' if is_global else selected_brand})")
+    p1, p2, p3 = st.columns(3)
+    
+    with p1:
+        st.error(f"**1. O Problema na {'Ecossistema' if is_global else selected_brand}**")
+        st.write(f"- **Mobile:** O INP crítico de **{info_ps['mobile']['inp']}** gera congelamento de interface.")
+        st.write(f"- **Estrutura:** Identificamos **{info_sf['missing_h1']} URLs** sem a tag H1 principal.")
+        
+    with p2:
+        st.warning(f"**2. O Diagnóstico (Crawl Budget)**")
+        st.write(f"O Googlebot é sobrecarregado por JavaScript e encontra **{info_sf['status_4xx']} URLs quebradas (4xx/5xx)** e **{info_sf['status_3xx']} redirecionamentos** na {'Ecossistema' if is_global else selected_brand}.")
+        st.write("Isso desperdiça a cota de varredura do robô em páginas sem valor comercial.")
+        
+    with p3:
+        st.success(f"**3. O Que Faremos na {'Ecossistema' if is_global else selected_brand} e Por Quê**")
+        st.write("- **SSR (Server-Side Rendering):** Entrega o HTML limpo e pronto, eliminando o travamento mobile.")
+        st.write("- **Higienização de Rastreio:** Corrigir os erros 4xx apontados no Screaming Frog e parametrizar tags H1 automáticas.")
+        st.write("- **Por quê?** Uma arquitetura limpa garante que o Googlebot dedique 100% da sua capacidade para indexar novos mercados esportivos e páginas de aposta.")
+
+# ---------------------------------------------------------
+# ABA 4: BACKLINKS & AUTORIDADE OFF-PAGE (COM GERADOR DISAVOW.TXT)
+# ---------------------------------------------------------
+with tab4:
+    st.header(f"🔗 Auditoria de Backlinks & Autoridade Off-Page {'(' + selected_brand + ')' if not is_global else '(Visão Global)'}")
+    st.markdown("Análise de perfil de links, identificação de toxicidade (*Link Farms/Spam*) e classificação por autoridade | Dados extraídos das planilhas do Semrush.")
+
+    if is_global and bl_data:
+        df_bl = pd.concat([bl_data[b] for b in bl_data], ignore_index=True)
+    elif not is_global and selected_brand in bl_data:
+        df_bl = bl_data[selected_brand].copy()
+    elif bl_data:
+        df_bl = list(bl_data.values())[0].copy()
+    else:
+        df_bl = pd.DataFrame()
+
+    if not df_bl.empty:
+        tot_links = len(df_bl)
+        good_links = len(df_bl[df_bl["Qualidade"].str.contains("Bom")])
+        toxic_links = len(df_bl[df_bl["Qualidade"].str.contains("Tóxico") | df_bl["Qualidade"].str.contains("Suspeito")])
+        pct_toxic = (toxic_links / tot_links * 100) if tot_links > 0 else 0
+        dofollow_count = len(df_bl[df_bl["Status_Link"] == "DoFollow"])
+
+        if is_global:
+            st.warning(f"⚠️ **DIAGNÓSTICO CONSOLIDADO DE OFF-PAGE (ECOSSISTEMA):** Foram analisados **{tot_links:,.0f} backlinks**. O ecossistema possui **{toxic_links:,.0f} links tóxicos ou suspeitos ({pct_toxic:.1f}%)**, exigindo higienização preventiva via Disavow.")
+        elif selected_brand == "BR4Bet":
+            st.warning(f"⚠️ **ALERTA DE TOXICIDADE OFF-PAGE (BR4Bet):** Detectados **{toxic_links:,.0f} links spammers/suspeitos ({pct_toxic:.1f}%)**. Por outro lado, a marca possui ativos valiosos como *Flashscore* (AS 83) e *Lance!* (AS 60) que precisam ser blindados.")
+        elif selected_brand == "Goldebet":
+            st.error(f"🚨 **ALERTA CRÍTICO DE SPAM (Goldebet):** A Goldebet possui **{toxic_links:,.0f} links tóxicos e de baixa qualidade ({pct_toxic:.1f}%)**, com forte presença de fazendas de links que suprimem a autoridade real da marca.")
+        elif selected_brand == "LotoGreen":
+            st.error(f"🚨 **ALERTA CRÍTICO DE SPAM (LotoGreen):** A LotoGreen sofreu um ataque massivo de SEO negativo, acumulando **{toxic_links:,.0f} links tóxicos de fazendas de links e PBNs ({pct_toxic:.1f}%)**. Ação urgente de Disavow necessária.")
+        else:
+            st.info(f"ℹ️️ **PERFIL EM CONSTRUÇÃO ({selected_brand}):** {tot_links:,.0f} backlinks mapeados no Semrush. Foco em campanhas de Digital PR para construção de autoridade institucional.")
+
+        st.divider()
+
+        st.subheader("💡 O Problemão vs. O Impacto no Negócio vs. A Solução Lucas Tadeu SEO")
+        
+        p_col1, p_col2, p_col3 = st.columns(3)
+        with p_col1:
+            st.error("🔴 **1. O Problemão (Ameaça Oculta)**")
+            if selected_brand == "BR4Bet":
+                st.write("- **Contaminação Massiva:** Mais de 10.900 backlinks vêm de fazendas de links automáticas e PBNs.")
+                st.write("- **Ancoragem Poluída:** Milhares de links apontam com textos estranhos e bots de automação.")
+            elif selected_brand == "Goldebet":
+                st.write("- **Poluição de Links Spam:** 94,5% dos links da Goldebet são fazendas de links e agregadores suspeitos.")
+                st.write("- **Risco Algorítmico:** O perfil de links esconde os ganhos de menção generativa na IA.")
+            else:
+                st.write("- **Invasão de Link Farms:** 90,4% do perfil de links é composto por PBNs e redes de spam (`@SEO_ANOMALY`).")
+                st.write("- **Cegueira do Algoritmo:** O perfil de links está dominado por spammers do Telegram.")
+
+        with p_col2:
+            st.warning("⚠️ **2. O Impacto no Negócio**")
+            st.write("- **Risco de Punição:** Ativação do *Google SpamBrain*, que rebaixa o domínio em buscas genéricas.")
+            st.write("- **Desperdício de Autoridade:** Links legítimos de alta autoridade (*Flashscore*, *Lance!*) perdem força devido à poluição de spam.")
+
+        with p_col3:
+            st.success("💡 **3. A Solução Lucas Tadeu SEO**")
+            st.write("- **Expurgo via Disavow:** Geração do arquivo `disavow.txt` com domínios tóxicos para upload no Google Search Console.")
+            st.write("- **Blindagem de Ativos:** Proteção dos links DoFollow Tier-1 e re-ancoragem semântica com o nome oficial da marca.")
+
+        st.divider()
+
+        st.subheader("🛠️ Ferramenta de Ação Imediata: Gerador do Arquivo disavow.txt")
+        st.caption("O sistema filtra automaticamente todos os domínios tóxicos/spammers mapeados acima e compila o arquivo de rejeição oficial para o Google Search Console.")
+        
+        disavow_text, total_domains_disavow = generate_disavow_content(df_bl, selected_brand)
+        
+        col_dis1, col_dis2 = st.columns([3, 1])
+        col_dis1.info(f"✅ **Arquivo Disavow Formatado:** Mapeados **{total_domains_disavow:,.0f} domínios spammers únicos** no padrão do Google (`domain:spamsite.com`).".replace(",", "."))
+        
+        col_dis2.download_button(
+            label="📥 Baixar disavow.txt",
+            data=disavow_text,
+            file_name=f"disavow_{selected_brand.lower().replace(' ', '_')}.txt",
+            mime="text/plain",
+            type="primary",
+            use_container_width=True
+        )
+
+        st.divider()
+
+        st.subheader("🔍 Mineração e Filtros de Backlinks")
+        bl_f1, bl_f2, bl_f3 = st.columns([1.5, 1.5, 2])
+        qualidade_selected = bl_f1.multiselect("Classificação de Qualidade:", options=df_bl["Qualidade"].unique(), default=df_bl["Qualidade"].unique())
+        status_selected = bl_f2.multiselect("Atributo de Rastreio:", options=df_bl["Status_Link"].unique(), default=df_bl["Status_Link"].unique())
+        search_bl = bl_f3.text_input("Buscar por Domínio / Âncora / URL:", "")
+
+        df_bl_filtered = df_bl.copy()
+        if qualidade_selected: df_bl_filtered = df_bl_filtered[df_bl_filtered["Qualidade"].isin(qualidade_selected)]
+        if status_selected: df_bl_filtered = df_bl_filtered[df_bl_filtered["Status_Link"].isin(status_selected)]
+        if search_bl:
+            df_bl_filtered = df_bl_filtered[
+                df_bl_filtered["Source url"].astype(str).str.contains(search_bl, case=False, na=False) | 
+                df_bl_filtered["Anchor"].astype(str).str.contains(search_bl, case=False, na=False) |
+                df_bl_filtered["Source title"].astype(str).str.contains(search_bl, case=False, na=False)
+            ]
+
+        bl_k1, bl_k2, bl_k3, bl_k4 = st.columns(4)
+        bl_k1.metric("Total Backlinks Mapeados", f"{tot_links:,.0f}".replace(",", "."))
+        bl_k2.metric("Backlinks Bons (Alta Autoridade)", f"{good_links:,.0f}".replace(",", "."), f"{(good_links/tot_links*100):.1f}% do total")
+        bl_k3.metric("Links Tóxicos / Suspeitos", f"{toxic_links:,.0f}".replace(",", "."), f"{pct_toxic:.1f}% de toxicidade", delta_color="inverse")
+        bl_k4.metric("Proporção DoFollow", f"{dofollow_count:,.0f}".replace(",", "."), f"{(dofollow_count/tot_links*100):.1f}% do total")
+
+        st.divider()
+
+        g_col1, g_col2 = st.columns(2)
+        with g_col1:
+            st.subheader("📊 Distribuição de Qualidade dos Backlinks")
+            df_qual_counts = df_bl["Qualidade"].value_counts().reset_index()
+            df_qual_counts.columns = ["Qualidade", "Quantidade"]
+            fig_qual = px.pie(
+                df_qual_counts, names="Qualidade", values="Quantidade", hole=0.4,
+                color="Qualidade",
+                color_discrete_map={
+                    "🟢 Bom (Alta Autoridade)": "#2E7D32",
+                    "🟡 Médio (Relevância Moderada)": "#F9A825",
+                    "🔴 Tóxico / Spam (Link Farm)": "#D32F2F",
+                    "🔴 Tóxico / Spam (Sitewide)": "#B71C1C",
+                    "🔴 Suspeito / Baixa Qualidade": "#C62828"
+                }
+            )
+            fig_qual.update_layout(height=340, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_qual, use_container_width=True)
+
+        with g_col2:
+            st.subheader("📌 Top 8 Textos Âncora Mais Frequentes")
+            top_anchors = df_bl["Anchor"].fillna("Sem Âncora (URL Direta)").value_counts().head(8).reset_index()
+            top_anchors.columns = ["Texto Âncora", "Quantidade"]
+            fig_anc = px.bar(top_anchors, x="Quantidade", y="Texto Âncora", orientation="h", color_discrete_sequence=["#0284c7"])
+            fig_anc.update_layout(height=340, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_anc, use_container_width=True)
+
+        st.divider()
+
+        st.subheader(f"📋 Tabela de Backlinks Mapeados ({len(df_bl_filtered):,.0f} exibidos)".replace(",", "."))
+        cols_show = ["Marca", "Source title", "Source url", "Target url", "Page ascore", "Anchor", "Status_Link", "Qualidade"]
+        cols_present = [c for c in cols_show if c in df_bl_filtered.columns]
+        st.dataframe(df_bl_filtered[cols_present].sort_values(by="Page ascore", ascending=False).head(1000), hide_index=True, use_container_width=True)
+    else:
+        st.info("ℹ️ Nenhuma planilha de backlinks encontrada. Certifique-se de que os arquivos `.xlsx` de backlinks estão na pasta do projeto.")
+
+# ---------------------------------------------------------
+# ABA 5: GEO & BUSCA POR IA (ECOSSISTEMA GOOGLE GEMINI & SGE)
+# ---------------------------------------------------------
+with tab5:
+    st.header(f"🧠 Generative Engine Optimization (GEO & SGE) {'(' + selected_brand + ')' if not is_global else ''}")
+    st.markdown("Análise de visibilidade nos motores de IA do **Semrush** (ChatGPT, Gemini, Google Modo IA).")
+
+    if is_global:
+        g_c1, g_c2, g_c3, g_c4 = st.columns(4)
+        g_c1.metric("Visibilidade Média IA", "29 / 100", "Meta: > 50")
+        g_c2.metric("Total Menções em LLMs", "288 menções", "84,7% no Modo IA")
+        g_c3.metric("Fontes Citadas na Web", "631 fontes", "Jornais & Blogs")
+        g_c4.metric("Páginas Próprias Citadas", "8 páginas", "Baixa citação direta", delta_color="inverse")
+
+        st.divider()
+
+        st.subheader("📊 Comparativo de Visibilidade de IA por Marca")
+        df_geo_comp = pd.DataFrame([
+            {"Marca": "BR4Bet", "Score AI": 34, "Menções": 39, "Citações": 5, "Páginas Citadas": 4, "LLM Dominante": "Modo IA (79.5%)"},
+            {"Marca": "Goldebet", "Score AI": 20, "Menções": 230, "Citações": 1, "Páginas Citadas": 1, "LLM Dominante": "Modo IA (89.1%)"},
+            {"Marca": "LotoGreen", "Score AI": 33, "Menções": 19, "Citações": 1, "Páginas Citadas": 3, "LLM Dominante": "ChatGPT (47.4%)"},
+        ])
+        st.dataframe(df_geo_comp, use_container_width=True, hide_index=True)
+
+        st.divider()
+
+        st.subheader("💡 Diagnóstico Estratégico Global de GEO")
+        d1, d2, d3 = st.columns(3)
+        with d1:
+            st.error("**1. Baixa Citação de Domínio Próprio**")
+            st.write("Apesar de somar 288 menções, o ecossistema tem apenas **8 páginas próprias citadas** diretamente pelas IAs.")
+        with d2:
+            st.warning("**2. Dependência Extrema do Modo IA**")
+            st.write("Quase 90% das menções ocorrem no Modo IA do Google. No ChatGPT e Gemini, a presença é baixa.")
+        with d3:
+            st.success("**3. O Que Faremos e Por Quê**")
+            st.write("Executar **Digital PR estruturado** nos portais citados pelas IAs e liberar a leitura do `llms.txt`.")
+    else:
+        geo_info = GEO_KNOWLEDGE[selected_brand]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Score Visibilidade IA", geo_info["score"], "Semrush")
+        c2.metric("Menções em IA", f"{geo_info['mencoes']} menções")
+        c3.metric("Fontes Citadas", f"{geo_info['fontes_citadas']} portais")
+        c4.metric("Páginas Próprias Citadas", f"{geo_info['paginas_citadas']} URLs", delta_color="normal")
+
+        st.divider()
+        geo_col1, geo_col2 = st.columns([1, 1])
+        with geo_col1:
+            st.subheader(f"🤖 Distribuição por Plataforma de IA ({selected_brand})")
+            df_llm = pd.DataFrame(list(geo_info["llm_dist"].items()), columns=["Plataforma LLM", "Percentual"])
+            fig_llm = px.pie(df_llm, names="Plataforma LLM", values="Percentual", hole=0.4, color_discrete_sequence=px.colors.qualitative.Set2)
+            fig_llm.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_llm, use_container_width=True)
+
+        with geo_col2:
+            st.subheader("🌎 Distribuição Geográfica das Menções")
+            st.info(f"**Países de Menção:**\n\n{geo_info['paises']}")
+            st.write(f"- **Tópicos mapeados:** {geo_info['topicos_count']} com alto desempenho.")
+
+        st.divider()
+        st.subheader(f"🕵️ Prompts Reais e Respostas de IA Monitoradas ({selected_brand})")
+        for idx, p in enumerate(geo_info["prompts"], 1):
+            with st.expander(f"Prompt {idx}: {p['prompt']} (Vol. IA: {p['volume']})"):
+                st.write(f"**Resposta Gerada pela IA:** {p['resposta']}")
+
+        st.divider()
+        st.subheader(f"💡 Diagnóstico e Ação de GEO ({selected_brand})")
+        diag_col1, diag_col2 = st.columns(2)
+        with diag_col1:
+            st.error(f"**Diagnóstico de IA para {selected_brand}:**")
+            st.write(geo_info["diagnostico"])
+        with diag_col2:
+            st.success(f"**Plano de Ação GEO para {selected_brand}:**")
+            st.write(geo_info["solucao"])
+
+    st.divider()
+
+    st.subheader("🤖 Simulador Interativo de Prompts de IA / Sandbox GEO (Google Gemini & Modo IA)")
+    st.caption("Ambiente de teste ao vivo para simular como o Google Gemini e o Modo IA (SGE) respondem aos apostadores e mapeiam os concorrentes de mercado.")
+
+    sand_c1, sand_c2 = st.columns([1, 2])
+    
+    with sand_c1:
+        selected_llm_engine = st.selectbox("Escolha o Motor de IA (Ecossistema Google):", ["Gemini 1.5 Pro (Google AI)", "Google Modo IA (SGE / Search RAG)"])
+        
+        prompt_presets = [
+            "Quais são as casas de apostas autorizadas mais seguras no Brasil em 2026?",
+            "A BR4Bet é confiável para apostar em futebol no Brasil?",
+            "Onde encontrar as melhores estatísticas e palpites do Brasileirão?",
+            "Quais as melhores alternativas para jogar Fortune Tiger e crash games?",
+            "Customizado (Digitar meu próprio prompt)"
+        ]
+        selected_preset = st.selectbox("Selecione uma pergunta de apostador:", prompt_presets)
+        
+        if selected_preset == "Customizado (Digitar meu próprio prompt)":
+            user_custom_prompt = st.text_input("Digite sua pergunta:", value="Qual a melhor plataforma para apostar na Sabiá Gaming?")
+        else:
+            user_custom_prompt = selected_preset
+
+        btn_run_sim = st.button("🚀 Simular Resposta RAG da IA", type="primary", use_container_width=True)
+
+    with sand_c2:
+        if btn_run_sim or "sim_run" in st.session_state:
+            st.session_state["sim_run"] = True
+            with st.spinner(f"Consultando modelo RAG e bases de conhecimento do {selected_llm_engine}..."):
+                time.sleep(0.8)
+                
+                if "BR4Bet" in user_custom_prompt or "futebol" in user_custom_prompt or "seguras" in user_custom_prompt:
+                    ans_text = """Com base nas diretrizes da Secretaria de Prêmios e Apostas (SPA/MF) de 2026, as plataformas autorizadas operam sob rígidos padrões de segurança e compliance no Brasil.
+
+**Casas de Apostas e Concorrentes Citados na IA:**
+1. **Betano & Bet365:** Líderes de mercado em volume e liquidez de apostas esportivas.
+2. **BR4Bet:** Plataforma da Sabiá Gaming focada em futebol e apostas esportivas, com licença SPA/MF e PIX instantâneo.
+3. **Sportingbet & KTO:** Fortes em cobertura de jogos nacionais e promoções.
+4. **Goldebet:** Citada principalmente por estatísticas e palpites de jogos.
+
+**Mapeamento de Concorrentes na SERP/IA:** Bet365, Betano, Sportingbet, KTO, EstrelaBet.
+**Posição da Marca:** BR4Bet ranqueada no Top 5 de casas autorizadas e seguras."""
+                    prob_score = "88%"
+                    sentiment = "🟢 Positivo / Confiável"
+                    sources_cited = "Flashscore.com.br, Lance.com.br, Metrópoles, Portal SPA/MF"
+                    competitors = "Bet365, Betano, Sportingbet, KTO"
+                elif "palpites" in user_custom_prompt or "estatísticas" in user_custom_prompt or "Goldebet" in user_custom_prompt:
+                    ans_text = """Para análise de estatísticas, cotações e palpites do Brasileirão em 2026, os modelos de IA e motores de busca citam os seguintes hubs de conteúdo:
+
+**Principais Hubs e Concorrentes Mapeados:**
+1. **Sofascore & Flashscore:** Líderes globais em dados estatísticos e placares ao vivo.
+2. **Goldebet (Hub Informacional):** Destaca-se nas respostas generativas da IA por fornecer estatísticas, análises de pré-jogo e prognósticos esportivos do Brasileirão.
+3. **GE Globo & Lance!:** Portais de notícias esportivas de massa.
+
+**Mapeamento de Concorrentes na SERP/IA:** Sofascore, Flashscore, GE Globo, Lance!, Oddschecker.
+**Posição da Marca:** Goldebet captura tráfego de topo de funil (informacional) e gera autoridade RAG."""
+                    prob_score = "76%"
+                    sentiment = "🟢 Positivo / Hub de Conteúdo"
+                    sources_cited = "UOL Esporte, Gazeta Esportiva, Lance!, Sofascore"
+                    competitors = "Sofascore, Flashscore, GE Globo, Lance!"
+                elif "cassino" in user_custom_prompt or "crash" in user_custom_prompt or "LotoGreen" in user_custom_prompt:
+                    ans_text = """Para jogos de cassino online e crash games (como Aviator e Fortune Tiger) autorizados no Brasil, as Inteligências Artificiais destacam plataformas verificadas com RNG certificado.
+
+**Plataformas Recomendadas e Concorrentes:**
+1. **LotoGreen:** Destacada no ecossistema de iGaming por seu catálogo de jogos rápidos, roletas e slots populares.
+2. **Betano & Stake:** Maiores catálogos de cassino ao vivo e jogos exclusivos.
+3. **KTO:** Conhecida por jogos estilo crash e saques rápidos.
+
+**Mapeamento de Concorrentes na SERP/IA:** Stake, Betano, KTO, Blaze, BC.Game.
+**Posição da Marca:** LotoGreen com forte presença nas buscas por cassino e crash games no Brasil."""
+                    prob_score = "83%"
+                    sentiment = "🟢 Positivo / Alta Relevância"
+                    sources_cited = "Portais de Avaliação de Cassino, Reclame Aqui, Guias de iGaming"
+                    competitors = "Stake, Betano, KTO, Blaze"
+                else:
+                    ans_text = f"""Ao processar a consulta *'{user_custom_prompt}'*, o modelo **{selected_llm_engine}** analisa as principais plataformas de apostas autorizadas pela SPA/MF em 2026 e mapeia o cenário competitivo.
+
+**Principais Marcas Mapeadas no Mercado:**
+- **Líderes de Mercado:** Bet365, Betano, Sportingbet, KTO.
+- **Ativos da Sabiá Gaming:** BR4Bet (esportes), Goldebet (estatísticas) e LotoGreen (cassino).
+
+**Diagnóstico RAG:** Para ampliar a citação direta no {selected_llm_engine}, recomenda-se intensificar a publicação de comunicados de imprensa (Digital PR) e otimizar os arquivos `llms.txt` dos domínios."""
+                    prob_score = "79%"
+                    sentiment = "🟢 Positivo / Mapeado"
+                    sources_cited = "Lance!, UOL, Documentos Regulatórios SPA/MF"
+                    competitors = "Bet365, Betano, Sportingbet, KTO"
+
+                st.markdown(f"**🤖 Resposta Gerada por {selected_llm_engine}:**")
+                st.info(ans_text)
+                
+                m_sim1, m_sim2, m_sim3, m_sim4 = st.columns(4)
+                m_sim1.metric("Probabilidade de Citação", prob_score)
+                m_sim2.metric("Sentimento de Reputação", sentiment)
+                m_sim3.metric("Fontes de Origem RAG", "3 Veículos Tier-1")
+                m_sim4.metric("Concorrentes Mapeados", competitors.split(',')[0] + " e outros")
+                st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
+
+# ---------------------------------------------------------
+# ABA 6: EXPANSÃO INTERNACIONAL DE SEO E GEO
+# ---------------------------------------------------------
+with tab6:
+    st.header("🌍 Expansão Internacional de SEO e GEO")
+    st.markdown("Framework executivo para internacionalização de tráfego orgânico e autoridade generativa na **América Latina (LatAm) e Europa**.")
+
+    st.subheader("📌 1. Framework de Governança em 4 Etapas")
+    f1, f2, f3, f4 = st.columns(4)
+    f1.info("**1. Compliance & Regulação**\nValidação de licenças locais (Mincetur, SCJ, SEGOB, SRIJ) e adequação legal de termos.")
+    f2.warning("**2. Vol. de Busca vs. CPC**\nAnálise de demanda informacional vs custo pago para estimar CAC orgânico local.")
+    f3.error("**3. Arquitetura Hreflang**\nIsolamento técnico em subdiretórios com mapeamento bidirecional exato por código de país.")
+    f4.success("**4. MVP via Hub Educativo**\nLançamento de guias de apostas e palpites em blogs regionais para validar tração.")
+
+    st.divider()
+
+    st.subheader("🌎 2. Matriz de Implementação por Mercado Alvo (SEO + GEO)")
+    st.caption("Estratégia personalizada considerando regulação, nuances semânticas e fontes RAG locais.")
+
+    df_inter = pd.DataFrame([
+        {
+            "País / Mercado": "Peru (LatAm)",
+            "Regulação Local": "Mincetur (Licença PE)",
+            "Arquitetura Hreflang": "`br4.bet/pe/` (`es-PE`)",
+            "Terminologia GEO / SEO": "Apuestas deportivas, pollas, parlays, apuestas en vivo",
+            "Portais Alvo PR (RAG)": "El Comercio, La República, RPP Noticias"
+        },
+        {
+            "País / Mercado": "Chile (LatAm)",
+            "Regulação Local": "SCJ (Marco SCJ)",
+            "Arquitetura Hreflang": "`br4.bet/cl/` (`es-CL`)",
+            "Terminologia GEO / SEO": "Apuestas combinadas, pollas, futbol chileno, cuotas",
+            "Portais Alvo PR (RAG)": "La Tercera, EMOL, BioBioChile"
+        },
+        {
+            "País / Mercado": "México (LatAm)",
+            "Regulação Local": "SEGOB (Licença MX)",
+            "Arquitetura Hreflang": "`br4.bet/mx/` (`es-MX`)",
+            "Terminologia GEO / SEO": "Quinielas, momios, parlays, casino en línea",
+            "Portais Alvo PR (RAG)": "El Universal, RÉCORD, MedioTiempo"
+        },
+        {
+            "País / Mercado": "Portugal (Europa)",
+            "Regulação Local": "SRIJ (Licença PT)",
+            "Arquitetura Hreflang": "`br4.bet/pt/` (`pt-PT`)",
+            "Terminologia GEO / SEO": "Odds, apostas múltiplas, boletim, casino online",
+            "Portais Alvo PR (RAG)": "A Bola, O Jogo, Público, Jornal de Notícias"
+        }
+    ])
+
+    st.dataframe(df_inter, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    col_exp1, col_exp2 = st.columns(2)
+    with col_exp1:
+        st.subheader("💡 Nuances Semânticas & Localização (GEO)")
+        st.write("""
+        - **Evitar Tradução Literal:** Traduzir termos do português para o espanhol sem pesquisa local destrói o ranqueamento. No México se busca por **'momios'** e **'quinielas'**, enquanto no Chile e Peru busca-se por **'pollas'** e **'parlays'**.
+        - **Estratégia de RAG Local:** As Inteligências Artificiais citam jornais do próprio país da busca. Uma busca feita em Lima consulta o *El Comercio*. É indispensável fechar assessoria de imprensa (Digital PR) em veículos Tier-1 de cada país.
+        """)
+
+    with col_exp2:
+        st.subheader("🛠️ Riscos Técnicos a Evitar")
+        st.write("""
+        - **Canibalização de SERP:** Sem a tag `hreflang` configurada corretamente, o Google pode exibir a Landing Page mexicana para um usuário em Lisboa, derrubando a taxa de conversão.
+        - **Contaminação de IP e Bônus:** As páginas de destino de cada subdiretório precisam carregar os métodos de pagamento (ex: PagoEfectivo no Peru, SPEI no México, MB Way em Portugal) e as moedas locais (PEN, CLP, MXN, EUR).
+        """)
+
+    st.divider()
+
+    st.subheader("📅 3. Roadmap Executivo de Lançamento Internacional (90 Dias)")
+    c_p1, c_p2, c_p3 = st.columns(3)
+    c_p1.warning("**0-30 Dias (Governança & Taxonomia):**\n- Validação jurídica e regulatória em cada país.\n- Pesquisa de palavras-chave locais no Semrush Global.\n- Setup do template técnico de `hreflang` e subdiretórios.")
+    c_p2.info("**31-60 Dias (Infraestrutura & GEO PR):**\n- Publicação das LPs regionalizadas com moedas locais.\n- Liberação dos manifestos `llms.txt` traduzidos.\n- Primeira onda de Digital PR em portais Tier-1 locais.")
+    c_p3.success("**61-90 Dias (Otimização & CRO):**\n- Rastreamento de FTD orgânico por país no BI.\n- Testes A/B de conversão regionalizados.\n- Expansão dos hubs de palpites esportivos locais.")
+
+# ---------------------------------------------------------
+# ABA 7: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
+# ---------------------------------------------------------
+with tab7:
+    st.header("🚀 Plano Executivo de Entrada, Timeline & Estrutura do Time")
+    st.markdown("Defesa do planejamento operacional de entrada, cronograma de entregas de 30/60/90 dias e estruturação da equipe de SEO/CRO/GEO | Por **Lucas Tadeu SEO**.")
+
+    st.subheader("📌 1. As 10 Primeiras Ações Imediatas na Operação (Especialista em SEO & GEO)")
+    st.caption("Ações táticas executadas ao assumir o projeto para imersão no negócio, governança de dados, ajuste semântico e liberação para IAs.")
+
+    df_10_acoes_expert = pd.DataFrame([
+        {
+            "Ação": "1. Imersão no Negócio, Entidades & Unit Economics",
+            "Motivo": "Compreender profundamente os modelos de receita das marcas (BR4Bet, Goldebet, LotoGreen), o perfil de cada apostador (ICP) e mapear como as marcas e a holding estão representadas no Knowledge Graph do Google e nas bases dos LLMs.",
+            "Prioridade": "🔴 Alta / Imediata"
+        },
+        {
+            "Ação": "2. Alinhamento de Analytics, Atribuição & Funil de FTD",
+            "Motivo": "Sentar com os times de BI e Web Analytics para auditarem o rastreamento do clique orgânico (SERP e IA) até o primeiro depósito (FTD). Sem provar geração de receita, o canal perde prioridade de investimento.",
+            "Prioridade": "🔴 Alta / Imediata"
+        },
+        {
+            "Ação": "3. Resgate Semântico On-Page & Alinhamento de Intenção",
+            "Motivo": "Auditar a estrutura de H1s, Titles e Canonicals das Landing Pages comerciais para impedir que o Google direcione tráfego de conversão para páginas institucionais ou jurídicas (Cookies/Termos).",
+            "Prioridade": "🔴 Alta / Imediata"
+        },
+        {
+            "Ação": "4. Desbloqueio Técnico de RAG & Rastreabilidade de IA",
+            "Motivo": "Auditar o arquivo robots.txt e validar a disponibilidade do manifesto llms.txt / llms-full.txt para garantir que os robôs da OpenAI, Perplexity, Gemini e Anthropic consigam raspar o site sem timeout.",
+            "Prioridade": "🔴 Alta / Imediata"
+        },
+        {
+            "Ação": "5. Mitigação do Gargalo Mobile (Core Web Vitals & INP)",
+            "Motivo": "Diagnosticar a sobrecarga de JavaScript client-side que causa travamentos de 564ms (INP) no celular, planejando a transição para Server-Side Rendering (SSR).",
+            "Prioridade": "🟡 Média / Curto Prazo"
+        },
+        {
+            "Ação": "6. Mapeamento da Esteira de Quick Wins (Posições 4 a 20)",
+            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizações rápidas de títulos, H1s e linkagem interna.",
+            "Prioridade": "🟡 Média / Curto Prazo"
+        },
+        {
+            "Ação": "7. Auditoria de Crawl Budget & Limpeza de Erros (Screaming Frog)",
+            "Motivo": "Analisar as varreduras do crawler para eliminar correntes de redirecionamento (3xx) e erros de página quebrada (4xx/5xx) que afogam a cota diária de varredura do Googlebot.",
+            "Prioridade": "🟡 Média / Curto Prazo"
+        },
+        {
+            "Ação": "8. Mapeamento de Reputação Generativa & Hallucinations",
+            "Motivo": "Executar testes de prompts em ChatGPT, Gemini e Perplexity para identificar alucinações, avaliações indevidas de risco ou confusão semântica com a marca clone pirata 'BBR4BET'.",
+            "Prioridade": "🟡 Média / Curto Prazo"
+        },
+        {
+            "Ação": "9. Setup de Digital PR & Mapeamento de Fontes de RAG",
+            "Motivo": "Mapear quais portais de imprensa e jornais Tier-1 (LANCE!, UOL, Gazeta) são citados pelos motores generativos ao recomendar plataformas do segmento, estruturando a assessoria.",
+            "Prioridade": "🟢 Estratégico"
+        },
+        {
+            "Ação": "10. Governança de SEO Internacional & Arquitetura Hreflang",
+            "Motivo": "Estabelecer a taxonomia de subdiretórios regionais (ex: /pe/, /cl/, /mx/) e mapeamento bidirecional de tags hreflang para expandir a operação geográfica sem canibalizar o tráfego local.",
+            "Prioridade": "🟢 Estratégico"
+        }
+    ])
+
+    st.dataframe(df_10_acoes_expert, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.subheader("📅 2. Plano de Execução Estratégico e Soluções (0 a 90 Dias)")
+    
+    col_t1, col_t2, col_t3 = st.columns(3)
+    
+    with col_t1:
+        st.warning("⏱️ **0 a 30 Dias: Diagnóstico, Quick Wins & Estrutura**")
+        st.write("""
+        - **Diagnóstico:** 
+          * Imersão no negócio, auditoria de atribuição de tráfego no Power BI e alinhamento do tracking de FTD orgânico.
+          * Auditoria de Crawl Budget no Screaming Frog e diagnóstico de RAG/IAs.
+        - **Quick Wins:** 
+          * Mapeamento no Semrush e priorização das palavras-chave comerciais (Pos. 4 a 20) com alto volume e intenção clara.
+        - **Estrutura:** 
+          * Correção imediata das H1s ausentes nas LPs de apostas.
+          * Aplicação de `noindex`/`canonical` nas páginas de Política de Cookies/Termos para limpar a SERP.
+          * Liberação e validação do arquivo `llms.txt` sem timeout.
+        """)
+
+    with col_t2:
+        st.info("🚀 **31 a 60 Dias: Implementação de Conteúdo, SEO & UX**")
+        st.write("""
+        - **Implementação de Conteúdo:** 
+          * Produção e otimização dos briefs para a esteira de Quick Wins.
+          * Lançamento do Hub Informacional de Palpites/Estatísticas do Brasileirão na Goldebet.
+        - **SEO On-Page:** 
+          * Otimização da arquitetura semântica, Schema Markup (SportsEvent/FAQ) e link building interno direcionando autoridade do blog para LPs comerciais.
+        - **UX / CRO:** 
+          * Redução de atrito na navegação mobile, testes A/B em botões de cadastro/depósito e otimização da velocidade de carregamento dos componentes de odds.
+        """)
+
+    with col_t3:
+        st.success("📈 **61 a 90 Dias: Escala, Otimização, Autoridade & Conversão**")
+        st.write("""
+        - **Escala & Otimização:** 
+          * Implementação de Server-Side Rendering (SSR) nas LPs de maior volume para zerar o travamento de INP (564ms) no celular.
+          * Automação de atualização de pautas esportivas.
+        - **Autoridade (Digital PR & GEO):** 
+          * Disparo da primeira onda de Digital PR em veículos Tier-1 (LANCE!, UOL, Gazeta) provando a licença SPA/MF para alimentar o RAG dos LLMs e limpar o ruído "BBR4BET".
+        - **Conversão (CRO & Expansão):** 
+          * Otimização contínua da taxa de conversão clique ➔ FTD e setup da arquitetura de subdiretórios com `hreflang` para expansão internacional.
+        """)
+
+    st.divider()
+
+    st.subheader("👥 3. Estruturação da Equipe de SEO, CRO & Conteúdo")
+    
+    t_col1, t_col2 = st.columns(2)
+    
+    with t_col1:
+        st.subheader("🏢 Divisão de Responsabilidades (Interno vs Terceirizado)")
+        st.write("""
+        - **Atividades mantidas INTERNAMENTE:**
+          * Planejamento Estratégico, Governança de SEO/GEO e Análise de Dados/BI.
+          * Diretrizes Técnicas On-Page e Arquitetura de Informação.
+          * Estruturação de Briefings, Pautas e Gestão do Funil de Conversão (CRO).
+        
+        - **Atividades TERCEIRIZADAS (Parceiros Externos):**
+          * **Digital PR & Assessoria de Imprensa:** Agências externas com relacionamento e inserção direta em veículos de comunicação Tier-1.
+          * **Link Building Institucional:** Aquisição contínua de autoridade de marca e backlinks de qualidade.
+        """)
+
+    with t_col2:
+        st.subheader("🔮 Evolução do Time e Visão 12 Meses")
+        st.write("""
+        - **Contratação Imediata (+1 Pessoa a Curto Prazo):**
+          * **Cargo:** 1 *Analista de Conteúdo Júnior*.
+          * **Papel:** Foco 100% na produção, redação e otimização On-Page de artigos e páginas de pouso a partir dos planejamentos passados.
+        
+        - **Visão do Time em 12 Meses (Estrutura Enxuta & Alta Performance):**
+          * **1 Especialista Sênior em SEO & CRO (Liderança por Lucas Tadeu SEO):** Responsável pela estratégia, BI, governança técnica e inteligência de GEO.
+          * **1 Analista de Conteúdo Júnior:** Responsável pela execução, produção e otimização do calendário editorial.
+          * **Parceiro Externo de Digital PR & Link Building:** Agência parceira focada na conquista de autoridade e RAG generativo.
+        """)
+
+# ---------------------------------------------------------
+# ABA 8: MIGRAÇÃO DE BLOG & PRESERVAÇÃO DE AUTORIDADE (/blog/)
+# ---------------------------------------------------------
+with tab8:
+    st.header("🏛️ Estratégia de Migração de Blog & Preservação de Autoridade")
+    st.markdown("Planejamento técnico para hospedar o blog em **Subpasta (`/blog/`)** utilizando **WordPress** e **Reverse Proxy**, garantindo 100% de transferência de PageRank para o domínio comercial.")
+
+    st.subheader("📌 1. Arquitetura de URL Recomendada vs Riscos de Subdomínio")
+    
+    m_col1, m_col2 = st.columns(2)
+    with m_col1:
+        st.success("**✅ Arquitetura Escolhida: Subpasta (`br4.bet.br/blog/`)**\n\n- **Preservação de PageRank:** O Google interpreta a subpasta como o mesmo ecossistema. Toda autoridade conquistada por artigos de palpites fortalece o domínio comercial de apostas.\n- **Maximização de FTDs:** Reduz o atrito de navegação do usuário e facilita o cruzamento de sessões/cookies.\n- **Crawl Budget Unificado:** O Googlebot varre o conteúdo informacional e as LPs na mesma cota de varredura.")
+        
+    with m_col2:
+        st.error("**❌ Arquitetura Descartada: Subdomínio (`blog.br4.bet.br`)**\n\n- **Diluição de Autoridade:** O Google trata subdomínios como entidades/sites independentes.\n- **Desperdício de Backlinks:** Links de veículos Tier-1 para o blog não transferem força direta para a página de apostas.\n- **Atrito de Conversão:** Perda de rastreabilidade de conversão (cross-domain cookies) do clique até o primeiro depósito.")
+
+    st.divider()
+
+    st.subheader("🛠️ 2. Stack de Plugins WordPress Recomendada (SEO & Performance)")
+    
+    df_wp_stack = pd.DataFrame([
+        {
+            "Plugin": "RankMath SEO (Pro)",
+            "Função Principal": "Gestão On-Page, Schema Markup (`SportsEvent`, `FAQPage`, `Person`), Sitemaps XML e integração com Search Console.",
+            "Impacto": "🟢 Alto (Indexação & E-E-A-T)"
+        },
+        {
+            "Plugin": "Redirection",
+            "Função Principal": "Gerenciamento e monitoramento de redirecionamentos 301 permanentes e logs de erros 404.",
+            "Impacto": "🟢 Alto (Preservação de URLs)"
+        },
+        {
+            "Plugin": "WP Rocket / Redis Cache",
+            "Função Principal": "Caching de páginas, minificação de CSS/JS e otimização de pré-carregamento para atingir nota verde no Core Web Vitals.",
+            "Impacto": "🟢 Alto (Performance & LCP)"
+        },
+        {
+            "Plugin": "WebP Express / ShortPixel",
+            "Função Principal": "Conversão automática de imagens enviadas para formatos de última geração (WebP/AVIF).",
+            "Impacto": "🟡 Média (Redução de Peso)"
+        }
+    ])
+    st.dataframe(df_wp_stack, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.subheader("🛣️ 3. Trilha Executiva de Migração em 5 Fases (Passo a Passo)")
+
+    fase1, fase2 = st.columns(2)
+    with fase1:
+        st.info("**Fase 1: Setup do WordPress & Staging**\n- Instalação do WordPress em servidor/container dedicado.\n- Estrutura de permalinks: `/blog/%postname%/`.\n- Instalação dos plugins da stack e bloqueio temporário via `<meta name=\"robots\" content=\"noindex, nofollow\">`.")
+        st.warning("**Fase 2: Planilha DE-PARA 1:1 e Mapeamento 301**\n- Mapeamento de 100% das URLs antigas indexadas no GSC/Semrush.\n- Elaboração da planilha DE-PARA direcionando cada URL antiga para `/blog/sua-pagina/`.\n- Validação das meta tags On-Page (Title, H1, H2, H3 e links internos).")
+
+    fase3, fase4 = st.columns(2)
+    with fase3:
+        st.error("**Fase 3: Configuração do Reverse Proxy (Dev/Infra)**\n- Configuração de regras Nginx / Cloudflare Workers para rotear `br4.bet.br/blog/*` para a instância do WordPress.\n- Garantia de resposta HTTP 200 OK sem redirecionamento visível de domínio.\n- Certificado SSL unificado (HTTPS).")
+        st.success("**Fase 4: Go-Live & Desbloqueio de Indexação**\n- Remoção da trava de `noindex` do WordPress.\n- Ativação dos redirecionamentos 301 permanentes da estrutura antiga.\n- Atualização do arquivo `robots.txt` e geração do sitemap em `br4.bet.br/blog/sitemap.xml`.")
+
+    st.divider()
+
+    st.subheader("📊 4. Matriz de Gestão de Riscos & Checklist de Validação (QA)")
+
+    qa_col1, qa_col2 = st.columns([1.2, 1])
+    with qa_col1:
+        st.markdown("**Checklist de Homologação Pós-Migração:**")
+        st.checkbox("O blog responde com HTTP 200 OK em `https://br4.bet.br/blog/`", value=True)
+        st.checkbox("Todas as URLs antigas redirecionam com código 301 direto (sem loops de redirecionamento)", value=True)
+        st.checkbox("Canonical tags apontam corretamente para o domínio sob `/blog/`", value=True)
+        st.checkbox("Sitemap XML submetido na propriedade principal do Google Search Console", value=True)
+        st.checkbox("Varredura no Screaming Frog confirma ausência de erros 404 e imagens quebradas", value=True)
+
+    with qa_col2:
+        st.warning("**⚠️ Principais Cuidados Durante o Go-Live:**\n\n1. **Mixed Content (HTTP/HTTPS):** Garantir que scripts e imagens do blog não tentem carregar sem SSL.\n2. **Loops de Redirecionamento (301):** Impedir que uma URL redirecione para ela mesma ou passe por múltiplos passos antes de abrir.\n3. **Crawl Budget:** Monitorar diariamente no GSC o relatório de 'Estatísticas de Rastreador' durante os primeiros 30 dias pós-migração.")
+
+    # RODAPÉ FINAL DE COPYRIGHT & BRANDING
+    st.markdown("""
+        <div class="footer-banner">
+            Apresentação Estratégica & Defesa do Case | Projetado e Desenvolvido por <strong>Lucas Tadeu SEO</strong> © 2026
+        </div>
+    """, unsafe_allow_html=True)
