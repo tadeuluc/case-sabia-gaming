@@ -106,7 +106,6 @@ st.markdown("""
         margin-bottom: 10px;
     }
 
-    /* Botão do LinkedIn na Sidebar */
     .linkedin-btn {
         display: inline-flex;
         align-items: center;
@@ -128,20 +127,17 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    /* Metric Card Styling Enhancements */
     div[data-testid="stMetricValue"] {
         font-size: 1.75rem !important;
         font-weight: 800 !important;
     }
 
-    /* Tab Custom Styling */
     button[data-baseweb="tab"] {
         font-size: 0.95rem !important;
         font-weight: 600 !important;
         padding: 12px 18px !important;
     }
 
-    /* Footer Branding Banner */
     .footer-banner {
         text-align: center;
         padding: 1.2rem;
@@ -438,7 +434,7 @@ GEO_KNOWLEDGE = {
         "prompts": [
             {"prompt": "How does Goldbet compare to other online bookmakers in features?", "resposta": "Se você está falando do Goldbet.io, a comparação precisa de uma ressalva...", "marcas": 59, "fontes": 7, "volume": "1.2 mil/mês"},
             {"prompt": "Are Goldbet's mobile app and login processes reliable across devices?", "resposta": "Sim - mas há uma ressalva importante: a GoldBet encontrada é essencialmente...", "marcas": 32, "fontes": 10, "volume": "10/mês"},
-            {"prompt": "What should I consider before signing up with Goldbet (security, licensing)?", "resposta": "Antes de se registrar na Goldbet, verifique a licença SPA/MF oficial...", "marcas": 4, "fontes": 4, "volume": "4/mês"}
+            {"prompt": "What should I consider before signing up with Goldbet (security, licensing)?", "resposta": "Antes de se registrar na Goldebet, verifique a licença SPA/MF oficial...", "marcas": 4, "fontes": 4, "volume": "4/mês"}
         ],
         "diagnostico": "Visibilidade de 20/100. Soma 230 menções (97,8% no Brasil), mas possui apenas 1 citação direta de página. A IA frequentemente confunde o domínio 'goldebet.bet.br' com plataformas estrangeiras ou homônimas (ex: Goldbet.io).",
         "solucao": "Publicar comunicados formais de imprensa associando explicitamente o domínio 'goldebet.bet.br' à operação autorizada pelo Ministério da Fazenda."
@@ -484,7 +480,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "3. SEO Técnico & Rastreio", 
     "4. Backlinks & Autoridade Off-Page",
     "5. GEO & Busca por IA", 
-    "6. Expansão Internacional", 
+    "6. Expansão Internacional & B2B", 
     "7. Plano Executivo & Time",
     "8. Migração de Contingência (Domínio Neutro)"
 ])
@@ -1170,81 +1166,124 @@ with tab5:
                 st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
 
 # ---------------------------------------------------------
-# ABA 6: EXPANSÃO INTERNACIONAL DE SEO E GEO
+# ABA 6: EXPANSÃO INTERNACIONAL & SABIÁ SOLUÇÕES B2B
 # ---------------------------------------------------------
 with tab6:
-    st.header("🌍 Expansão Internacional de SEO e GEO")
-    st.markdown("Framework executivo para internacionalização de tráfego orgânico e autoridade generativa na **América Latina (LatAm) e Europa**.")
+    st.header("🌍 Expansão Internacional (LATAM & África) & Sabiá Soluções B2B")
+    st.markdown("Estratégia executiva da **Dupla Hélice (B2C + B2B)**: Exportar a autoridade das marcas de aposta para a América Latina/África e posicionar a **Sabiá Soluções** como fornecedora líder de plataformas *Turnkey/White Label*.")
 
-    st.subheader("📌 1. Framework de Governança em 4 Etapas")
-    f1, f2, f3, f4 = st.columns(4)
-    f1.info("**1. Compliance & Regulação**\nValidação de licenças locais (Mincetur, SCJ, SEGOB, SRIJ) e adequação legal de termos.")
-    f2.warning("**2. Vol. de Busca vs. CPC**\nAnálise de demanda informacional vs custo pago para estimar CAC orgânico local.")
-    f3.error("**3. Arquitetura Hreflang**\nIsolamento técnico em subdiretórios com mapeamento bidirecional exato por código de país.")
-    f4.success("**4. MVP via Hub Educativo**\nLançamento de guias de apostas e palpites em blogs regionais para validar tração.")
+    # SEÇÃO 1: BENCHMARKING DE MERCADO LATAM (DADOS REAL-TIME SEMRUSH 2026)
+    st.subheader("📊 1. Benchmarking de Concorrência na LATAM (Relatórios Semrush Out/2026)")
+    st.caption("Análise de tráfego, volume de palavras e estratégias de grandes operadores em mercados regulados hispânicos.")
 
-    st.divider()
-
-    st.subheader("🌎 2. Matriz de Implementação por Mercado Alvo (SEO + GEO)")
-    st.caption("Estratégia personalizada considerando regulação, nuances semânticas e fontes RAG locais.")
-
-    df_inter = pd.DataFrame([
+    df_latam_bench = pd.DataFrame([
         {
-            "País / Mercado": "Peru (LatAm)",
-            "Regulação Local": "Mincetur (Licença PE)",
-            "Arquitetura Hreflang": "`br4.bet/pe/` (`es-PE`)",
-            "Terminologia GEO / SEO": "Apuestas deportivas, pollas, parlays, apuestas en vivo",
-            "Portais Alvo PR (RAG)": "El Comercio, La República, RPP Noticias"
+            "Dominio / Player": "apuestatotal.com (Peru)",
+            "Palavras-Chave": "3,084 (3.3K)",
+            "Tráfego Mensal Estimado": "2.400.000 (2.4M)",
+            "Valor de Tráfego": "$468,400",
+            "Foco Semântico & Ativo": "Líder absoluto no Peru (`apuestas deportivas`, `apuesta total en vivo`)"
         },
         {
-            "País / Mercado": "Chile (LatAm)",
-            "Regulação Local": "SCJ (Marco SCJ)",
-            "Arquitetura Hreflang": "`br4.bet/cl/` (`es-CL`)",
-            "Terminologia GEO / SEO": "Apuestas combinadas, pollas, futbol chileno, cuotas",
-            "Portais Alvo PR (RAG)": "La Tercera, EMOL, BioBioChile"
+            "Dominio / Player": "betsson.pe (Peru)",
+            "Palavras-Chave": "9,833 (10.3K)",
+            "Tráfego Mensal Estimado": "689,800 (689.8K)",
+            "Valor de Tráfego": "$222,600",
+            "Foco Semântico & Ativo": "Dominância em tráfego informacional de futebol (`liga 1`) e `tragamonedas`"
         },
         {
-            "País / Mercado": "México (LatAm)",
-            "Regulação Local": "SEGOB (Licença MX)",
-            "Arquitetura Hreflang": "`br4.bet/mx/` (`es-MX`)",
-            "Terminologia GEO / SEO": "Quinielas, momios, parlays, casino en línea",
-            "Portais Alvo PR (RAG)": "El Universal, RÉCORD, MedioTiempo"
+            "Dominio / Player": "lat.betano.com (Hub LATAM)",
+            "Palavras-Chave": "1,037 (1.0K)",
+            "Tráfego Mensal Estimado": "2,600 (2.6K)",
+            "Valor de Tráfego": "$3,100",
+            "Foco Semântico & Ativo": "Hub neutro em espanhol capturando `casino en linea`, `casinos chile`, `bonos`"
         },
         {
-            "País / Mercado": "Portugal (Europa)",
-            "Regulação Local": "SRIJ (Licença PT)",
-            "Arquitetura Hreflang": "`br4.bet/pt/` (`pt-PT`)",
-            "Terminologia GEO / SEO": "Odds, apostas múltiplas, boletim, casino online",
-            "Portais Alvo PR (RAG)": "A Bola, O Jogo, Público, Jornal de Notícias"
+            "Dominio / Player": "betsson.pe (Colômbia DB)",
+            "Palavras-Chave": "1,995 (2.1K)",
+            "Tráfego Mensal Estimado": "16,100 (16.1K)",
+            "Valor de Tráfego": "$3,200",
+            "Foco Semântico & Ativo": "Captura de buscas esportivas (`champions league`, `copa libertadores`, `mines`)"
         }
     ])
-
-    st.dataframe(df_inter, use_container_width=True, hide_index=True)
-
-    st.divider()
-
-    col_exp1, col_exp2 = st.columns(2)
-    with col_exp1:
-        st.subheader("💡 Nuances Semânticas & Localização (GEO)")
-        st.write("""
-        - **Evitar Tradução Literal:** Traduzir termos do português para o espanhol sem pesquisa local destrói o ranqueamento. No México se busca por **'momios'** e **'quinielas'**, enquanto no Chile e Peru busca-se por **'pollas'** e **'parlays'**.
-        - **Estratégia de RAG Local:** As Inteligências Artificiais citam jornais do próprio país da busca. Uma busca feita em Lima consulta o *El Comercio*. É indispensável fechar assessoria de imprensa (Digital PR) em veículos Tier-1 de cada país.
-        """)
-
-    with col_exp2:
-        st.subheader("🛠️ Riscos Técnicos a Evitar")
-        st.write("""
-        - **Canibalização de SERP:** Sem a tag `hreflang` configurada corretamente, o Google pode exibir a Landing Page mexicana para um usuário em Lisboa, derrubando a taxa de conversão.
-        - **Contaminação de IP e Bônus:** As páginas de destino de cada subdiretório precisam carregar os métodos de pagamento (ex: PagoEfectivo no Peru, SPEI no México, MB Way em Portugal) e as moedas locais (PEN, CLP, MXN, EUR).
-        """)
+    st.dataframe(df_latam_bench, use_container_width=True, hide_index=True)
 
     st.divider()
 
-    st.subheader("📅 3. Roadmap Executivo de Lançamento Internacional (90 Dias)")
+    # SEÇÃO 2: A TESE DA POLIVALÊNCIA SEMÂNTICA DO ESPANHOL
+    st.subheader("💡 2. Estratégia de Polivalência Semântica do Espanhol (Custo por FTD Otimizado)")
+    
+    poly_col1, poly_col2 = st.columns(2)
+    with poly_col1:
+        st.success("**🎯 Eficiência de Alcance Cross-Border:**\n\n- **1 Conteúdo, 20+ Países:** Diferente do português, otimizar clusters em espanhol (`casino en línea`, `apuestas deportivas`, `juegos de tragamonedas`, `bonos de bienvenida`) garante ranqueamento imediato no Peru, Colômbia, Chile, México, Equador, Espanha e EUA Hispânico.\n- **Redução Radical do CAC Orgânico:** Não é necessário criar sites do zero para cada país. Apenas regionalizamos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`) com moedas e pagamentos locais (PagoEfectivo, PSE, SPEI).")
+
+    with poly_col2:
+        st.info("**📈 O Case de Sucesso `lat.betano.com`:**\n\n- **Antecipação dos Gigantes:** A Betano criou o subdomínio `lat.betano.com` especificamente para abrigar termos de cassino e apostas em espanhol.\n- **Resultados Mapeados:** Ranqueamento no Top 3 para `casinos online chile` (Pos. 1), `casino en línea` (Pos. 2) e `bonos de casino` (Pos. 3), provando que o tráfego regional compensa bloqueios pontuais de TLDs locais.")
+
+    st.divider()
+
+    # SEÇÃO 3: FRENTE B2B - SABIÁ SOLUÇÕES (SOFTWARE HOUSE & PLATFORM PROVIDER)
+    st.subheader("⚙️ 3. Frente B2B: Sabiá Soluções (Fornecimento de Plataformas de iGaming)")
+    st.caption("Como posicionar a Sabiá Soluções para vender tecnologia *Turnkey* e *White Label* para operadores na LATAM e África.")
+
+    b2b_col1, b2b_col2 = st.columns(2)
+    with b2b_col1:
+        st.warning("**🏢 A Dor do Mercado Local (Onde Aprimoramos o Pitch):**\n\n- Operadores locais no Peru, México, Colômbia e Nigéria possuem licença e capital para mídia, mas **não possuem tecnologia própria** nem motores de odds/cassino de baixa latência.\n- Os fornecedores europeus (Softswiss, EveryMatrix, BetConstruct) cobram setups abusivos e levam de 4 a 6 meses para entregar a casa de apostas.")
+
+    with b2b_col2:
+        st.success("**🚀 O Diferencial Competitivo da Sabiá Soluções:**\n\n- **Plataforma SEO-Native:** Nossa plataforma entrega de fábrica arquivos `llms.txt`, marcação Schema, Server-Side Rendering (SSR) e suporte a jogos leves para redes móveis africanas.\n- **Turnkey em 30 Dias:** Onboarding ultra-rápido integrado com métodos de pagamento locais (PagoEfectivo, SPEI, M-Pesa, PIX Internacional).")
+
+    st.divider()
+
+    # SEÇÃO 4: MATRIZ DE EXPANSÃO B2C E B2B (LATAM & ÁFRICA)
+    st.subheader("🌎 4. Matriz de Expansão B2C & B2B por Região Alvo")
+
+    df_regional_exp = pd.DataFrame([
+        {
+            "Região / País": "Peru (LATAM)",
+            "Regulação": "Mincetur (Ativa)",
+            "Frente B2C (Nossas Bets)": "Hub `/pe/` focado na Liga 1, Copa Libertadores e jogos de minas/slots.",
+            "Frente B2B (Sabiá Soluções)": "Venda de plataforma para casas regionais que operam redes físicas e online.",
+            "Sinergia de Idioma": "Espanhol Nativo (Reaproveitamento 100%)"
+        },
+        {
+            "Região / País": "Colômbia (LATAM)",
+            "Regulação": "Coljuegos (Ativa)",
+            "Frente B2C (Nossas Bets)": "Captura de buscas esportivas genéricas de futebol e palpites.",
+            "Frente B2B (Sabiá Soluções)": "Fornecimento de motor de cassino rápido para operadores licenciados.",
+            "Sinergia de Idioma": "Espanhol Nativo (Reaproveitamento 100%)"
+        },
+        {
+            "Região / País": "México (LATAM)",
+            "Regulação": "SEGOB (Ativa)",
+            "Frente B2C (Nossas Bets)": "Captura de intenção via termos locais (*Momios*, *Quinielas*, *Parlays*).",
+            "Frente B2B (Sabiá Soluções)": "Plataforma White Label adaptada ao sistema bancário SPEI.",
+            "Sinergia de Idioma": "Espanhol Localizado"
+        },
+        {
+            "Região / País": "Angola & Moçambique (África)",
+            "Regulação": "ISJ / Reguladores Locais",
+            "Frente B2C (Nossas Bets)": "Exportação direta do acervo em português do Brasil para o mercado africano.",
+            "Frente B2B (Sabiá Soluções)": "Software House oficial para grupos de investimento locais.",
+            "Sinergia de Idioma": "Português (Custo Zero de Tradução)"
+        },
+        {
+            "Região / País": "Nigéria & Quênia (África)",
+            "Regulação": "NLRC / BCLB (Ativas)",
+            "Frente B2C (Nossas Bets)": "Versão 'Lite' das LPs focada em consumo ultra-baixo de dados móveis.",
+            "Frente B2B (Sabiá Soluções)": "Integração nativa de M-Pesa e pagamento por SMS/USSD.",
+            "Sinergia de Idioma": "Inglês Global"
+        }
+    ])
+    st.dataframe(df_regional_exp, use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    st.subheader("📅 5. Roadmap Executivo de Lançamento Internacional (90 Dias)")
     c_p1, c_p2, c_p3 = st.columns(3)
-    c_p1.warning("**0-30 Dias (Governança & Taxonomia):**\n- Validação jurídica e regulatória em cada país.\n- Pesquisa de palavras-chave locais no Semrush Global.\n- Setup do template técnico de `hreflang` e subdiretórios.")
-    c_p2.info("**31-60 Dias (Infraestrutura & GEO PR):**\n- Publicação das LPs regionalizadas com moedas locais.\n- Liberação dos manifestos `llms.txt` traduzidos.\n- Primeira onda de Digital PR em portais Tier-1 locais.")
-    c_p3.success("**61-90 Dias (Otimização & CRO):**\n- Rastreamento de FTD orgânico por país no BI.\n- Testes A/B de conversão regionalizados.\n- Expansão dos hubs de palpites esportivos locais.")
+    c_p1.warning("**0-30 Dias (Governança & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/mx/`).\n- Início do Inbound SEO B2B para a Sabiá Soluções em espanhol e inglês.\n- Publicação das LPs de atração de operadores locais.")
+    c_p2.info("**31-60 Dias (Lançamento B2C & B2B):**\n- Go-live do hub neutro em espanhol capturando termos genéricos de cassino.\n- Lançamento da campanha de Digital PR em portais de negócios da LATAM (Forbes Latam, El Comercio).\n- Fechamento dos primeiros acordos de plataforma B2B.")
+    c_p3.success("**61-90 Dias (Escala & Monetização):**\n- Acompanhamento de FTDs orgânicos B2C e royalties de plataforma B2B.\n- Expansão da operação B2C para a África Lusófona (Angola e Moçambique).\n- Otimização do funil de conversão B2B no CRM.")
 
 # ---------------------------------------------------------
 # ABA 7: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
@@ -1284,7 +1323,7 @@ with tab7:
         },
         {
             "Ação": "6. Mapeamento da Esteira de Quick Wins (Posições 4 a 20)",
-            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizações rápidas de títulos, H1s e linkagem interna.",
+            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizaciones rápidas de títulos, H1s e linkagem interna.",
             "Prioridade": "🟡 Média / Curto Prazo"
         },
         {
@@ -1413,7 +1452,7 @@ with tab8:
         st.info("**💻 Escopo de TI & Desenvolvimento (Infra & Servidor):**\n\n1. **DNS & SSL:** Apontamento A/CNAME do domínio neutro, emissão de certificado SSL (HTTPS) e ativamento de WAF na Cloudflare.\n2. **Servidor & PHP:** Provisionamento de PHP 8.2+, `memory_limit = 512M`, Redis Object Cache / FastCGI Cache e backups diários.\n3. **Deploy do Tema IA:** Subir a pasta do tema customizado em `/wp-content/themes/` e validar HTML5 semântico (Mobile-First).\n4. **Redirecionamento 301 na CDN:** Regras de 301 Wildcard na Cloudflare redirecionando os domínios `.bet.br` para o domínio neutro.\n5. **Hardening & Segurança:** Bloqueio de `xmlrpc.php`, restrições de pasta `/wp-admin/` e liberação de acesso SSH/SFTP para SEO.")
 
     with b_ti2:
-        st.success("**🎯 Escopo de SEO & Conteúdo (Lucas Tadeu SEO):**\n\n1. **Plugins de SEO & Performance:** Instalação e parametrização do RankMath Pro, Redirection, WP Rocket e WebP Express.\n2. **Planilha Mestre DE-PARA:** Mapeamento 1:1 de todas as URLs antigas do `.bet.br` para as novas subpastas neutras.\n3. **Search Console (GSC):** Execução da ferramenta oficial *Change of Address* (Mudança de Endereço) e submissão dos Sitemaps XML.\n4. **Auditoria de Qualidade:** Varredura no Screaming Frog para eliminação de erros 404 e canonicalização On-Page.\n5. **Monitoramento RAG & Indexação:** Acompanhamento diário da oscilação de palavras-chave no Semrush e relatórios de rastreamento.")
+        st.success("**🎯 Escopo de SEO & Conteúdo (Lucas Tadeu SEO):**\n\n1. **Plugins de SEO & Performance:** Instalação e parametrization do RankMath Pro, Redirection, WP Rocket e WebP Express.\n2. **Planilha Mestre DE-PARA:** Mapeamento 1:1 de todas as URLs antigas do `.bet.br` para as novas subpastas neutras.\n3. **Search Console (GSC):** Execução da ferramenta oficial *Change of Address* (Mudança de Endereço) e submissão dos Sitemaps XML.\n4. **Auditoria de Qualidade:** Varredura no Screaming Frog para eliminação de erros 404 e canonicalização On-Page.\n5. **Monitoramento RAG & Indexação:** Acompanhamento diário da oscilação de palavras-chave no Semrush e relatórios de rastreamento.")
 
     st.divider()
 
