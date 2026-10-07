@@ -106,6 +106,7 @@ st.markdown("""
         margin-bottom: 10px;
     }
 
+    /* Botão do LinkedIn na Sidebar */
     .linkedin-btn {
         display: inline-flex;
         align-items: center;
@@ -127,17 +128,20 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
+    /* Metric Card Styling Enhancements */
     div[data-testid="stMetricValue"] {
         font-size: 1.75rem !important;
         font-weight: 800 !important;
     }
 
+    /* Tab Custom Styling */
     button[data-baseweb="tab"] {
         font-size: 0.95rem !important;
         font-weight: 600 !important;
         padding: 12px 18px !important;
     }
 
+    /* Footer Branding Banner */
     .footer-banner {
         text-align: center;
         padding: 1.2rem;
