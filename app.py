@@ -480,7 +480,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "3. SEO Técnico & Rastreio", 
     "4. Backlinks & Autoridade Off-Page",
     "5. GEO & Busca por IA", 
-    "6. Expansão Internacional & B2B", 
+    "6. Expansão Internacional (SEO & IA)", 
     "7. Plano Executivo & Time",
     "8. Migração de Contingência (Domínio Neutro)"
 ])
@@ -1166,124 +1166,116 @@ with tab5:
                 st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
 
 # ---------------------------------------------------------
-# ABA 6: EXPANSÃO INTERNACIONAL & SABIÁ SOLUÇÕES B2B
+# ABA 6: EXPANSÃO INTERNACIONAL (SEO, GEO & IA)
 # ---------------------------------------------------------
 with tab6:
-    st.header("🌍 Expansão Internacional (LATAM & África) & Sabiá Soluções B2B")
-    st.markdown("Estratégia executiva da **Dupla Hélice (B2C + B2B)**: Exportar a autoridade das marcas de aposta para a América Latina/África e posicionar a **Sabiá Soluções** como fornecedora líder de plataformas *Turnkey/White Label*.")
+    st.header("🌍 Expansão Internacional B2C: Dominância Hispânica & Oportunidade de Mercado")
+    st.markdown("Plano estratégico de aquisição de tráfego orgânico e visibilidade de IA (GEO) para as marcas do grupo (**BR4Bet, Goldebet, LotoGreen**) na América Latina e Europa Hispânica.")
 
-    # SEÇÃO 1: BENCHMARKING DE MERCADO LATAM (DADOS REAL-TIME SEMRUSH 2026)
-    st.subheader("📊 1. Benchmarking de Concorrência na LATAM (Relatórios Semrush Out/2026)")
-    st.caption("Análise de tráfego, volume de palavras e estratégias de grandes operadores em mercados regulados hispânicos.")
-
-    df_latam_bench = pd.DataFrame([
-        {
-            "Dominio / Player": "apuestatotal.com (Peru)",
-            "Palavras-Chave": "3,084 (3.3K)",
-            "Tráfego Mensal Estimado": "2.400.000 (2.4M)",
-            "Valor de Tráfego": "$468,400",
-            "Foco Semântico & Ativo": "Líder absoluto no Peru (`apuestas deportivas`, `apuesta total en vivo`)"
-        },
-        {
-            "Dominio / Player": "betsson.pe (Peru)",
-            "Palavras-Chave": "9,833 (10.3K)",
-            "Tráfego Mensal Estimado": "689,800 (689.8K)",
-            "Valor de Tráfego": "$222,600",
-            "Foco Semântico & Ativo": "Dominância em tráfego informacional de futebol (`liga 1`) e `tragamonedas`"
-        },
-        {
-            "Dominio / Player": "lat.betano.com (Hub LATAM)",
-            "Palavras-Chave": "1,037 (1.0K)",
-            "Tráfego Mensal Estimado": "2,600 (2.6K)",
-            "Valor de Tráfego": "$3,100",
-            "Foco Semântico & Ativo": "Hub neutro em espanhol capturando `casino en linea`, `casinos chile`, `bonos`"
-        },
-        {
-            "Dominio / Player": "betsson.pe (Colômbia DB)",
-            "Palavras-Chave": "1,995 (2.1K)",
-            "Tráfego Mensal Estimado": "16,100 (16.1K)",
-            "Valor de Tráfego": "$3,200",
-            "Foco Semântico & Ativo": "Captura de buscas esportivas (`champions league`, `copa libertadores`, `mines`)"
-        }
-    ])
-    st.dataframe(df_latam_bench, use_container_width=True, hide_index=True)
+    # KPIS PRINCIPAIS EXTRAÍDOS DO SEMRUSH
+    st.subheader("📌 1. Dimensionamento do Oceano Azul de Palavras-Chave (Relatórios SEMrush Out/2026)")
+    
+    kpi_exp1, kpi_exp2, kpi_exp3, kpi_exp4 = st.columns(4)
+    kpi_exp1.metric("Palavras NÃO Exploradas (Global)", "13.100+ termos", "Lacunas Mapeadas")
+    kpi_exp2.metric("Oportunidades em Espanhol (ES)", "5.700 termos", "Mercado Hispânico Global")
+    kpi_exp3.metric("Oportunidades no Peru (PE)", "4.200 termos", "Mercado Regulado Mincetur")
+    kpi_exp4.metric("Oportunidades na Colômbia (CO)", "2.000 termos", "Mercado Regulado Coljuegos")
 
     st.divider()
 
-    # SEÇÃO 2: A TESE DA POLIVALÊNCIA SEMÂNTICA DO ESPANHOL
-    st.subheader("💡 2. Estratégia de Polivalência Semântica do Espanhol (Custo por FTD Otimizado)")
+    # GRÁFICOS VISUAIS INTERATIVOS
+    g_exp1, g_exp2 = st.columns([1.2, 1])
+    
+    with g_exp1:
+        st.subheader("📊 Distribuição de Palavras-Chave NÃO Exploradas por Mercado")
+        df_gap_chart = pd.DataFrame([
+            {"Mercado / Banco": "Espanha / Hispânico Global (ES)", "Palavras Não Exploradas": 5700},
+            {"Mercado / Banco": "Peru (PE)", "Palavras Não Exploradas": 4200},
+            {"Mercado / Banco": "Colômbia (CO)", "Palavras Não Exploradas": 2000},
+            {"Mercado / Banco": "Chile (CL)", "Palavras Não Exploradas": 1200}
+        ])
+        fig_gap = px.pie(
+            df_gap_chart, 
+            names="Mercado / Banco", 
+            values="Palavras Não Exploradas", 
+            hole=0.4,
+            title="Oceano Azul: 13.100 Oportunidades Fora do Top 10 Concorrente",
+            color_discrete_sequence=["#0284C7", "#15803D", "#F97316", "#A855F7"]
+        )
+        fig_gap.update_layout(height=330, margin=dict(l=20, r=20, t=30, b=20))
+        st.plotly_chart(fig_gap, use_container_width=True)
+
+    with g_exp2:
+        st.subheader("💰 Custo do Clique (CPC) x Economia via SEO")
+        st.caption("Valores de CPC em Dólar no Google Ads provando o valor financeiro do ranqueamento orgânico.")
+        
+        df_cpc_savings = pd.DataFrame([
+            {"Termo Transacional": "poker (CL)", "CPC em USD": 13.88},
+            {"Termo Transacional": "live casino", "CPC em USD": 12.57},
+            {"Termo Transacional": "poker (ES)", "CPC em USD": 9.57},
+            {"Termo Transacional": "casino en linea", "CPC em USD": 6.28},
+            {"Termo Transacional": "juegos de casino en linea", "CPC em USD": 4.75},
+            {"Termo Transacional": "apuestas en linea", "CPC em USD": 4.23}
+        ])
+        fig_cpc = px.bar(
+            df_cpc_savings, 
+            x="CPC em USD", 
+            y="Termo Transacional", 
+            orientation="h",
+            title="Economia por Clique Capturado via SEO ($ USD)",
+            color_discrete_sequence=["#22C55E"]
+        )
+        fig_cpc.update_layout(height=330, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+        st.plotly_chart(fig_cpc, use_container_width=True)
+
+    st.divider()
+
+    # TESE DA POLIVALÊNCIA DO ESPANHOL
+    st.subheader("💡 2. A Tese da Polivalência Semântica Hispânica (Eficácia Cross-Border)")
     
     poly_col1, poly_col2 = st.columns(2)
     with poly_col1:
-        st.success("**🎯 Eficiência de Alcance Cross-Border:**\n\n- **1 Conteúdo, 20+ Países:** Diferente do português, otimizar clusters em espanhol (`casino en línea`, `apuestas deportivas`, `juegos de tragamonedas`, `bonos de bienvenida`) garante ranqueamento imediato no Peru, Colômbia, Chile, México, Equador, Espanha e EUA Hispânico.\n- **Redução Radical do CAC Orgânico:** Não é necessário criar sites do zero para cada país. Apenas regionalizamos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`) com moedas e pagamentos locais (PagoEfectivo, PSE, SPEI).")
+        st.success("**🎯 1 Estrutura de Conteúdo ➔ 20+ Países Impactados:**\n\n- **Ganho de Escala:** Ao contrário do português (restrito ao Brasil), um único cluster otimizado em espanhol genérico (`casino en línea`, `apuestas deportivas`, `juegos de tragamonedas`, `bonos de bienvenida`) ranqueia simultaneamente no Peru, Colômbia, Chile, México, Equador, Espanha e EUA Hispânico.\n- **Redução Radical do CAC:** Não criamos operações do zero. Apenas regionalizamos os subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`) adaptados às moedas (PEN, COP, MXN, CLP) e meios de pagamento (PagoEfectivo, PSE, SPEI).")
 
     with poly_col2:
-        st.info("**📈 O Case de Sucesso `lat.betano.com`:**\n\n- **Antecipação dos Gigantes:** A Betano criou o subdomínio `lat.betano.com` especificamente para abrigar termos de cassino e apostas em espanhol.\n- **Resultados Mapeados:** Ranqueamento no Top 3 para `casinos online chile` (Pos. 1), `casino en línea` (Pos. 2) e `bonos de casino` (Pos. 3), provando que o tráfego regional compensa bloqueios pontuais de TLDs locais.")
+        st.info("**📈 O Movimento do Concorrente (`lat.betano.com`):**\n\n- **Antecipação Regulatória:** A Betano criou o subdomínio `lat.betano.com` especificamente para capturar tráfego regional em espanhol.\n- **Posições Mapeadas no SEMrush:** Ranqueamento no Top 3 para `casino en linea` (Pos. 3 | CPC $6.28), `casinos online chile` (Pos. 1 | CPC $1.55) e `bonos de casino` (Pos. 3).\n- **Nosso Diferencial de SEO/GEO:** O hub da Betano possui lacunas em Schema Markup e velocidade mobile, permitindo que a Sabiá tome a liderança com nossa arquitetura otimizada para IAs.")
 
     st.divider()
 
-    # SEÇÃO 3: FRENTE B2B - SABIÁ SOLUÇÕES (SOFTWARE HOUSE & PLATFORM PROVIDER)
-    st.subheader("⚙️ 3. Frente B2B: Sabiá Soluções (Fornecimento de Plataformas de iGaming)")
-    st.caption("Como posicionar a Sabiá Soluções para vender tecnologia *Turnkey* e *White Label* para operadores na LATAM e África.")
+    # MATRIZ DE SINERGIA SEO X PPC
+    st.subheader("⚡ 3. Matriz 360° de Sinergia: SEO (Orgânico/GEO) x Mídia Paga (PPC)")
+    st.caption("Como a liderança de SEO coordena e otimiza os investimentos do time de tráfego pago.")
 
-    b2b_col1, b2b_col2 = st.columns(2)
-    with b2b_col1:
-        st.warning("**🏢 A Dor do Mercado Local (Onde Aprimoramos o Pitch):**\n\n- Operadores locais no Peru, México, Colômbia e Nigéria possuem licença e capital para mídia, mas **não possuem tecnologia própria** nem motores de odds/cassino de baixa latência.\n- Os fornecedores europeus (Softswiss, EveryMatrix, BetConstruct) cobram setups abusivos e levam de 4 a 6 meses para entregar a casa de apostas.")
-
-    with b2b_col2:
-        st.success("**🚀 O Diferencial Competitivo da Sabiá Soluções:**\n\n- **Plataforma SEO-Native:** Nossa plataforma entrega de fábrica arquivos `llms.txt`, marcação Schema, Server-Side Rendering (SSR) e suporte a jogos leves para redes móveis africanas.\n- **Turnkey em 30 Dias:** Onboarding ultra-rápido integrado com métodos de pagamento locais (PagoEfectivo, SPEI, M-Pesa, PIX Internacional).")
-
-    st.divider()
-
-    # SEÇÃO 4: MATRIZ DE EXPANSÃO B2C E B2B (LATAM & ÁFRICA)
-    st.subheader("🌎 4. Matriz de Expansão B2C & B2B por Região Alvo")
-
-    df_regional_exp = pd.DataFrame([
+    df_sinergia = pd.DataFrame([
         {
-            "Região / País": "Peru (LATAM)",
-            "Regulação": "Mincetur (Ativa)",
-            "Frente B2C (Nossas Bets)": "Hub `/pe/` focado na Liga 1, Copa Libertadores e jogos de minas/slots.",
-            "Frente B2B (Sabiá Soluções)": "Venda de plataforma para casas regionais que operam redes físicas e online.",
-            "Sinergia de Idioma": "Espanhol Nativo (Reaproveitamento 100%)"
+            "Frente de Atuação": "1. Expurgo de CAC Pago (Foco SEO)",
+            "Tipo de Palavra / CPC": "Termos de Altíssimo CPC ($4,00 a $13,88 USD)",
+            "Ação Mídia Paga (PPC)": "Negativar e zerar investimento do Google Ads.",
+            "Ação Liderança SEO / GEO": "Construir silos de conteúdo e Schema Markup para dominar o Top 3 orgânico a CUSTO ZERO de clique."
         },
         {
-            "Região / País": "Colômbia (LATAM)",
-            "Regulação": "Coljuegos (Ativa)",
-            "Frente B2C (Nossas Bets)": "Captura de buscas esportivas genéricas de futebol e palpites.",
-            "Frente B2B (Sabiá Soluções)": "Fornecimento de motor de cassino rápido para operadores licenciados.",
-            "Sinergia de Idioma": "Espanhol Nativo (Reaproveitamento 100%)"
+            "Frente de Atuação": "2. Validação de FTD em Tempo Real",
+            "Tipo de Palavra / CPC": "Cauda Longa com CPC Acessível ($0,20 a $1,50 USD)",
+            "Ação Mídia Paga (PPC)": "Rodar campanhas curtas de teste de 14 dias para medir conversão em primeiro depósito (FTD).",
+            "Ação Liderança SEO / GEO": "Receber o relatório de palavras que geraram FTD e canalizar força de backlinks/links internos para ranqueamento definitivo."
         },
         {
-            "Região / País": "México (LATAM)",
-            "Regulação": "SEGOB (Ativa)",
-            "Frente B2C (Nossas Bets)": "Captura de intenção via termos locais (*Momios*, *Quinielas*, *Parlays*).",
-            "Frente B2B (Sabiá Soluções)": "Plataforma White Label adaptada ao sistema bancário SPEI.",
-            "Sinergia de Idioma": "Espanhol Localizado"
-        },
-        {
-            "Região / País": "Angola & Moçambique (África)",
-            "Regulação": "ISJ / Reguladores Locais",
-            "Frente B2C (Nossas Bets)": "Exportação direta do acervo em português do Brasil para o mercado africano.",
-            "Frente B2B (Sabiá Soluções)": "Software House oficial para grupos de investimento locais.",
-            "Sinergia de Idioma": "Português (Custo Zero de Tradução)"
-        },
-        {
-            "Região / País": "Nigéria & Quênia (África)",
-            "Regulação": "NLRC / BCLB (Ativas)",
-            "Frente B2C (Nossas Bets)": "Versão 'Lite' das LPs focada em consumo ultra-baixo de dados móveis.",
-            "Frente B2B (Sabiá Soluções)": "Integração nativa de M-Pesa e pagamento por SMS/USSD.",
-            "Sinergia de Idioma": "Inglês Global"
+            "Frente de Atuação": "3. Captura de Topo de Funil",
+            "Tipo de Palavra / CPC": "Termos Informacionais e Esportivos (CPC $0,00 USD)",
+            "Ação Mídia Paga (PPC)": "Totalmente proibido anunciar (evitar queima de verba).",
+            "Ação Liderança SEO / GEO": "Criar o Hub Informacional de Palpites (`/pe/palpites/`) para capturar tráfego de massa (`posiciones liga 1`, `copa libertadores`)."
         }
     ])
-    st.dataframe(df_regional_exp, use_container_width=True, hide_index=True)
+    st.dataframe(df_sinergia, use_container_width=True, hide_index=True)
 
     st.divider()
 
-    st.subheader("📅 5. Roadmap Executivo de Lançamento Internacional (90 Dias)")
+    # ROADMAP DE EXPANSÃO 90 DIAS
+    st.subheader("📅 4. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
     c_p1, c_p2, c_p3 = st.columns(3)
-    c_p1.warning("**0-30 Dias (Governança & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/mx/`).\n- Início do Inbound SEO B2B para a Sabiá Soluções em espanhol e inglês.\n- Publicação das LPs de atração de operadores locais.")
-    c_p2.info("**31-60 Dias (Lançamento B2C & B2B):**\n- Go-live do hub neutro em espanhol capturando termos genéricos de cassino.\n- Lançamento da campanha de Digital PR em portais de negócios da LATAM (Forbes Latam, El Comercio).\n- Fechamento dos primeiros acordos de plataforma B2B.")
-    c_p3.success("**61-90 Dias (Escala & Monetização):**\n- Acompanhamento de FTDs orgânicos B2C e royalties de plataforma B2B.\n- Expansão da operação B2C para a África Lusófona (Angola e Moçambique).\n- Otimização do funil de conversão B2B no CRM.")
+    c_p1.warning("**0-30 Dias (Infra & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`).\n- Implementação das tags `hreflang` e liberação dos manifestos `llms.txt` em espanhol.\n- Início do resgate de palavras não exploradas em Peru e Colômbia.")
+    c_p2.info("**31-60 Dias (Conteúdo & GEO PR):**\n- Publicação dos clusters genéricos de alta intenção (`casino en línea`, `apuestas deportivas`).\n- Início do plano de Digital PR em veículos locais da LATAM (Forbes Latam, El Comercio) para autoridade de RAG.\n- Testes de conversão (FTD) alinhados com o time de mídia.")
+    c_p3.success("**61-90 Dias (Dominância & Escala):**\n- Domínio do Top 3 nas palavras de alto CPC para zerar dependência paga.\n- Acompanhamento de FTDs orgânicos em moeda forte por país no Power BI.\n- Expansão do modelo para o mercado hispânico dos EUA e África Lusófona.")
 
 # ---------------------------------------------------------
 # ABA 7: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
@@ -1323,7 +1315,7 @@ with tab7:
         },
         {
             "Ação": "6. Mapeamento da Esteira de Quick Wins (Posições 4 a 20)",
-            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizaciones rápidas de títulos, H1s e linkagem interna.",
+            "Motivo": "Minerar no Semrush/GSC palavras-chave comerciais e informacionais de alto volume estagnadas na 2ª página do Google para otimizações rápidas de títulos, H1s e linkagem interna.",
             "Prioridade": "🟡 Média / Curto Prazo"
         },
         {
@@ -1452,7 +1444,7 @@ with tab8:
         st.info("**💻 Escopo de TI & Desenvolvimento (Infra & Servidor):**\n\n1. **DNS & SSL:** Apontamento A/CNAME do domínio neutro, emissão de certificado SSL (HTTPS) e ativamento de WAF na Cloudflare.\n2. **Servidor & PHP:** Provisionamento de PHP 8.2+, `memory_limit = 512M`, Redis Object Cache / FastCGI Cache e backups diários.\n3. **Deploy do Tema IA:** Subir a pasta do tema customizado em `/wp-content/themes/` e validar HTML5 semântico (Mobile-First).\n4. **Redirecionamento 301 na CDN:** Regras de 301 Wildcard na Cloudflare redirecionando os domínios `.bet.br` para o domínio neutro.\n5. **Hardening & Segurança:** Bloqueio de `xmlrpc.php`, restrições de pasta `/wp-admin/` e liberação de acesso SSH/SFTP para SEO.")
 
     with b_ti2:
-        st.success("**🎯 Escopo de SEO & Conteúdo (Lucas Tadeu SEO):**\n\n1. **Plugins de SEO & Performance:** Instalação e parametrization do RankMath Pro, Redirection, WP Rocket e WebP Express.\n2. **Planilha Mestre DE-PARA:** Mapeamento 1:1 de todas as URLs antigas do `.bet.br` para as novas subpastas neutras.\n3. **Search Console (GSC):** Execução da ferramenta oficial *Change of Address* (Mudança de Endereço) e submissão dos Sitemaps XML.\n4. **Auditoria de Qualidade:** Varredura no Screaming Frog para eliminação de erros 404 e canonicalização On-Page.\n5. **Monitoramento RAG & Indexação:** Acompanhamento diário da oscilação de palavras-chave no Semrush e relatórios de rastreamento.")
+        st.success("**🎯 Escopo de SEO & Conteúdo (Lucas Tadeu SEO):**\n\n1. **Plugins de SEO & Performance:** Instalação e parametrização do RankMath Pro, Redirection, WP Rocket e WebP Express.\n2. **Planilha Mestre DE-PARA:** Mapeamento 1:1 de todas as URLs antigas do `.bet.br` para as novas subpastas neutras.\n3. **Search Console (GSC):** Execução da ferramenta oficial *Change of Address* (Mudança de Endereço) e submissão dos Sitemaps XML.\n4. **Auditoria de Qualidade:** Varredura no Screaming Frog para eliminação de erros 404 e canonicalização On-Page.\n5. **Monitoramento RAG & Indexação:** Acompanhamento diário da oscilação de palavras-chave no Semrush e relatórios de rastreamento.")
 
     st.divider()
 
