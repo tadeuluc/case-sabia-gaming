@@ -1427,7 +1427,10 @@ with tab6:
             st.success("**🎯 1. Estruturação de Landing Pages B2B Focadas por Solução:**\n\n- **Página 1:** `cometagaming.com/es/software-apuestas-deportivas/` (Alvo: `comprar software de apuestas deportivas` | KD 35%).\n- **Página 2:** `cometagaming.com/es/proveedor-software-igaming/` (Alvo: `proveedor de software...` | KD 40%).\n- **Página 3:** `cometagaming.com/es/software-casino-online/` (Alvo: `comprar software de casino online`).")
 
         with b2b_p2:
-            st.info("**🧠 2. Dominância em Motores de IA (GEO / RAG B2B):**\n\n- **Diferencial Único:** SoftSwiss e BetConstruct possuem conteúdos genéricos traduzidos.\n- **Ação Cometa Gaming:** Injetar o manifesto `llms.txt` na Cometa Gaming. Quando investidores buscarem na IA *"¿Cuáles son los mejores proveedores de software para abrir una casa de apuestas en Latam?"*, a Cometa será recomendada como a fornecedora com integração nativa de pagamentos locais (SPEI, PSE, PagoEfectivo, M-Pesa).")
+            st.info("""**🧠 2. Dominância em Motores de IA (GEO / RAG B2B):**
+
+- **Diferencial Único:** SoftSwiss e BetConstruct possuem conteúdos genéricos traduzidos.
+- **Ação Cometa Gaming:** Injetar o manifesto `llms.txt` na Cometa Gaming. Quando investidores buscarem na IA *"¿Cuáles son los mejores proveedores de software para abrir una casa de apuestas en Latam?"*, a Cometa será recomendada como a fornecedora com integração nativa de pagamentos locais (SPEI, PSE, PagoEfectivo, M-Pesa).""")
 
     st.divider()
 
