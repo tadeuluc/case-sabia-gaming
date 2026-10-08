@@ -1183,7 +1183,7 @@ with tab6:
 
     st.divider()
 
-    # SEÇÃO NOVIDADE: RAIO-X DE COBERTURA DE PALAVRAS E SHARE OF SEARCH POR PAÍS
+    # RAIO-X DE COBERTURA DE PALAVRAS E SHARE OF SEARCH POR PAÍS
     st.subheader("📊 2. Raio-X da Concorrência & Cobertura de Mercado (Share of Search por País)")
     st.caption("Comparativo da presença de palavras-chave entre os 5 principais domínios analisados nas bases do SEMrush.")
 
@@ -1245,7 +1245,7 @@ with tab6:
 
     st.divider()
 
-    # SEÇÃO NOVIDADE: SCORECARD ESTRATÉGICO DA CONCORRÊNCIA
+    # SCORECARD ESTRATÉGICO DA CONCORRÊNCIA
     st.subheader("⚔️ 3. Scorecard da Concorrência: Onde Eles Erram x Nosso Ponto de Ataque")
     st.caption("Diagnóstico técnico de SEO e inteligência generativa identificando as vulnerabilidades dos líderes.")
 
@@ -1279,8 +1279,22 @@ with tab6:
 
     st.divider()
 
+    # SEÇÃO NOVIDADE: ALERTA DE MERCADO - CASE 7K.BET.BR
+    st.subheader("🚨 4. Alerta de Mercado: Movimentação Recente da 7k.bet.br na LATAM (Relatório SEMrush 08/Out/2026)")
+    st.caption("Acompanhamento das movimentações de operadores brasileiros expandindo para mercados hispânicos pós-bloqueios regulatórios.")
+
+    col_7k_1, col_7k_2 = st.columns([1, 1.2])
+    
+    with col_7k_1:
+        st.warning("**📊 Mapeamento Numérico do Posicionamento da `7k.bet.br`:**\n\n- **Chile (CL):** **36 palavras-chave** ranqueadas (tráfego estimado: 1.700 acessos/mês | custo de tráfego: $655 USD).\n- **Espanha / Hispânico (ES):** **22 palavras-chave** ranqueadas (tráfego estimado: 74 acessos/mês | custo de tráfego: $508 USD).\n- **100% Dependência Branded:** Todas as palavras posicionadas pela `7k.bet.br` são variações exatas do nome da marca (`bet7k`, `7k`, `betk7`, `7kbet`, `bet7x`, `btk7`, `7bet`, `bet7k app`, `7k casino`).")
+
+    with col_7k_2:
+        st.error("**💣 Onde a `7k.bet.br` Está Vulnerável (Nossa Janela de Oportunidade):**\n\n- **Zero Palavras Genéricas (Non-Branded):** A `7k.bet.br` não possui nenhuma palavra-chave genérica de cassino ou apostas posicionada na LATAM (`casino en línea`, `apuestas deportivas`, `tragamonedas`).\n- **Cegueira Semântica do Concorrente:** A 7k apenas captura o usuário que já conhece a marca e digita o nome no Google. Eles não capturam novos apostadores locais no Peru, Chile, Colômbia ou México.\n- **Ação Imediata da Sabiá:** Lançar o Hub Neutro focado em SEO/GEO Non-Branded para capturar a intenção de busca desses países antes que a 7k consiga construir autoridade fora do seu nome de marca.")
+
+    st.divider()
+
     # TESE DA POLIVALÊNCIA DO ESPANHOL
-    st.subheader("💡 4. A Tese da Polivalência Semântica Hispânica (Eficácia Cross-Border)")
+    st.subheader("💡 5. A Tese da Polivalência Semântica Hispânica (Eficácia Cross-Border)")
     
     poly_col1, poly_col2 = st.columns(2)
     with poly_col1:
@@ -1292,7 +1306,7 @@ with tab6:
     st.divider()
 
     # MATRIZ DE SINERGIA SEO X PPC
-    st.subheader("⚡ 5. Matriz 360° de Sinergia: SEO (Orgânico/GEO) x Mídia Paga (PPC)")
+    st.subheader("⚡ 6. Matriz 360° de Sinergia: SEO (Orgânico/GEO) x Mídia Paga (PPC)")
     st.caption("Como a liderança de SEO coordena e otimiza os investimentos do time de tráfego pago.")
 
     df_sinergia = pd.DataFrame([
@@ -1320,7 +1334,7 @@ with tab6:
     st.divider()
 
     # ROADMAP DE EXPANSÃO 90 DIAS
-    st.subheader("📅 6. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
+    st.subheader("📅 7. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
     c_p1, c_p2, c_p3 = st.columns(3)
     c_p1.warning("**0-30 Dias (Infra & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`).\n- Implementação das tags `hreflang` e liberação dos manifestos `llms.txt` em espanhol.\n- Início do resgate de palavras não exploradas em Peru e Colômbia.")
     c_p2.info("**31-60 Dias (Conteúdo & GEO PR):**\n- Publicação dos clusters genéricos de alta intenção (`casino en línea`, `apuestas deportivas`).\n- Início do plano de Digital PR em veículos locais da LATAM (Forbes Latam, El Comercio) para autoridade de RAG.\n- Testes de conversão (FTD) alinhados com o time de mídia.")
