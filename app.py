@@ -106,7 +106,6 @@ st.markdown("""
         margin-bottom: 10px;
     }
 
-    /* Botão do LinkedIn na Sidebar */
     .linkedin-btn {
         display: inline-flex;
         align-items: center;
@@ -128,20 +127,17 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    /* Metric Card Styling Enhancements */
     div[data-testid="stMetricValue"] {
         font-size: 1.75rem !important;
         font-weight: 800 !important;
     }
 
-    /* Tab Custom Styling */
     button[data-baseweb="tab"] {
         font-size: 0.95rem !important;
         font-weight: 600 !important;
         padding: 12px 18px !important;
     }
 
-    /* Footer Branding Banner */
     .footer-banner {
         text-align: center;
         padding: 1.2rem;
@@ -1187,55 +1183,104 @@ with tab6:
 
     st.divider()
 
-    # GRÁFICOS VISUAIS INTERATIVOS
-    g_exp1, g_exp2 = st.columns([1.2, 1])
-    
-    with g_exp1:
-        st.subheader("📊 Distribuição de Palavras-Chave NÃO Exploradas por Mercado")
-        df_gap_chart = pd.DataFrame([
-            {"Mercado / Banco": "Espanha / Hispânico Global (ES)", "Palavras Não Exploradas": 5700},
-            {"Mercado / Banco": "Peru (PE)", "Palavras Não Exploradas": 4200},
-            {"Mercado / Banco": "Colômbia (CO)", "Palavras Não Exploradas": 2000},
-            {"Mercado / Banco": "Chile (CL)", "Palavras Não Exploradas": 1200}
-        ])
-        fig_gap = px.pie(
-            df_gap_chart, 
-            names="Mercado / Banco", 
-            values="Palavras Não Exploradas", 
-            hole=0.4,
-            title="Oceano Azul: 13.100 Oportunidades Fora do Top 10 Concorrente",
-            color_discrete_sequence=["#0284C7", "#15803D", "#F97316", "#A855F7"]
-        )
-        fig_gap.update_layout(height=330, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_gap, use_container_width=True)
+    # SEÇÃO NOVIDADE: RAIO-X DE COBERTURA DE PALAVRAS E SHARE OF SEARCH POR PAÍS
+    st.subheader("📊 2. Raio-X da Concorrência & Cobertura de Mercado (Share of Search por País)")
+    st.caption("Comparativo da presença de palavras-chave entre os 5 principais domínios analisados nas bases do SEMrush.")
 
-    with g_exp2:
-        st.subheader("💰 Custo do Clique (CPC) x Economia via SEO")
-        st.caption("Valores de CPC em Dólar no Google Ads provando o valor financeiro do ranqueamento orgânico.")
-        
-        df_cpc_savings = pd.DataFrame([
-            {"Termo Transacional": "poker (CL)", "CPC em USD": 13.88},
-            {"Termo Transacional": "live casino", "CPC em USD": 12.57},
-            {"Termo Transacional": "poker (ES)", "CPC em USD": 9.57},
-            {"Termo Transacional": "casino en linea", "CPC em USD": 6.28},
-            {"Termo Transacional": "juegos de casino en linea", "CPC em USD": 4.75},
-            {"Termo Transacional": "apuestas en linea", "CPC em USD": 4.23}
+    pais_selecionado = st.selectbox("Selecione o Mercado / Banco de Dados para Análise:", [
+        "Peru (PE) - Mercado Primário",
+        "Chile (CL) - Expansão de Cassino",
+        "Colômbia (CO) - Mercado Regulado",
+        "Espanha / Global (ES) - Alcance Hispânico"
+    ])
+
+    if "Peru" in pais_selecionado:
+        df_comp_pais = pd.DataFrame([
+            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 4200, "Share of Search (%)": "75.0%", "Tráfego Estimado": "689.8K /mês"},
+            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 669, "Share of Search (%)": "11.9%", "Tráfego Estimado": "2.4M /mês"},
+            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 380, "Share of Search (%)": "6.8%", "Tráfego Estimado": "Variado"},
+            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 332, "Share of Search (%)": "5.9%", "Tráfego Estimado": "2.6K /mês"},
+            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 23, "Share of Search (%)": "0.4%", "Tráfego Estimado": "Irrelevante"}
         ])
-        fig_cpc = px.bar(
-            df_cpc_savings, 
-            x="CPC em USD", 
-            y="Termo Transacional", 
+    elif "Chile" in pais_selecionado:
+        df_comp_pais = pd.DataFrame([
+            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 707, "Share of Search (%)": "49.3%", "Tráfego Estimado": "Liderança Cassino"},
+            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 526, "Share of Search (%)": "36.7%", "Tráfego Estimado": "Tráfego Cruzado"},
+            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 117, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Internacional"},
+            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 83, "Share of Search (%)": "5.8%", "Tráfego Estimado": "Baixa Presença"},
+            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+        ])
+    elif "Colômbia" in pais_selecionado:
+        df_comp_pais = pd.DataFrame([
+            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 1600, "Share of Search (%)": "68.7%", "Tráfego Estimado": "16.1K /mês"},
+            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 311, "Share of Search (%)": "13.3%", "Tráfego Estimado": "Em Ascensão"},
+            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 244, "Share of Search (%)": "10.5%", "Tráfego Estimado": "Internacional"},
+            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 163, "Share of Search (%)": "7.0%", "Tráfego Estimado": "Nicho"},
+            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+        ])
+    else:
+        df_comp_pais = pd.DataFrame([
+            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 3200, "Share of Search (%)": "45.8%", "Tráfego Estimado": "Global PE"},
+            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 1900, "Share of Search (%)": "27.2%", "Tráfego Estimado": "Hub Hispânico"},
+            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 1300, "Share of Search (%)": "18.6%", "Tráfego Estimado": "Matriz .com"},
+            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 574, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Peruana Externa"},
+            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 6, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+        ])
+
+    c_chart1, c_chart2 = st.columns([1.2, 1])
+    with c_chart1:
+        fig_comp = px.bar(
+            df_comp_pais, 
+            x="Palavras Ranqueadas", 
+            y="Player / Concorrente", 
             orientation="h",
-            title="Economia por Clique Capturado via SEO ($ USD)",
-            color_discrete_sequence=["#22C55E"]
+            title=f"Volume de Palavras-Chave Mapeadas no SEMrush ({pais_selecionado.split(' - ')[0]})",
+            color_discrete_sequence=["#0284C7"]
         )
-        fig_cpc.update_layout(height=330, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_cpc, use_container_width=True)
+        fig_comp.update_layout(height=320, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+        st.plotly_chart(fig_comp, use_container_width=True)
+
+    with c_chart2:
+        st.dataframe(df_comp_pais[["Player / Concorrente", "Palavras Ranqueadas", "Share of Search (%)"]], hide_index=True, use_container_width=True)
+
+    st.divider()
+
+    # SEÇÃO NOVIDADE: SCORECARD ESTRATÉGICO DA CONCORRÊNCIA
+    st.subheader("⚔️ 3. Scorecard da Concorrência: Onde Eles Erram x Nosso Ponto de Ataque")
+    st.caption("Diagnóstico técnico de SEO e inteligência generativa identificando as vulnerabilidades dos líderes.")
+
+    df_scorecard = pd.DataFrame([
+        {
+            "Concorrente": "Betsson (betsson.pe / betsson.com)",
+            "Liderança Atual": "Líder em volume de palavras no Peru (10.3K) e Colômbia.",
+            "Vulnerabilidade Crítica": "Arquitetura técnica ultrapassada, sem otimização para RAG/IAs (ChatGPT/Gemini) e dependência de tabelas estáticas de futebol.",
+            "Ponto de Ataque da Sabiá Gaming": "Construir hub SEO-Native com SSR, Schema Markup e `llms.txt` para tomar a recomendação de IA no Top 1."
+        },
+        {
+            "Concorrente": "Apuesta Total (apuestatotal.com)",
+            "Liderança Atual": "Líder em tráfego bruto no Peru (2.4M acessos/mês).",
+            "Vulnerabilidade Crítica": "90% do tráfego depende da marca (`apuesta total login`). Inexistente fora do Peru (apenas 83 termos no Chile).",
+            "Ponto de Ataque da Sabiá Gaming": "Dominar os termos genéricos de topo de funil (`posiciones liga 1`, `copa libertadores`) onde a Apuesta Total não ranqueia."
+        },
+        {
+            "Concorrente": "Betano LATAM (lat.betano.com)",
+            "Liderança Atual": "Primeiro grande a criar hub neutro regional em espanhol.",
+            "Vulnerabilidade Crítica": "Foco restrito em termos comerciais diretos de cassino. Abandono total de guias educativos e buscas informacionais.",
+            "Ponto de Ataque da Sabiá Gaming": "Atacar o topo e meio de funil educativo (`menos de 2.5 goles que significa`), capturando o usuário antes que ele busque a Betano."
+        },
+        {
+            "Concorrente": "OlimpoBet (olimpobetpe.pe)",
+            "Liderança Atual": "Nenhuma (Apenas 23 palavras ranqueadas no Peru).",
+            "Vulnerabilidade Crítica": "Dependência de 100% de mídia paga cara no Google Ads.",
+            "Ponto de Ataque da Sabiá Gaming": "Atrair o apostador via SEO e zerar a fatia de mercado desse concorrente."
+        }
+    ])
+    st.dataframe(df_scorecard, use_container_width=True, hide_index=True)
 
     st.divider()
 
     # TESE DA POLIVALÊNCIA DO ESPANHOL
-    st.subheader("💡 2. A Tese da Polivalência Semântica Hispânica (Eficácia Cross-Border)")
+    st.subheader("💡 4. A Tese da Polivalência Semântica Hispânica (Eficácia Cross-Border)")
     
     poly_col1, poly_col2 = st.columns(2)
     with poly_col1:
@@ -1247,7 +1292,7 @@ with tab6:
     st.divider()
 
     # MATRIZ DE SINERGIA SEO X PPC
-    st.subheader("⚡ 3. Matriz 360° de Sinergia: SEO (Orgânico/GEO) x Mídia Paga (PPC)")
+    st.subheader("⚡ 5. Matriz 360° de Sinergia: SEO (Orgânico/GEO) x Mídia Paga (PPC)")
     st.caption("Como a liderança de SEO coordena e otimiza os investimentos do time de tráfego pago.")
 
     df_sinergia = pd.DataFrame([
@@ -1275,7 +1320,7 @@ with tab6:
     st.divider()
 
     # ROADMAP DE EXPANSÃO 90 DIAS
-    st.subheader("📅 4. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
+    st.subheader("📅 6. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
     c_p1, c_p2, c_p3 = st.columns(3)
     c_p1.warning("**0-30 Dias (Infra & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`).\n- Implementação das tags `hreflang` e liberação dos manifestos `llms.txt` em espanhol.\n- Início do resgate de palavras não exploradas em Peru e Colômbia.")
     c_p2.info("**31-60 Dias (Conteúdo & GEO PR):**\n- Publicação dos clusters genéricos de alta intenção (`casino en línea`, `apuestas deportivas`).\n- Início do plano de Digital PR em veículos locais da LATAM (Forbes Latam, El Comercio) para autoridade de RAG.\n- Testes de conversão (FTD) alinhados com o time de mídia.")
