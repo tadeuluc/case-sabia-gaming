@@ -448,7 +448,7 @@ GEO_KNOWLEDGE = {
             {"prompt": "Quais são as avaliações e fiabilidade do LotoGreen no Brasil?", "resposta": "Pesquisei a LotoGreen no contexto brasileiro, incluindo a lista oficial da SPA/MF...", "marcas": 8, "fontes": 67, "volume": "67/mês"},
             {"prompt": "Qual é a relação entre o LotoGreen e plataformas de cassino no Brasil?", "resposta": "A relação é direta: a LotoGreen é uma plataforma de apostas com foco em cassino...", "marcas": 6, "fontes": 28, "volume": "28/mês"}
         ],
-        "diagnostico": "Visibilidade de 33/100. Maior presença relativa no ChatGPT (47,4%) e 100% focado no Brasil. No entanto, é muito citada em pesquisas por 'alternativas ao LotoGreen' (6.3K vol/mês).",
+        "diagnostico": "Visibilidade de 33/100. Maior presença relative no ChatGPT (47,4%) e 100% focado no Brasil. No entanto, é muito citada em pesquisas por 'alternativas ao LotoGreen' (6.3K vol/mês).",
         "solucao": "Reforçar o conteúdo On-Page e liberar o manifesto llms.txt para garantir que a IA recomende a própria LotoGreen em vez de sugerir concorrentes."
     }
 }
@@ -480,7 +480,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "3. SEO Técnico & Rastreio", 
     "4. Backlinks & Autoridade Off-Page",
     "5. GEO & Busca por IA", 
-    "6. Expansão Internacional (SEO & IA)", 
+    "6. Expansão Internacional & Cometa B2B", 
     "7. Plano Executivo & Time",
     "8. Migração de Contingência (Domínio Neutro)"
 ])
@@ -1166,130 +1166,268 @@ with tab5:
                 st.caption(f"**Portais de Origem Mapeados:** {sources_cited}")
 
 # ---------------------------------------------------------
-# ABA 6: EXPANSÃO INTERNACIONAL (SEO, GEO & IA)
+# ABA 6: EXPANSÃO INTERNACIONAL B2C & COMETA GAMING B2B
 # ---------------------------------------------------------
 with tab6:
-    st.header("🌍 Expansão Internacional B2C: Dominância Hispânica & Oportunidade de Mercado")
-    st.markdown("Plano estratégico de aquisição de tráfego orgânico e visibilidade de IA (GEO) para as marcas do grupo (**BR4Bet, Goldebet, LotoGreen**) na América Latina e Europa Hispânica.")
+    st.header("🌍 Expansão Internacional B2C & Cometa Gaming (B2B iGaming Solutions)")
+    st.markdown("Plano estratégico de aquisição de tráfego orgânico B2C nas casas do grupo e posicionamento da **Cometa Gaming (Sabiá Solutions)** como fornecedora líder de software de iGaming e *Turnkey/White Label* na América Latina e Europa Hispânica.")
 
-    # KPIS PRINCIPAIS EXTRAÍDOS DO SEMRUSH
-    st.subheader("📌 1. Dimensionamento do Oceano Azul de Palavras-Chave (Relatórios SEMrush Out/2026)")
-    
-    kpi_exp1, kpi_exp2, kpi_exp3, kpi_exp4 = st.columns(4)
-    kpi_exp1.metric("Palavras NÃO Exploradas (Global)", "13.100+ termos", "Lacunas Mapeadas")
-    kpi_exp2.metric("Oportunidades em Espanhol (ES)", "5.700 termos", "Mercado Hispânico Global")
-    kpi_exp3.metric("Oportunidades no Peru (PE)", "4.200 termos", "Mercado Regulado Mincetur")
-    kpi_exp4.metric("Oportunidades na Colômbia (CO)", "2.000 termos", "Mercado Regulado Coljuegos")
-
-    st.divider()
-
-    # RAIO-X DE COBERTURA DE PALAVRAS E SHARE OF SEARCH POR PAÍS
-    st.subheader("📊 2. Raio-X da Concorrência & Cobertura de Mercado (Share of Search por País)")
-    st.caption("Comparativo da presença de palavras-chave entre os 5 principais domínios analisados nas bases do SEMrush.")
-
-    pais_selecionado = st.selectbox("Selecione o Mercado / Banco de Dados para Análise:", [
-        "Peru (PE) - Mercado Primário",
-        "Chile (CL) - Expansão de Cassino",
-        "Colômbia (CO) - Mercado Regulado",
-        "Espanha / Global (ES) - Alcance Hispânico"
+    # GUIA SUB-ABAS DENTRO DA ABA 6
+    sub_tab_b2c, sub_tab_cometa = st.tabs([
+        "🎲 Expansão B2C (Casas de Aposta na LATAM)",
+        "🏢 B2B: Cometa Gaming (Análise de Concorrência & Software iGaming)"
     ])
 
-    if "Peru" in pais_selecionado:
-        df_comp_pais = pd.DataFrame([
-            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 4200, "Share of Search (%)": "75.0%", "Tráfego Estimado": "689.8K /mês"},
-            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 669, "Share of Search (%)": "11.9%", "Tráfego Estimado": "2.4M /mês"},
-            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 380, "Share of Search (%)": "6.8%", "Tráfego Estimado": "Variado"},
-            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 332, "Share of Search (%)": "5.9%", "Tráfego Estimado": "2.6K /mês"},
-            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 23, "Share of Search (%)": "0.4%", "Tráfego Estimado": "Irrelevante"}
-        ])
-    elif "Chile" in pais_selecionado:
-        df_comp_pais = pd.DataFrame([
-            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 707, "Share of Search (%)": "49.3%", "Tráfego Estimado": "Liderança Cassino"},
-            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 526, "Share of Search (%)": "36.7%", "Tráfego Estimado": "Tráfego Cruzado"},
-            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 117, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Internacional"},
-            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 83, "Share of Search (%)": "5.8%", "Tráfego Estimado": "Baixa Presença"},
-            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
-        ])
-    elif "Colômbia" in pais_selecionado:
-        df_comp_pais = pd.DataFrame([
-            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 1600, "Share of Search (%)": "68.7%", "Tráfego Estimado": "16.1K /mês"},
-            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 311, "Share of Search (%)": "13.3%", "Tráfego Estimado": "Em Ascensão"},
-            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 244, "Share of Search (%)": "10.5%", "Tráfego Estimado": "Internacional"},
-            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 163, "Share of Search (%)": "7.0%", "Tráfego Estimado": "Nicho"},
-            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
-        ])
-    else:
-        df_comp_pais = pd.DataFrame([
-            {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 3200, "Share of Search (%)": "45.8%", "Tráfego Estimado": "Global PE"},
-            {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 1900, "Share of Search (%)": "27.2%", "Tráfego Estimado": "Hub Hispânico"},
-            {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 1300, "Share of Search (%)": "18.6%", "Tráfego Estimado": "Matriz .com"},
-            {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 574, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Peruana Externa"},
-            {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 6, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+    # -----------------------------------------------------
+    # SUB-ABA 1: EXPANSÃO B2C
+    # -----------------------------------------------------
+    with sub_tab_b2c:
+        st.subheader("📌 1. Dimensionamento do Oceano Azul B2C (Relatórios SEMrush Out/2026)")
+        
+        kpi_exp1, kpi_exp2, kpi_exp3, kpi_exp4 = st.columns(4)
+        kpi_exp1.metric("Palavras NÃO Exploradas (Global)", "13.100+ termos", "Lacunas Mapeadas")
+        kpi_exp2.metric("Oportunidades em Espanhol (ES)", "5.700 termos", "Mercado Hispânico Global")
+        kpi_exp3.metric("Oportunidades no Peru (PE)", "4.200 termos", "Mercado Regulado Mincetur")
+        kpi_exp4.metric("Oportunidades na Colômbia (CO)", "2.000 termos", "Mercado Regulado Coljuegos")
+
+        st.divider()
+
+        st.subheader("📊 2. Raio-X da Concorrência & Cobertura de Mercado (Share of Search por País)")
+        st.caption("Comparativo da presença de palavras-chave entre os 5 principais domínios analisados nas bases do SEMrush.")
+
+        pais_selecionado = st.selectbox("Selecione o Mercado / Banco de Dados para Análise:", [
+            "Peru (PE) - Mercado Primário",
+            "Chile (CL) - Expansão de Cassino",
+            "Colômbia (CO) - Mercado Regulado",
+            "Espanha / Global (ES) - Alcance Hispânico"
         ])
 
-    c_chart1, c_chart2 = st.columns([1.2, 1])
-    with c_chart1:
-        fig_comp = px.bar(
-            df_comp_pais, 
-            x="Palavras Ranqueadas", 
-            y="Player / Concorrente", 
-            orientation="h",
-            title=f"Volume de Palavras-Chave Mapeadas no SEMrush ({pais_selecionado.split(' - ')[0]})",
-            color_discrete_sequence=["#0284C7"]
-        )
-        fig_comp.update_layout(height=320, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_comp, use_container_width=True)
+        if "Peru" in pais_selecionado:
+            df_comp_pais = pd.DataFrame([
+                {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 4200, "Share of Search (%)": "75.0%", "Tráfego Estimado": "689.8K /mês"},
+                {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 669, "Share of Search (%)": "11.9%", "Tráfego Estimado": "2.4M /mês"},
+                {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 380, "Share of Search (%)": "6.8%", "Tráfego Estimado": "Variado"},
+                {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 332, "Share of Search (%)": "5.9%", "Tráfego Estimado": "2.6K /mês"},
+                {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 23, "Share of Search (%)": "0.4%", "Tráfego Estimado": "Irrelevante"}
+            ])
+        elif "Chile" in pais_selecionado:
+            df_comp_pais = pd.DataFrame([
+                {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 707, "Share of Search (%)": "49.3%", "Tráfego Estimado": "Liderança Cassino"},
+                {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 526, "Share of Search (%)": "36.7%", "Tráfego Estimado": "Tráfego Cruzado"},
+                {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 117, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Internacional"},
+                {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 83, "Share of Search (%)": "5.8%", "Tráfego Estimado": "Baixa Presença"},
+                {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+            ])
+        elif "Colômbia" in pais_selecionado:
+            df_comp_pais = pd.DataFrame([
+                {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 1600, "Share of Search (%)": "68.7%", "Tráfego Estimado": "16.1K /mês"},
+                {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 311, "Share of Search (%)": "13.3%", "Tráfego Estimado": "Em Ascensão"},
+                {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 244, "Share of Search (%)": "10.5%", "Tráfego Estimado": "Internacional"},
+                {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 163, "Share of Search (%)": "7.0%", "Tráfego Estimado": "Nicho"},
+                {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 1, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+            ])
+        else:
+            df_comp_pais = pd.DataFrame([
+                {"Player / Concorrente": "Betsson PE (betsson.pe)", "Palavras Ranqueadas": 3200, "Share of Search (%)": "45.8%", "Tráfego Estimado": "Global PE"},
+                {"Player / Concorrente": "Betano LATAM (lat.betano.com)", "Palavras Ranqueadas": 1900, "Share of Search (%)": "27.2%", "Tráfego Estimado": "Hub Hispânico"},
+                {"Player / Concorrente": "Betsson Global (betsson.com)", "Palavras Ranqueadas": 1300, "Share of Search (%)": "18.6%", "Tráfego Estimado": "Matriz .com"},
+                {"Player / Concorrente": "Apuesta Total (apuestatotal.com)", "Palavras Ranqueadas": 574, "Share of Search (%)": "8.2%", "Tráfego Estimado": "Peruana Externa"},
+                {"Player / Concorrente": "OlimpoBet (olimpobetpe.pe)", "Palavras Ranqueadas": 6, "Share of Search (%)": "0.1%", "Tráfego Estimado": "Nulo"}
+            ])
 
-    with c_chart2:
-        st.dataframe(df_comp_pais[["Player / Concorrente", "Palavras Ranqueadas", "Share of Search (%)"]], hide_index=True, use_container_width=True)
+        c_chart1, c_chart2 = st.columns([1.2, 1])
+        with c_chart1:
+            fig_comp = px.bar(
+                df_comp_pais, 
+                x="Palavras Ranqueadas", 
+                y="Player / Concorrente", 
+                orientation="h",
+                title=f"Volume de Palavras-Chave Mapeadas no SEMrush ({pais_selecionado.split(' - ')[0]})",
+                color_discrete_sequence=["#0284C7"]
+            )
+            fig_comp.update_layout(height=320, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_comp, use_container_width=True)
 
-    st.divider()
+        with c_chart2:
+            st.dataframe(df_comp_pais[["Player / Concorrente", "Palavras Ranqueadas", "Share of Search (%)"]], hide_index=True, use_container_width=True)
 
-    # SCORECARD ESTRATÉGICO DA CONCORRÊNCIA
-    st.subheader("⚔️ 3. Scorecard da Concorrência: Onde Eles Erram x Nosso Ponto de Ataque")
-    st.caption("Diagnóstico técnico de SEO e inteligência generativa identificando as vulnerabilidades dos líderes.")
+        st.divider()
 
-    df_scorecard = pd.DataFrame([
-        {
-            "Concorrente": "Betsson (betsson.pe / betsson.com)",
-            "Liderança Atual": "Líder em volume de palavras no Peru (10.3K) e Colômbia.",
-            "Vulnerabilidade Crítica": "Arquitetura técnica ultrapassada, sem otimização para RAG/IAs (ChatGPT/Gemini) e dependência de tabelas estáticas de futebol.",
-            "Ponto de Ataque da Sabiá Gaming": "Construir hub SEO-Native com SSR, Schema Markup e `llms.txt` para tomar a recomendação de IA no Top 1."
-        },
-        {
-            "Concorrente": "Apuesta Total (apuestatotal.com)",
-            "Liderança Atual": "Líder em tráfego bruto no Peru (2.4M acessos/mês).",
-            "Vulnerabilidade Crítica": "90% do tráfego depende da marca (`apuesta total login`). Inexistente fora do Peru (apenas 83 termos no Chile).",
-            "Ponto de Ataque da Sabiá Gaming": "Dominar os termos genéricos de topo de funil (`posiciones liga 1`, `copa libertadores`) onde a Apuesta Total não ranqueia."
-        },
-        {
-            "Concorrente": "Betano LATAM (lat.betano.com)",
-            "Liderança Atual": "Primeiro grande a criar hub neutro regional em espanhol.",
-            "Vulnerabilidade Crítica": "Foco restrito em termos comerciais diretos de cassino. Abandono total de guias educativos e buscas informacionais.",
-            "Ponto de Ataque da Sabiá Gaming": "Atacar o topo e meio de funil educativo (`menos de 2.5 goles que significa`), capturando o usuário antes que ele busque a Betano."
-        },
-        {
-            "Concorrente": "OlimpoBet (olimpobetpe.pe)",
-            "Liderança Atual": "Nenhuma (Apenas 23 palavras ranqueadas no Peru).",
-            "Vulnerabilidade Crítica": "Dependência de 100% de mídia paga cara no Google Ads.",
-            "Ponto de Ataque da Sabiá Gaming": "Atrair o apostador via SEO e zerar a fatia de mercado desse concorrente."
-        }
-    ])
-    st.dataframe(df_scorecard, use_container_width=True, hide_index=True)
+        st.subheader("⚔️ 3. Scorecard da Concorrência B2C: Onde Eles Erram x Nosso Ponto de Ataque")
+        st.caption("Diagnóstico técnico de SEO e inteligência generativa identificando as vulnerabilidades dos líderes.")
 
-    st.divider()
+        df_scorecard = pd.DataFrame([
+            {
+                "Concorrente": "Betsson (betsson.pe / betsson.com)",
+                "Liderança Atual": "Líder em volume de palavras no Peru (10.3K) e Colômbia.",
+                "Vulnerabilidade Crítica": "Arquitetura técnica ultrapassada, sem otimização para RAG/IAs (ChatGPT/Gemini) e dependência de tabelas estáticas de futebol.",
+                "Ponto de Ataque da Sabiá Gaming": "Construir hub SEO-Native com SSR, Schema Markup e `llms.txt` para tomar a recomendação de IA no Top 1."
+            },
+            {
+                "Concorrente": "Apuesta Total (apuestatotal.com)",
+                "Liderança Atual": "Líder em tráfego bruto no Peru (2.4M acessos/mês).",
+                "Vulnerabilidade Crítica": "90% do tráfego depende da marca (`apuesta total login`). Inexistente fora do Peru (apenas 83 termos no Chile).",
+                "Ponto de Ataque da Sabiá Gaming": "Dominar os termos genéricos de topo de funil (`posiciones liga 1`, `copa libertadores`) onde a Apuesta Total não ranqueia."
+            },
+            {
+                "Concorrente": "Betano LATAM (lat.betano.com)",
+                "Liderança Atual": "Primeiro grande a criar hub neutro regional em espanhol.",
+                "Vulnerabilidade Crítica": "Foco restrito em termos comerciais diretos de cassino. Abandono total de guias educativos e buscas informacionais.",
+                "Ponto de Ataque da Sabiá Gaming": "Atacar o topo e meio de funil educativo (`menos de 2.5 goles que significa`), capturando o usuário antes que ele busque a Betano."
+            },
+            {
+                "Concorrente": "OlimpoBet (olimpobetpe.pe)",
+                "Liderança Atual": "Nenhuma (Apenas 23 palavras ranqueadas no Peru).",
+                "Vulnerabilidade Crítica": "Dependência de 100% de mídia paga cara no Google Ads.",
+                "Ponto de Ataque da Sabiá Gaming": "Atrair o apostador via SEO e zerar a fatia de mercado desse concorrente."
+            }
+        ])
+        st.dataframe(df_scorecard, use_container_width=True, hide_index=True)
 
-    # SEÇÃO NOVIDADE: ALERTA DE MERCADO - CASE 7K.BET.BR
-    st.subheader("🚨 4. Alerta de Mercado: Movimentação Recente da 7k.bet.br na LATAM (Relatório SEMrush 08/Out/2026)")
-    st.caption("Acompanhamento das movimentações de operadores brasileiros expandindo para mercados hispânicos pós-bloqueios regulatórios.")
+        st.divider()
 
-    col_7k_1, col_7k_2 = st.columns([1, 1.2])
-    
-    with col_7k_1:
-        st.warning("**📊 Mapeamento Numérico do Posicionamento da `7k.bet.br`:**\n\n- **Chile (CL):** **36 palavras-chave** ranqueadas (tráfego estimado: 1.700 acessos/mês | custo de tráfego: $655 USD).\n- **Espanha / Hispânico (ES):** **22 palavras-chave** ranqueadas (tráfego estimado: 74 acessos/mês | custo de tráfego: $508 USD).\n- **100% Dependência Branded:** Todas as palavras posicionadas pela `7k.bet.br` são variações exatas do nome da marca (`bet7k`, `7k`, `betk7`, `7kbet`, `bet7x`, `btk7`, `7bet`, `bet7k app`, `7k casino`).")
+        st.subheader("🚨 4. Alerta de Mercado: Movimentação Recente da 7k.bet.br na LATAM (Relatório SEMrush 08/Out/2026)")
+        st.caption("Acompanhamento das movimentações de operadores brasileiros expandindo para mercados hispânicos pós-bloqueios regulatórios.")
 
-    with col_7k_2:
-        st.error("**💣 Onde a `7k.bet.br` Está Vulnerável (Nossa Janela de Oportunidade):**\n\n- **Zero Palavras Genéricas (Non-Branded):** A `7k.bet.br` não possui nenhuma palavra-chave genérica de cassino ou apostas posicionada na LATAM (`casino en línea`, `apuestas deportivas`, `tragamonedas`).\n- **Cegueira Semântica do Concorrente:** A 7k apenas captura o usuário que já conhece a marca e digita o nome no Google. Eles não capturam novos apostadores locais no Peru, Chile, Colômbia ou México.\n- **Ação Imediata da Sabiá:** Lançar o Hub Neutro focado em SEO/GEO Non-Branded para capturar a intenção de busca desses países antes que a 7k consiga construir autoridade fora do seu nome de marca.")
+        col_7k_1, col_7k_2 = st.columns([1, 1.2])
+        
+        with col_7k_1:
+            st.warning("**📊 Mapeamento Numérico do Posicionamento da `7k.bet.br`:**\n\n- **Chile (CL):** **36 palavras-chave** ranqueadas (tráfego estimado: 1.700 acessos/mês | custo de tráfego: $655 USD).\n- **Espanha / Hispânico (ES):** **22 palavras-chave** ranqueadas (tráfego estimado: 74 acessos/mês | custo de tráfego: $508 USD).\n- **100% Dependência Branded:** Todas as palavras posicionadas pela `7k.bet.br` são variações exatas do nome da marca (`bet7k`, `7k`, `betk7`, `7kbet`, `bet7x`, `btk7`, `7bet`, `bet7k app`, `7k casino`).")
+
+        with col_7k_2:
+            st.error("**💣 Onde a `7k.bet.br` Está Vulnerável (Nossa Janela de Oportunidade):**\n\n- **Zero Palavras Genéricas (Non-Branded):** A `7k.bet.br` não possui nenhuma palavra-chave genérica de cassino ou apostas posicionada na LATAM (`casino en línea`, `apuestas deportivas`, `tragamonedas`).\n- **Cegueira Semântica do Concorrente:** A 7k apenas captura o usuário que já conhece a marca e digita o nome no Google. Eles não capturam novos apostadores locais no Peru, Chile, Colômbia ou México.\n- **Ação Imediata da Sabiá:** Lançar o Hub Neutro focado em SEO/GEO Non-Branded para capturar a intenção de busca desses países antes que a 7k consiga construir autoridade fora do seu nome de marca.")
+
+    # -----------------------------------------------------
+    # SUB-ABA 2: COMETA GAMING B2B (NOVIDADE)
+    # -----------------------------------------------------
+    with sub_tab_cometa:
+        st.subheader("🏢 Análise de Concorrência B2B: Cometa Gaming (Sabiá Solutions)")
+        st.caption("Relatório SEMrush (Out/2026): Mapeamento de lacunas nas buscas em espanhol por software de iGaming, plataformas White Label e criação de casas de apostas.")
+
+        st.info("**📌 Resumo Executivo B2B (Head of Performance & SEO):**\nOs grandes fornecedores globais de tecnologia (*BetConstruct* e *SoftSwiss*) estão ativamente buscando compradores no mercado hispânico (39 termos ranqueados cada), enquanto *Ana Gaming* (0 palavras) e *Playtech* (1 palavra) estão completamente ausentes. A **Cometa Gaming** possui uma oportunidade imediata de capturar leads B2B qualificados (operadores/investidores) atacando termos de compra em espanhol com **dificuldade média/baixa (KD < 45%)** onde os líderes possuem posições fracas.")
+
+        st.divider()
+
+        # KPIS B2B
+        b2b_kpi1, b2b_kpi2, b2b_kpi3, b2b_kpi4 = st.columns(4)
+        b2b_kpi1.metric("Termos B2B 'Software' Mapeados", "45 Oportunidades", "SEMRUSH ES")
+        b2b_kpi2.metric("Cometa Gaming (cometagaming.com)", "0 palavras", "Pronta para Invasão", delta_color="inverse")
+        b2b_kpi3.metric("Líderes de Mercado B2B", "BetConstruct & SoftSwiss", "39 palavras cada")
+        b2b_kpi4.metric("Dificuldade Média Quick Wins B2B", "33% a 42% KD", "Alta Facilidade de Ranqueamento")
+
+        st.divider()
+
+        # COMPARATIVO DE PRESENÇA B2B
+        st.subheader("📊 1. Presença Orgânica na LATAM/Espanha (Palavras B2B de 'Software')")
+        
+        df_b2b_providers = pd.DataFrame([
+            {"Provedor / Domínio": "BetConstruct (betconstruct.com)", "Palavras B2B Ranqueadas": 39, "Status no Mercado": "🟡 Líder Dominante", "Foco do Software": "Sportsbook & Turnkey Software"},
+            {"Provedor / Domínio": "SoftSwiss (softswiss.com)", "Palavras B2B Ranqueadas": 39, "Status no Mercado": "🟡 Líder Dominante", "Foco do Software": "Casino Software & Turnkey Solutions"},
+            {"Provedor / Domínio": "Playtech (playtech.com)", "Palavras B2B Ranqueadas": 1, "Status no Mercado": "⚪ Presença Residual", "Foco do Software": "Software Tradicional de Cassino"},
+            {"Provedor / Domínio": "Cometa Gaming (cometagaming.com)", "Palavras B2B Ranqueadas": 0, "Status no Mercado": "🔴 Entrada Iminente", "Foco do Software": "Plataforma iGaming / White Label LATAM"},
+            {"Provedor / Domínio": "Ana Gaming (anagaming.com.br)", "Palavras B2B Ranqueadas": 0, "Status no Mercado": "🔴 Sem Presença ES", "Foco do Software": "Desenvolvimento Local BR"}
+        ])
+
+        col_b2b_chart1, col_b2b_chart2 = st.columns([1.2, 1])
+        with col_b2b_chart1:
+            fig_b2b = px.bar(
+                df_b2b_providers, 
+                x="Palavras B2B Ranqueadas", 
+                y="Provedor / Domínio", 
+                orientation="h",
+                title="Cobertura de Busca B2B por Fornecedor (Banco SEMrush ES)",
+                color_discrete_sequence=["#F59E0B"]
+            )
+            fig_b2b.update_layout(height=300, yaxis=dict(autorange="reversed"), margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_b2b, use_container_width=True)
+
+        with col_b2b_chart2:
+            st.dataframe(df_b2b_providers[["Provedor / Domínio", "Palavras B2B Ranqueadas", "Status no Mercado"]], hide_index=True, use_container_width=True)
+
+        st.divider()
+
+        # MATRIZ DE PALAVRAS-CHAVE B2B & QUICK WINS
+        st.subheader("🎯 2. As Maiores Oportunidades de Compra B2B (Mineração de Altíssima Intenção)")
+        st.caption("Termos de busca utilizados por investidores e futuros operadores na América Latina para contratar software de apostas e cassino.")
+
+        df_b2b_keywords = pd.DataFrame([
+            {
+                "Palavra-Chave B2B (Espanhol)": "desarrolladores de software de apuestas deportivas",
+                "Intenção": "Transacional",
+                "Volume/mês": 40,
+                "Dificuldade (KD%)": "33% (Ultra Baixa)",
+                "BetConstruct": "Posição #1",
+                "SoftSwiss": "Posição #19",
+                "Oportunidade Cometa Gaming": "🔥 Alta: SoftSwiss está na pág 2. Cometa entra no Top 3 com 1 artigo otimizado."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "comprar software de apuestas deportivas",
+                "Intenção": "Transacional",
+                "Volume/mês": 110,
+                "Dificuldade (KD%)": "35% (Muito Baixa)",
+                "BetConstruct": "Posição #2",
+                "SoftSwiss": "Posição #3",
+                "Oportunidade Cometa Gaming": "🔥 Alta: Termo direto de compra. Criar LP comercial de produto."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "proveedor de software de apuestas deportivas",
+                "Intenção": "Comercial",
+                "Volume/mês": 90,
+                "Dificuldade (KD%)": "40% (Baixa)",
+                "BetConstruct": "Posição #12",
+                "SoftSwiss": "Posição #11",
+                "Oportunidade Cometa Gaming": "🔥 Máxima: Ambos os concorrentes estão fora do Top 10! Brecha aberta."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "software para casas de apuestas deportivas",
+                "Intenção": "Transacional",
+                "Volume/mês": 50,
+                "Dificuldade (KD%)": "42% (Baixa)",
+                "BetConstruct": "Posição #5",
+                "SoftSwiss": "Posição #15",
+                "Oportunidade Cometa Gaming": "🔥 Alta: Busca direta de novos operadores querendo montar bancas."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "software de apostas esportivas",
+                "Intenção": "Comercial",
+                "Volume/mês": 50,
+                "Dificuldade (KD%)": "43% (Baixa)",
+                "BetConstruct": "Posição #1",
+                "SoftSwiss": "Posição #4",
+                "Oportunidade Cometa Gaming": "🔥 Alta: Termo híbrido PT/ES para empresários da LATAM."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "comprar software de casino online",
+                "Intenção": "Transacional",
+                "Volume/mês": 40,
+                "Dificuldade (KD%)": "51% (Média)",
+                "BetConstruct": "Posição #5",
+                "SoftSwiss": "Posição #1",
+                "Oportunidade Cometa Gaming": "🟡 Média: Foco em pacotes Turnkey de Cassino com crash games."
+            },
+            {
+                "Palavra-Chave B2B (Espanhol)": "casino software provider",
+                "Intenção": "Comercial",
+                "Volume/mês": 90,
+                "Dificuldade (KD%)": "68% (Média/Alta)",
+                "BetConstruct": "Posição #3",
+                "SoftSwiss": "Posição #1",
+                "Oportunidade Cometa Gaming": "🟡 Média: Termo global em inglês com forte apelo em feiras iGaming."
+            }
+        ])
+        st.dataframe(df_b2b_keywords, use_container_width=True, hide_index=True)
+
+        st.divider()
+
+        # ESTRATÉGIA DE ENTRADA ASSERTIVA B2B (VISÃO HEAD DE PERFORMANCE)
+        st.subheader("🚀 3. Plano de Ataque Assertivo da Cometa Gaming (Como Entrar e Vencer)")
+        
+        b2b_p1, b2b_p2 = st.columns(2)
+        with b2b_p1:
+            st.success("**🎯 1. Estruturação de Landing Pages B2B Focadas por Solução:**\n\n- **Página 1:** `cometagaming.com/es/software-apuestas-deportivas/` (Alvo: `comprar software de apuestas deportivas` | KD 35%).\n- **Página 2:** `cometagaming.com/es/proveedor-software-igaming/` (Alvo: `proveedor de software...` | KD 40%).\n- **Página 3:** `cometagaming.com/es/software-casino-online/` (Alvo: `comprar software de casino online`).")
+
+        with b2b_p2:
+            st.info("**🧠 2. Dominância em Motores de IA (GEO / RAG B2B):**\n\n- **Diferencial Único:** SoftSwiss e BetConstruct possuem conteúdos genéricos traduzidos.\n- **Ação Cometa Gaming:** Injetar o manifesto `llms.txt` na Cometa Gaming. Quando investidores buscarem na IA *"¿Cuáles son los mejores proveedores de software para abrir una casa de apuestas en Latam?"*, a Cometa será recomendada como a fornecedora com integração nativa de pagamentos locais (SPEI, PSE, PagoEfectivo, M-Pesa).")
 
     st.divider()
 
@@ -1336,9 +1474,9 @@ with tab6:
     # ROADMAP DE EXPANSÃO 90 DIAS
     st.subheader("📅 7. Roadmap Executivo de Lançamento e Ranqueamento (90 Dias)")
     c_p1, c_p2, c_p3 = st.columns(3)
-    c_p1.warning("**0-30 Dias (Infra & Taxonomia):**\n- Setup dos subdiretórios geográficos (`/pe/`, `/co/`, `/cl/`, `/mx/`).\n- Implementação das tags `hreflang` e liberação dos manifestos `llms.txt` em espanhol.\n- Início do resgate de palavras não exploradas em Peru e Colômbia.")
-    c_p2.info("**31-60 Dias (Conteúdo & GEO PR):**\n- Publicação dos clusters genéricos de alta intenção (`casino en línea`, `apuestas deportivas`).\n- Início do plano de Digital PR em veículos locais da LATAM (Forbes Latam, El Comercio) para autoridade de RAG.\n- Testes de conversão (FTD) alinhados com o time de mídia.")
-    c_p3.success("**61-90 Dias (Dominância & Escala):**\n- Domínio do Top 3 nas palavras de alto CPC para zerar dependência paga.\n- Acompanhamento de FTDs orgânicos em moeda forte por país no Power BI.\n- Expansão do modelo para o mercado hispânico dos EUA e África Lusófona.")
+    c_p1.warning("**0-30 Dias (Infra & Taxonomia):**\n- Setup dos subdiretórios geográficos B2C (`/pe/`, `/co/`, `/cl/`) e LPs B2B na Cometa Gaming.\n- Implementação das tags `hreflang` e liberação dos manifestos `llms.txt` em espanhol.\n- Início da criação das LPs B2B direcionadas para `comprar software de apuestas deportivas`.")
+    c_p2.info("**31-60 Dias (Conteúdo & GEO PR):**\n- Publicação dos clusters genéricos B2C e materiais de produto da Cometa Gaming.\n- Início do plano de Digital PR em veículos B2B de iGaming da LATAM (Yogonet, SBC Noticias).\n- Testes de conversão (FTD) B2C e captação de MQLs B2B.")
+    c_p3.success("**61-90 Dias (Dominância & Escala):**\n- Domínio do Top 3 nas palavras B2B de baixa dificuldade (KD 33-42%).\n- Acompanhamento de FTDs B2C e contratos fechados de plataforma B2B na Cometa Gaming.\n- Expansão do modelo para o mercado hispânico dos EUA e África Lusófona.")
 
 # ---------------------------------------------------------
 # ABA 7: PLANO EXECUTIVO & ESTRUTURA DO TIME (LUCAS TADEU SEO)
